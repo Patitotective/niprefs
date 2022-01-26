@@ -2,53 +2,8 @@ import std/[strutils, strformat, parseutils, sequtils, options]
 import npeg
 import prefsnode, escaper
 
-const
-  commentChar* = '#'                   ## The character to comment with.
-  firstLine* = &"{commentChar}NiPrefs" ## First line when writing a *prefs* file.
-  sepChar* = '=' ## The character used to separate a key-val pair when writing a *prefs* file.
-  endChar* = '\n'                      ## The character to end a key-val pair.
-  continueChar* = '>'                  ## The character used to indicate a nested table.
-  indentChar* = ' '.repeat 2           ## The character used to indent.
-  keyPathSep* = '/'                    ## The character to separate a *key path*.
-  invalidKeyChars* = [sepChar, commentChar, continueChar,
-      keyPathSep]                      ## Invalid characters to use in a key.
-  autoGenKeys* = true                  ## Auto generate keys when accessing to a nested table.
-
 type
   SyntaxError* = object of ValueError
-
-  PTokenKind = enum
-    PEqual,       # =
-    PDQuote,      # Double quote "
-    PSQuote,      # Single quote '
-    PGreater,     # >
-    PMinus,       # -
-    PAtSign,      # @
-    PLeftSquare,  # [
-    PRightSquare, # ]
-    PLeftBrace,   # {
-    PRightBrace,  # }
-    PColon,       # :
-
-    PNil,
-    PBool,
-    PNumber,
-    PString,
-    PObject,
-
-  PToken = object
-    kind*: PTokenKind
-    lexeme*: string
-    literal*: PrefsNode
-    line*: int
-    column*: int
-
-  PScanner = object
-    source*: string
-    tokens*: seq[PToken]
-    start*: int
-    current*: int
-    line*: int
 
   PNestData = ref object
     parent*: Option[PNestData]
@@ -62,62 +17,17 @@ type
     objData*: PNestData
     seqData*: PNestData
 
-proc initPToken(kind: PTokenKind, lexeme: string, literal: PrefsNode, line: int,
-    column: int): PToken =
-  PToken(kind: kind, lexeme: lexeme, literal: literal, line: line,
-      column: column)
-
-proc initPScanner(source: string): PScanner =
-  PScanner(source: source)
-
-proc `isAtEnd`(scanner: PScanner): bool =
-  scanner.current >= scanner.source.len
-
-proc advance(scanner: PScanner): char =
-  scanner.source[scanner.current+1]
-
-proc addToken(scanner: var PScanner, kind: PTokenKind,
-    literal: PrefsNode = newPEmpty()) =
-  let text = scanner.source[scanner.start..scanner.current]
-  scanner.tokens.add initPToken(kind, text, literal, scanner.line,
-      scanner.current)
-
-proc scanToken(scanner: var PScanner) =
-  case scanner.advance
-  of '=':
-    scanner.addToken(PEqual)
-  of '"':
-    scanner.addToken(PDQuote)
-  of '\'':
-    scanner.addToken(PSQuote)
-  of '>':
-    scanner.addToken(QGreater)
-  of '-':
-    scanner.addToken(PMinus)
-  of '@':
-    scanner.addToken(PAtSign)
-  of '[':
-    scanner.addToken(PLeftSquare)
-  of ']':
-    scanner.addToken(PRightSquare)
-  of '{':
-    scanner.addToken(PLeftBrace)
-  of '}':
-    scanner.addToken(PRightBrace)
-  of ':':
-    scanner.addToken(PColon)
-  else:
-    raise newException(SyntaxError, &"Unexpected character at line {scanner.line}, column {scanner.column}")
-
-proc scanTokens(scanner: PScanner): seq[PToken] =
-  while !scanner.isAtEnd:
-    scanner.start = scanner.current
-    scanner.scanToken()
-
-  scanner.tokens.add initPToken()
-
-proc toString(token: PToken): string =
-  &"{token.kind} {token.lexeme} {token.literal}"
+const
+  commentChar* = '#'                   ## The character to comment with.
+  firstLine* = &"{commentChar}NiPrefs" ## First line when writing a *prefs* file.
+  sepChar* = '=' ## The character used to separate a key-val pair when writing a *prefs* file.
+  endChar* = '\n'                      ## The character to end a key-val pair.
+  continueChar* = '>'                  ## The character used to indicate a nested table.
+  indentChar* = ' '.repeat 2           ## The character used to indent.
+  keyPathSep* = '/'                    ## The character to separate a *key path*.
+  invalidKeyChars* = [sepChar, commentChar, continueChar,
+      keyPathSep]                      ## Invalid characters to use in a key.
+  autoGenKeys* = true                  ## Auto generate keys when accessing to a nested table.
 
 proc initPNestData(parent: Option[PNestData] = none(PNestData),
     child: PrefsNode): PNestData =
