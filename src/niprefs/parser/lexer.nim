@@ -30,6 +30,8 @@ type
     VAL
     GREATER  # >
     INDEN
+    INDIN
+    INDOUT
 
     EOF      # End Of File
 
@@ -128,21 +130,21 @@ let lexer = peg(tokens, data: PLexer):
   spaced(rule) <- *S * rule * *S
   items(rule) <- ?spaced(rule * *(spaced(',') * rule) * ?',')
 
-  tokens <- *token
-  token <- empty | pair
+  tokens <- *token * EOF
+  token <- *S * '\n' | pair
 
   EOF <- !1:
     data.addToken(EOF, $0, @0)
-    fail # Terminate
 
   comment <- '#' * *(1 - '\n')
   emptyLn <- *S * ?comment * endLn
-  empty <- *S * ?comment * ('\n' | EOF)
-  endLn <- newLn | EOF
+  endLn <- newLn | !1
   newLn <- '\n':
     data.addToken(NL, $0, @0)
 
-  pair <- inden * key * spaced(sep) * val * emptyLn
+  pair <- inden * key * spaced(sep) * (obj | val * (emptyLn |
+      E"new line or the end"))
+
   key <- +({'\x20'..'\xff'} - {'=', '\n', '#'}):
     data.addToken(KEY, $0, @0)
 
@@ -152,11 +154,20 @@ let lexer = peg(tokens, data: PLexer):
   greater <- '>':
     data.addToken(GREATER, $0, @0)
 
-  inden <- *indentChar:
+  inden <- *indentChar * &1:
     data.addToken(INDEN, $0, @0)
 
+  indin <- *indentChar:
+    data.addToken(INDIN, $0, @0)
+
+  indout <- *indentChar:
+    data.addToken(INDOUT, $0, @0)
+
+  obj <- greater * *S * ?comment * (newLn | E"new line") * &indin * (+token |
+      E"one or more pairs") * &indout
+
   val <- (seq | num | char | bool | null | string | rawString | emptyObj |
-      greater | E"value") * !(1 - '\n') | E"only one value"
+      E"value") * *S * (comment | !(1 - '\n')) | E"only one value"
 
   null <- "nil":
     data.addToken(VAL, $0, @0)
