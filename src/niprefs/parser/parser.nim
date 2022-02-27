@@ -1,4 +1,4 @@
-import std/[strutils, strformat, sequtils, options]
+import std/[strutils, strformat, sequtils, options, tables]
 import npeg, npeg/codegen
 import lexer, escaper
 
@@ -260,6 +260,3 @@ proc parsePrefs*(source: string): PObjectType =
 
 proc readPrefs*(path: string): PObjectType =
   parsePrefs(path.scanPrefsFile().stack)
-
-when isMainModule:
-  echo readPrefs("prefs.niprefs")

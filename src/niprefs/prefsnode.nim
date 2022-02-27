@@ -1,5 +1,4 @@
 import std/[macros, tables]
-export tables
 
 type
   PSeqParam* = openArray[PrefsNode] ## Used for as the parameter for sequence type
@@ -255,12 +254,12 @@ proc `$`*(node: PrefsNode): string =
   of PString:
     result.addQuoted(node.getString())
 
-proc `[]`*(node: var PrefsNode, key: string): PrefsNode =
-  ## Access to `key` in `node.objectV`.
+proc `[]`*(node: var PrefsNode, key: string): var PrefsNode =
+  ## Access to the value of `key` in `node.objectV`. The value can be modified.
   node.objectV[key]
 
 proc `[]`*(node: PrefsNode, key: string): PrefsNode =
-  ## Access to `key` in `node.objectV`.
+  ## Access to the value of `key` in `node.objectV`.
   node.objectV[key]
 
 proc `[]`*(node: PrefsNode, index: int): PrefsNode =
@@ -289,3 +288,8 @@ proc `[]=`*(node: var PrefsNode, key: string, val: PrefsNode) =
     table["users"] = toPrefs @["ElegantBeef", "Patitotective"]
 
   node.objectV[key] = val
+
+proc del*(node: var PrefsNode, key: string) = 
+  ## Delete `key` from `node.objectV`.
+
+  node.objectV.del(key)

@@ -1,6 +1,6 @@
-import std/[strutils, sequtils, strformat, options, os]
+import std/[strutils, sequtils, strformat, options, tables, os]
 import prefsnode, parser/parser, utils
-export prefsnode, parser, tables, strutils
+export prefsnode, parser
 
 const
   commentChar = '#'

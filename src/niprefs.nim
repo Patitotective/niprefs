@@ -1,9 +1,32 @@
 ## NiPrefs is a library that offers a preferences-system in a text file within a table-like structure.
+## It stores the preferences in an `OrderedTable[string, PrefsNode]` where `PrefsNode` is an object variation that supports the following types:  
+## - `int`
+## - `nil`
+## - `seq` (there are no arrays)
+## - `bool`
+## - `char`
+## - `float`
+## - `string` (and raw strings)
+## - `OrderedTable[string, PrefsNode]` (nested tables)
+
+## # Syntax
+## NiPrefs writes the preferences down to a text file using a pretty straightforward syntax that goes like this:
+## ```nim
+## # Comment
+## lang="en" # Keys do not require quotes
+## dark=false
+## scheme=> # Nested tables are defined with a greater than symbol and indentation-in
+##   background="#ffffff" # background belongs to scheme
+##   font=>
+##     family="UbuntuMono"
+##     size=15
+##     color="#000000"
+## ```
 
 ## # Basic usage
 runnableExamples:
   let defaultPrefs = toPrefs({
-    "lang": "es",
+    "lang": "en",
     "dark": true,
     "keybindings": {:},
     "scheme": {
@@ -14,7 +37,7 @@ runnableExamples:
         "color": "#73D216"
     }
   }
-  })
+})
 
   var prefs = initPrefs(defaultPrefs, "settings.niprefs")
 
@@ -22,7 +45,7 @@ runnableExamples:
 ##
 ## ```nim
 ## #NiPrefs
-## lang="es"
+## lang="en"
 ## dark=true
 ## keybindings={:}
 ## scheme=>
@@ -32,31 +55,37 @@ runnableExamples:
 ##     family="UbuntuMono"
 ##     color="#73D216"
 ## ```
-## As you can see, *NiPrefs* syntax is pretty straightforward.
-##
-## It supports the following types:
-## - `int`
-## - `nil`
-## - `seq` (there are no arrays)
-## - `bool`
-## - `char`
-## - `float`
-## - `OrderedTable` (nested tables)
-## - `string` (and raw strings)
-##
-## Notes:
-## - Sequences can be written with or without the `@` prefix.
-## - Nested tables are defined with `key=>` new line and indent in.
+
+## ## Reading
+## To read a key from your preferences file you can access to it as it were a table:
 ## ```nim
-## scheme=>
-##   background="#000000"
-##   font=>
-##     size=15
-##     family="UbuntuMono"
-##     color="#73D216"
+## echo prefs["lang"]
+## >>> "en"
 ## ```
-## To access (read/write) to a nested table Prefs uses something called *key paths*, which are in essence a path separated by a slash `/` (e.g. `scheme/font/size`).
-## - Comments are supported with the `#` character (only inline comments).
+## To read a nested key you must use something called *key paths*, which are in essence a path to a nested key separated by a slash `/`:
+## ```nim
+## echo prefs["scheme/font/family"]
+## >>> "UbuntuMono"
+## ```
+
+## ## Writing
+## To change the value of a key or create a new one you can do it as it were table:
+## ```nim
+## prefs["lang"] = "es"
+## echo prefs["lang"]
+## >>> "es"
+## ```
+## Same with nested keys:
+## ```nim
+## prefs["scheme/font/size"] = 20
+## echo prefs["scheme/font/size"]
+## >>> 20
+## ```
+
+## ## Removing
+## To remove a key from your preferences you can use either `del` or `pop`.
+## [`del`]() deletes the `key` **if** it exists, does nothing if it does not.
+## [`pop`]() deletes the `key`, returns true if it existed and sets `val` to the value that the `key` had. Otherwise, returns false, and `val` is unchanged.
 
 import std/tables
 import niprefs/prefsbase
@@ -76,6 +105,18 @@ proc initPrefs*(table: PrefsNode = newPObject(),
     path: string = "prefs.niprefs"): Prefs =
   ## Creates a new Prefs object and checks if a file exists at `path` to create it if it doesn't.
   initPrefs(table = table.getObject(), path = path)
+
+template len*(prefs: Prefs): int =
+  ## Same as `prefs.content.len`.
+  runnableExamples:
+    var prefs = toPrefs({"lang": "en", "theme": "dark"}).initPrefs
+
+    prefs.overwrite() # To avoid conflicts
+
+    assert prefs.len == 2
+
+  prefs.content.len
+
 
 template pairs*(prefs: Prefs) =
   ## Same as `prefs.content.pairs`
@@ -161,7 +202,7 @@ proc `[]=`*(prefs: Prefs, key: string, val: PrefsNode) =
   prefs.write(key, val)
 
 proc clear*(prefs: Prefs) =
-  ## Clear the *prefs* file, obtaining an empty table.
+  ## Clears the content of the file.
   runnableExamples:
     var prefs = toPrefs({"lang": "en", "theme": "dark"}).initPrefs
     prefs.clear()
@@ -207,15 +248,3 @@ proc pop*(prefs: Prefs, key: string, val: var PrefsNode): bool =
     prefs.delKey(key)
   else:
     result = false
-
-proc len*(prefs: Prefs): int =
-  ## Returns the length of the *prefs* file
-  runnableExamples:
-    var prefs = toPrefs({"lang": "en", "theme": "dark"}).initPrefs
-
-    prefs.overwrite() # To avoid conflicts
-
-    assert prefs.len == 2
-
-  prefs.content.len
-

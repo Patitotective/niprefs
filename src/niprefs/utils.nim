@@ -1,4 +1,4 @@
-import std/[strutils, os]
+import std/[strutils, tables, os]
 import prefsnode
 
 proc splitDir(path: string): seq[string] =
