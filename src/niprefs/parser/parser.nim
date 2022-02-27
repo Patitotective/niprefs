@@ -1,293 +1,265 @@
-import std/[strutils, strformat, parseutils, sequtils, options]
-import npeg
-import prefsnode, escaper
+import std/[strutils, strformat, sequtils, options]
+import npeg, npeg/codegen
+import lexer, escaper
 
 type
-  SyntaxError* = object of ValueError
-
   PNestData = ref object
-    parent*: Option[PNestData]
+    inside*: bool
     child*: PrefsNode
+    parent*: Option[PNestData]
 
   PParseData = object
     table*: PObjectType
-    indentLevel*: int
-    inObj*: bool
-    inSeq*: bool
+    indentStack*: seq[int]
     objData*: PNestData
     seqData*: PNestData
 
-const
-  commentChar* = '#'                   ## The character to comment with.
-  firstLine* = &"{commentChar}NiPrefs" ## First line when writing a *prefs* file.
-  sepChar* = '=' ## The character used to separate a key-val pair when writing a *prefs* file.
-  endChar* = '\n'                      ## The character to end a key-val pair.
-  continueChar* = '>'                  ## The character used to indicate a nested table.
-  indentChar* = ' '.repeat 2           ## The character used to indent.
-  keyPathSep* = '/'                    ## The character to separate a *key path*.
-  invalidKeyChars* = [sepChar, commentChar, continueChar,
-      keyPathSep]                      ## Invalid characters to use in a key.
-  autoGenKeys* = true                  ## Auto generate keys when accessing to a nested table.
-
-proc initPNestData(parent: Option[PNestData] = none(PNestData),
-    child: PrefsNode): PNestData =
-  PNestData(parent: parent, child: child)
+proc initPNestData(inside: bool = false, child: PrefsNode = newPEmpty(),
+    parent: Option[PNestData] = PNestData.none): PNestData =
+  PNestData(inside: inside, child: child, parent: parent)
 
 proc initPParseData(table: PObjectType = default PObjectType,
-    pseqdata: PNestData = initPNestData(child = newPSeq()),
-    pobjdata: PNestData = initPNestData(child = newPObject())
+    seqData: PNestData = initPNestData(),
+    objData: PNestData = initPNestData()
   ): PParseData =
-  PParseData(table: table, indentLevel: 0, inObj: false, inSeq: false,
-      objData: pobjdata, seqData: pseqdata)
+  PParseData(table: table, indentStack: @[0], objData: objData,
+      seqData: seqData)
 
-proc checkKey*(key: string) =
-  ## Raises an exception if `key` contains any of the `invalidKeyChars`.
-  if invalidKeyChars.anyIt(it in key):
-    raise newException(KeyError, &"Invalid key \"{key}\" (it must not contain {invalidKeyChars})")
+#[
+proc `$`(data: PNestData): string =
+  &"inside={data.inside}\nchild={data.child}\nparent={data.parent.isSome}"
 
-proc removeTypeSuf(str: var string) =
-  ## Gets the type suffix in the string, returns it and removes it from `str`
-  ## Nothing happens if `'` wasn't fount
-  let indx = str.find('\'')
-  if indx > -1:
-    # echo str[indx..<str.len]
-    str = str[0..<indx]
+proc `$`(data: PParseData): string =
+  &"table={data.table}\nindentStack={data.indentStack}\nobjData=>\n{indent($data.objData, 2)}\nseqData=>\n{indent($data.seqData, 2)}"
+]#
 
-template top[K, V](table: OrderedTable[K, V]): tuple[key: K, val: V] =
+proc `[]=`(data: var PParseData, key: string, val: PrefsNode) =
+  data.table[key] = val
+
+proc `==`(token: PToken, kind: PTokenKind): bool = token.kind == kind
+
+proc `top`[A](list: openArray[A]): A =
+  list[^1]
+
+proc `top`[K, V](table: OrderedTable[K, V]): tuple[key: K, val: V] =
   (key: table.keys.toSeq[^1], val: table[table.keys.toSeq[^1]])
 
-template `top=`[K, V](table: OrderedTable[K, V], val: V) = table[
-    table.keys.toSeq[^1]] = val
+proc `top=`[K, V](table: var OrderedTable[K, V], val: V) =
+  table[table.top.key] = val
 
-proc addToTable(data: var PParseData, node: PrefsNode) =
-  if data.inSeq:
-    data.seqData.child.seqV.add node
-  elif data.inObj:
-    data.objData.child.objectV.top = node
+proc `top`(data: PParseData): tuple[key: string, val: PrefsNode] =
+  data.table.top
+
+proc removeTypeSuf(num: string): string =
+  result = num
+
+  let idx = num.find('\'')
+  if idx > -1:
+    result = num[0..<idx]
+
+proc parseInt(lexeme: string, kind: PTokenKind): PrefsNode =
+  var lexeme = lexeme.removeTypeSuf()
+  var num: int
+
+  let negative = if lexeme.startsWith('-'): true else: false
+  lexeme.removePrefix('-')
+
+  if lexeme.len <= 1:
+    num = lexeme.parseInt()
   else:
-    data.table.top = node
-
-grammar "number":
-  minus <- '-'
-  octdigit <- {'0'..'7'}
-  bindigit <- {'0'..'1'}
-  nums <- Digit * *(?'_' * Digit)
-  exponent <- i"e" * ('+' | '-') * nums
-
-  iSuffix <- i"i" * ("8" |
-      "16" | "32" | "64")
-  uSuffix <- i"u" * ?("8" |
-      "16" | "32" | "64")
-  typeSuffix <- '\'' * (uSuffix | iSuffix)
-  f32Suffix <- i"f" * ?"32"
-  f64Suffix <- i"f64" | i"d"
-  fSuffix <- f32Suffix | f64Suffix
-
-  Hex <- ?minus * '0' * i"x" * Xdigit * *(?'_' * Xdigit):
-    var num: int
-    discard parseHex($0, num)
-    data.addToTable newPInt(num)
-
-  Dec <- ?minus * nums
-  Oct <- ?minus * '0' * 'o' * octdigit * *(?'_' * octdigit)
-  Bin <- ?minus * '0' * i"b" * bindigit * *(?'_' * bindigit)
-
-  Float <- ?minus * nums * (('.' * nums * ?exponent) | exponent)
-
-  Float32 <- Hex * '\'' * f32Suffix |
-    (Float | Oct | Bin | Dec) * '\'' * f32Suffix
-
-  Float64 <- Hex * '\'' * f64Suffix |
-    (Float | Oct | Bin | Dec) * '\'' * f64Suffix
-
-grammar "str":
-  escapeSeq <- 'r' | 'c' | 'n' | 'l' | 'f' | 't' | 'v' | '\\' | '"' | '\'' | +Digit |
-    'a' | 'b' | 'e' | ('x' * Xdigit[2])
-  escape <- '\\' * ('p' | escapeSeq | ('u' * Xdigit[4]) | ('u' * '{' * +Xdigit * '}'))
-  escapeChar <- '\\' * escapeSeq
-  charBody <- escapeChar | {0..255}
-  strBody <- ?escape * *( +( {'\x20'..'\xff'} - {'"'} - {'\\'}) * *escape)
-  rawStrBody <- *( +( {'\x20'..'\xff'} - {'"'}) | "\"\"")
-
-let parser = peg("start", data: PParseData):
-  newLine <- '\n'
-  S <- Space - newLine
-  sepChar <- '='
-  commentChar <- '#'
-  continueChar <- '>'
-  indentChar <- ' ' | '\t'
-  comment <- commentChar * *(1 - newLine):
-    echo $0
-
-  emptyLn <- *S * ?comment * newLine
-  endLn <- *S * ?comment * (newLine | !1)
-
-  pnil <- "nil":
-    data.addToTable newPNil()
-
-  spaced(rule) <- *S * rule * *S
-  isolated(rule) <- *emptyLn * rule * *emptyLn
-  commented(rule) <- rule * *S * ?comment
-
-  pbool <- "true" | "false":
-    data.addToTable newPBool(parseBool($0))
-
-  pint <- (number.Hex | number.Bin | number.Oct | number.Dec) *
-      ?number.typeSuffix: # To avoid conflicts with pfloat
-    var num: int
-    var str = $0 # Int string
-
-    let negative = str.startsWith('-')
-    str.removePrefix('-')
-
-    str.removeTypeSuf()
-
-    if str.startsWith("0b"):
-      num = str.parseBinInt()
-    elif str.startsWith("0x"):
-      num = str.parseHexInt()
-    elif str.startsWith("0o"):
-      num = str.parseOctInt()
+    case lexeme[0..1]
+    of "0b": # Bin
+      num = lexeme.parseBinInt()
+    of "0x": # Hex
+      num = lexeme.parseHexInt()
+    of "0o": # Oct
+      num = lexeme.parseOctInt()
     else:
-      num = str.parseInt()
+      num = lexeme.parseInt()
 
-    if negative:
-      num = 0 - num
+  if negative:
+    num = -num
 
-    data.addToTable newPInt(num)
+  result = num.newPInt()
 
-  pfloat <- number.Float | number.Float32 | number.Float64:
+proc parseFloat(lexeme: string, kind: PTokenKind): PrefsNode =
+  var lexeme = lexeme.removeTypeSuf()
+
+  let negative = if lexeme.startsWith('-'): true else: false
+  lexeme.removePrefix('-')
+
+  if lexeme.len <= 1:
+    result = lexeme.parseFloat().newPFloat()
+  else:
     var num: float
-    var str = $0 # Float string
 
-    let negative = str.startsWith('-')
-    str.removePrefix('-')
-
-    str.removeTypeSuf()
-
-    if str.startsWith("0b"):
-      num = cast[float](str.parseBinInt)
-    elif str.startsWith("0x"):
-      num = cast[float](str.parseHexInt)
-    elif str.startsWith("0o"):
-      num = cast[float](str.parseOctInt)
+    case lexeme[0..1]
+    of "0b": # Bin
+      num = cast[float](lexeme.parseBinInt)
+    of "0x": # Hex
+      num = cast[float](lexeme.parseHexInt)
+    of "0o": # Oct
+      num = cast[float](lexeme.parseOctInt)
     else:
-      num = str.parseFloat()
+      num = lexeme.parseFloat()
 
     if negative:
       num = -num
 
-    data.addToTable newPFloat(num)
+    result = num.newPFloat()
 
-  pchar <- '\'' * >str.charBody * '\'':
-    data.addToTable newPChar(parseEscaped($1))
+proc parseVal(token: PToken): PrefsNode =
+  case token.kind
+  of DEC, BIN, OCT, HEX:
+    result = token.lexeme.parseInt(token.kind)
+  of FLOAT, FLOAT32, FLOAT64:
+    result = token.lexeme.parseFloat(token.kind)
+  of BOOL:
+    result = token.lexeme.parseBool().newPBool()
+  of CHAR:
+    result = token.lexeme[1..^2].parseEscapedChar().newPChar()
+  of STRING:
+    result = token.lexeme[1..^2].parseEscaped().newPString()
+  of RAWSTRING:
+    result = token.lexeme[2..^2].newPString()
+  of EMPTYOBJ:
+    result = newPObject()
+  else:
+    echo &"Unkown token {token.lexeme} of {token.kind}"
+    result = newPEmpty()
 
-  pstring <- '"' * >str.strBody * '"':
-    data.addToTable newPString(parseEscaped($1))
+proc addToTable(data: var PParseData, key: string, val: PrefsNode) =
+  let key = key.strip()
 
-  prawstring <- i"r" * '"' * >str.rawStrBody * '"':
-    data.addToTable newPString($1)
+  if data.objData.inside:
+    data.objData.child[key] = val
+  else:
+    data[key] = val
 
-  # Sequences
-  pseqOpen <- ?'@' * '[':
-    if data.inSeq:
-      data.seqData.parent = initPNestData(parent = data.seqData.parent,
-          child = data.seqData.child).some()
+proc addToTable(data: var PParseData, key: string, val: PToken) =
+  if val.kind == SEQOPEN:
+    data.addToTable(key, data.seqData.child)
+  else:
+    data.addToTable(key, parseVal(val))
 
-    data.inSeq = true
-    data.seqData.child = newPSeq()
+proc closeSeq(data: var PParseData) =
+  if data.seqData.parent.isSome:
+    data.seqData.parent.get().child.seqV.add data.seqData.child
+    data.seqData = data.seqData.parent.get()
+    data.seqData.inside = true
+  else:
+    data.seqData.inside = false
 
-  pseqClose <- ']' | E"sequence close ]":
-    if data.seqData.parent.isSome:
-      data.seqData.parent.get().child.seqV.add(data.seqData.child)
-      data.seqData = data.seqData.parent.get()
+proc closeObj(data: var PParseData) =
+  if data.objData.parent.isSome:
+    data.objData.parent.get().child.objectV.top = data.objData.child
+    data.objData = data.objData.parent.get()
+    data.objData.inside = true
+  else:
+    data.objData.inside = false
+    data.addToTable(data.top.key, data.objData.child)
+
+proc indOut(data: var PParseData, ind: int, pos: PTokenPos) =
+  for i in countdown(data.indentStack.high, 0):
+    if ind < data.indentStack[i]:
+      data.closeObj()
+      data.indentStack.pop()
+    elif ind == data.indentStack[i]:
+      break
     else:
-      data.inSeq = false
-      data.addToTable data.seqData.child
+      raise newException(SyntaxError, &"Invalid indentation at {pos.line}:{pos.col} (#{pos.idx}), found {ind}, expected {data.indentStack[i]} or {data.indentStack[i+1]}")
 
-  seqItems <- val * *(*S * ',' * *S * val) * ?','
-  pseq <- pseqOpen * *S * ?seqItems * *S * pseqClose
+let parser = peg(content, PToken, data: PParseData):
+  spaced(rule) <- *[INDEN] * rule * *[INDEN]
 
-  # Objects
-  indIn <- *indentChar:
-    if len($0) <= data.indentLevel:
-      let offset = @0
-      let indentLevel = len($0)
-      raise newException(SyntaxError, &"Invalid indentation-in at #{offset}, expected an indentation greater than {data.indentLevel} but got {indentLevel}")
+  content <- *token
+  token <- ?[INDEN] * [NL] | obj | pair
+  
+  endLn <- [NL] | "":
+    if ($0).kind notin [NL, EOF]:
+      let lexeme = ($0).lexeme
+      let pos = ($0).pos
+      raise newException(SyntaxError, &"Expected new line or end of the file at {pos.line}:{pos.col} (#{pos.idx}), found \"{lexeme}\"")
 
-    echo "Indentation in ", data.indentLevel, " -> ", len($0)
+  pair <- indSame * >[KEY] * spaced(sep) * >(val | E"value") * endLn:
+    data.addToTable(($1).lexeme, $2)
 
-    data.indentLevel = len($0)
+  objOpen <- indSame * >[KEY] * spaced(sep) * [GREATER]:
+    data.addToTable(($1).lexeme, newPObject())
 
-    if data.inObj:
-      data.objData.parent = initPNestData(parent = data.objData.parent,
-          child = data.objData.child).some()
+  obj <- objOpen * ([NL] | E"new line") * *[NL] * (
+      indIn | E"indentation in") * (+token | E"one or more pairs")
 
-    data.inObj = true
+  indSame <- [INDEN] | "":
+    var ind = ($0).lexeme.len
+    if ($0).kind == KEY: # A KEY would mean zero indentation
+      ind = 0
+    elif ($0).kind != INDEN: # Otherwise is invalid
+      fail
+
+    if ind < data.indentStack.top: # Object close
+      data.indOut(ind, ($0).pos)
+
+    elif ind != data.indentStack.top:
+      let pos = ($0).pos
+      raise newException(SyntaxError, &"Invalid indentation at {pos.line}:{pos.col} (#{pos.idx}), found {ind}, expected {data.indentStack.top}")
+
+  indIn <- &[INDEN]:
+    validate ($0).lexeme.len > data.indentStack.top
+    data.indentStack.add ($0).lexeme.len
+
+    if data.objData.inside:
+      data.objData.parent = initPNestData(parent = data.objData.parent, child = data.objData.child).some
+
+    data.objData.inside = true
     data.objData.child = newPObject()
 
-  indSame <- *indentChar:
-    validate len($0) == data.indentLevel
-    echo "Indentation same ", data.indentLevel
-    #[
-    if len($0) != data.indentLevel:
-      let offset = @0
-      let indentLevel = len($0)
-      raise newException(SyntaxError, &"Invalid indentation at #{offset}, expected {data.indentLevel} but got {indentLevel}")
-    ]#
+  sep <- [EQUAL] | E"separator '='"
+  seqOpen <- [SEQOPEN]:
+    if data.seqData.inside:
+      data.seqData.parent = initPNestData(parent = data.seqData.parent, child = data.seqData.child).some
 
-  indOut <- *indentChar:
-    validate len($0) <= data.indentLevel
-    echo "Indentation out ", data.indentLevel, " -> ", len($0)
+    data.seqData.child = newPSeq()
+    data.seqData.inside = true
 
-    data.indentLevel = len($0)
-    echo data
+  seqClose <- [SEQCLOSE] | E"sequence close":
+    data.closeSeq()
 
-    if data.objData.parent.isSome:
-      data.objData.parent.get().child.objectV.top = data.objData.child
-      data.objData = data.objData.parent.get()
-    else:
-      data.inObj = false
-      data.addToTable data.objData.child
+  seqVal <- val:
+    if ($0).kind != SEQOPEN:
+      data.seqData.child.seqV.add parseVal($0)
 
-  pobject <- commented(continueChar) * +emptyLn * &indIn * content * &((
-      emptyLn | !1) * indOut)
+  SEQ <- seqOpen * *seqVal * seqClose
 
-  pemtpyobj <- '{' * *S * ?':' * *S * '}':
-    data.addToTable newPObject()
+  val <- [NIL] | [BOOL] | [CHAR] | [OBJECT] | [EMPTYOBJ] | [STRING] | [
+      RAWSTRING] | [DEC] | [HEX] | [BIN] | [OCT] | [FLOAT] | [FLOAT32] | [
+          FLOAT64] | SEQ
 
-  key <- +(1 - (sepChar | newLine)):
-    let key = strip($0)
-    checkKey(key)
-
-    if data.inObj:
-      data.objData.child[key] = newPEmpty()
-    else:
-      data.table[key] = newPEmpty()
-
-  val <- pfloat | pint | pnil | pseq | pbool |
-      pchar | prawstring | pstring | pemtpyobj |
-      E"one of float, int, nil, sequence, bool, char, string or object"
-
-  pair <- indSame * key * spaced(sepChar | E"separator =") * (
-      pobject | commented(val) * endLn)
-
-  content <- (*emptyLn * pair)
-  start <- content * !1
-
-proc parsePrefs*(str: string): PObjectType =
-  ## Parse the given string as *Prefs* format.
-  ## Any variation of int or float (uint, int8, float32, etc.) is implicitly converted to int and float, respectly.
-
+proc parsePrefs*(tokens: seq[PToken]): PObjectType =
   var data = initPParseData()
-  let output = parser.match(str.strip(), data)
+  var output: MatchResult[PToken]
+
+  try:
+    output = parser.match(tokens, data)
+  except NPegException as error:
+    let pos = tokens[error.matchLen].pos
+    raise newException(SyntaxError, getCurrentExceptionMsg() &
+        fmt" (line: {pos.line}, col: {pos.col})")
+
+  while data.objData.inside: # Unterminated object
+    data.closeObj()
+
   result = data.table
 
   if not output.ok:
-    raise newException(SyntaxError, &"Error while parsing {output}, parsed table: {result}")
+    let pos = tokens[output.matchLen].pos
+    raise newException(SyntaxError, &"Error while parsing at {pos.line}:{pos.col} (#{pos.idx}), parsed table: {result}")
+
+proc parsePrefs*(source: string): PObjectType =
+  parsePrefs(source.scanPrefs().stack)
 
 proc readPrefs*(path: string): PObjectType =
-  ## Reads the file at `path` and parses it.
-  parsePrefs(readFile(path))
+  parsePrefs(path.scanPrefsFile().stack)
 
-echo readPrefs("prefs.niprefs")
+when isMainModule:
+  echo readPrefs("prefs.niprefs")

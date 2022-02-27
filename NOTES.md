@@ -1,5 +1,15 @@
 # Notes
 
+## To Generate Documentation
+```sh
+nim doc --project --outdir:docs src/niprefs.nim
+```
+
 ## Parser
-- Integers are getting duplicated in sequences.
-- Floats are behaving weird.
+- Object start is detected by indentation in.
+- Object end is detected by the difference between indentations.
+
+## TODO
+- Fix nested assignment on `PObjectType` (`tests/test1.nim`).
+- Finish tests.
+- Remake docs.

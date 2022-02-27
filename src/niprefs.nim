@@ -2,10 +2,10 @@
 
 ## # Basic usage
 runnableExamples:
-  let defaultPrefs = toPNode({
+  let defaultPrefs = toPrefs({
     "lang": "es",
     "dark": true,
-    "keybindings": {: },
+    "keybindings": {:},
     "scheme": {
       "background": "#000000",
       "font": {
@@ -92,7 +92,7 @@ template values*(prefs: Prefs) =
 proc `$`*(prefs: Prefs): string =
   ## Instead of printing the prefs object, print it's content
   runnableExamples:
-    var prefs = toPNode({"lang": "en", "theme": "dark"}).initPrefs
+    var prefs = toPrefs({"lang": "en", "theme": "dark"}).initPrefs
 
     prefs.overwrite() # To avoid conflicts
 
@@ -106,7 +106,7 @@ proc `[]`*(prefs: Prefs, key: string): PrefsNode =
   ## Supports *key path*.
 
   runnableExamples:
-    var prefs = toPNode({"lang": "en", "scheme": {
+    var prefs = toPrefs({"lang": "en", "scheme": {
         "font": "UbuntuMono"}}).initPrefs
 
     prefs.overwrite() # To avoid conflicts
@@ -128,7 +128,7 @@ proc `[]=`*[T: not PrefsNode](prefs: Prefs, key: string, val: T) =
   ## Supports *key path*.
 
   runnableExamples:
-    var prefs = toPNode({"lang": "en", "theme": "dark"}).initPrefs
+    var prefs = toPrefs({"lang": "en", "theme": "dark"}).initPrefs
 
     prefs.overwrite() # To avoid conflicts
 
@@ -139,16 +139,16 @@ proc `[]=`*[T: not PrefsNode](prefs: Prefs, key: string, val: T) =
 proc `[]=`*(prefs: Prefs, key: string, val: PrefsNode) =
   ## Write in the *prefs* file the given key-value pair.
   ##
-  ## Use this procedure for [structured types](https://nim-lang.org/docs/manual.html#types-structured-types) with the [toPNode](prefsnode.html#toPNode.m%2Cuntyped) macro.
+  ## Use this procedure for [structured types](https://nim-lang.org/docs/manual.html#types-structured-types) with the [toPrefs](prefsnode.html#toPrefs.m%2Cuntyped) macro.
   ##
   ## *(See the example below)*
   ##
   ## Supports *key path*.
 
   runnableExamples:
-    var prefs = toPNode({"lang": "en"}).initPrefs
+    var prefs = toPrefs({"lang": "en"}).initPrefs
 
-    prefs["keybindings"] = toPNode @[{"keys": "Ctrl+C",
+    prefs["keybindings"] = toPrefs @[{"keys": "Ctrl+C",
         "command": "copy"}]
     # It is converted into
     # newPNode(@[newPNode(
@@ -163,7 +163,7 @@ proc `[]=`*(prefs: Prefs, key: string, val: PrefsNode) =
 proc clear*(prefs: Prefs) =
   ## Clear the *prefs* file, obtaining an empty table.
   runnableExamples:
-    var prefs = toPNode({"lang": "en", "theme": "dark"}).initPrefs
+    var prefs = toPrefs({"lang": "en", "theme": "dark"}).initPrefs
     prefs.clear()
     assert prefs.content == default PObjectType # PObject stands for OrderedTable[string, PrefsNode]
 
@@ -172,7 +172,7 @@ proc clear*(prefs: Prefs) =
 proc contains*(prefs: Prefs, key: string): bool =
   ## Alias of [hasKey proc](prefsbase.html#hasKey%2CPrefsBase%2Cstring) for use with the `in` operator.
   runnableExamples:
-    var prefs = toPNode({"lang": "en", "theme": "dark"}).initPrefs
+    var prefs = toPrefs({"lang": "en", "theme": "dark"}).initPrefs
     prefs.overwrite() # To avoid conflicts
 
     assert "lang" in prefs
@@ -192,7 +192,7 @@ proc pop*(prefs: Prefs, key: string, val: var PrefsNode): bool =
 
   runnableExamples:
     var
-      prefs = toPNode({"lang": "en", "theme": "dark"}).initPrefs
+      prefs = toPrefs({"lang": "en", "theme": "dark"}).initPrefs
       s: PrefsNode
 
     prefs.overwrite() # To avoid conflicts
@@ -211,7 +211,7 @@ proc pop*(prefs: Prefs, key: string, val: var PrefsNode): bool =
 proc len*(prefs: Prefs): int =
   ## Returns the length of the *prefs* file
   runnableExamples:
-    var prefs = toPNode({"lang": "en", "theme": "dark"}).initPrefs
+    var prefs = toPrefs({"lang": "en", "theme": "dark"}).initPrefs
 
     prefs.overwrite() # To avoid conflicts
 

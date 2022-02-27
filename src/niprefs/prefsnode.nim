@@ -144,13 +144,13 @@ proc newPNode*(obj: string): PrefsNode =
   ## Create a new PrefsNode from `obj`.
   newPString(obj)
 
-macro toPNode*(obj: untyped): PrefsNode =
+macro toPrefs*(obj: untyped): PrefsNode =
   ## Convert the given object into a `PrefsNode` if possible
   ## - Arrays are converted into sequences
   ## - `{key: val, ..}` are converted to ordered tables.
 
   runnableExamples:
-    var node = toPNode {
+    var node = toPrefs {
       "lang": "es",
       "dark": true,
       "users": @[],
@@ -169,7 +169,7 @@ macro toPNode*(obj: untyped): PrefsNode =
 
     for i in obj:
       i.expectKind(nnkExprColonExpr) # Expects key:val
-      result.add nnkExprColonExpr.newTree(i[0], newCall("toPNode", i[1]))
+      result.add nnkExprColonExpr.newTree(i[0], newCall("toPrefs", i[1]))
 
     result = newCall("newPObject", newCall("toOrderedTable", result))
 
@@ -185,7 +185,7 @@ macro toPNode*(obj: untyped): PrefsNode =
     result = newNimNode(nnkBracket)
 
     for i in obj:
-      result.add newCall("toPNode", i)
+      result.add newCall("toPrefs", i)
 
     result = newCall("newPSeq", result)
 
@@ -194,7 +194,7 @@ macro toPNode*(obj: untyped): PrefsNode =
     result = newNimNode(nnkBracket)
 
     for i in obj[1]:
-      result.add newCall("toPNode", i)
+      result.add newCall("toPrefs", i)
 
     result = newCall("newPSeq", result)
 
@@ -205,6 +205,7 @@ proc `==`*(node1: PrefsNode, node2: PrefsNode): bool =
   ## Checks if two nodes of the same kind have the same value
 
   assert node1.kind == node2.kind
+
   case node1.kind:
   of PInt:
     result = node1.getInt() == node2.getInt()
@@ -254,6 +255,10 @@ proc `$`*(node: PrefsNode): string =
   of PString:
     result.addQuoted(node.getString())
 
+proc `[]`*(node: var PrefsNode, key: string): PrefsNode =
+  ## Access to `key` in `node.objectV`.
+  node.objectV[key]
+
 proc `[]`*(node: PrefsNode, key: string): PrefsNode =
   ## Access to `key` in `node.objectV`.
   node.objectV[key]
@@ -271,7 +276,7 @@ proc `[]=`*[T: not PrefsNode](node: var PrefsNode, key: string, val: T) =
   ## The given value is converted to PrefsNode` with `newPNode`
 
   runnableExamples:
-    var table = toPNode {"lang": "en"}
+    var table = toPrefs {"lang": "en"}
     table["lang"] = "es"
 
   node.objectV[key] = newPNode(val)
@@ -280,7 +285,7 @@ proc `[]=`*(node: var PrefsNode, key: string, val: PrefsNode) =
   ## Change the value of the key in node's table
 
   runnableExamples:
-    var table = toPNode {"lang": "en"}
-    table["users"] = toPNode @["ElegantBeef", "Patitotective"]
+    var table = toPrefs {"lang": "en"}
+    table["users"] = toPrefs @["ElegantBeef", "Patitotective"]
 
   node.objectV[key] = val

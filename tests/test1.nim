@@ -8,5 +8,40 @@
 import unittest
 import niprefs
 
-test "can add":
-  check add(5, 5) == 10
+let defaultPrefs = toPrefs({
+  "lang": "en",
+  "dark": true,
+  "keybindings": {:},
+  "scheme": {
+    "background": "#000000",
+    "font": {
+      "size": 15,
+      "family": "UbuntuMono",
+      "color": "#73D216"
+  }
+}
+})
+
+var prefs = initPrefs(defaultPrefs, "settings.niprefs")
+prefs.overwrite()
+
+test "can read":
+  check prefs.content == prefs.table
+
+test "can write":
+  prefs["lang"] = "es"
+  prefs.table["lang"] = "es".toPrefs
+
+  prefs["scheme/font/size"] = 20
+  prefs.table["scheme"]["font"] = 20.toPrefs
+
+  # check prefs.content == prefs.table
+
+test "can remove":
+  prefs.del("lang")
+  prefs.table.del("lang")
+
+  prefs.del("scheme/font/size")
+  # prefs.table["scheme"]["font"].del("size")
+
+  # check prefs.content == prefs.table

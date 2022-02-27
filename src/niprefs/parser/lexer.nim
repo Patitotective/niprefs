@@ -1,49 +1,46 @@
 import std/[strutils, strformat]
 import npeg
+import ../prefsnode
+export prefsnode
 
 type
-  PValKind = enum
-    NIL       # nil
-    BOOL      # true or false
-    CHAR      # 'a'
-    OBJECT
-    EMPTYOBJ  # {:} or {}
-    STRING    # "hello"
-    RAWSTRING # r"hello"
-
-    DEC,      # Decimal int
-    HEX,      # Hex int (0x)
-    BIN,      # Bin int (0b)
-    OCT,      # Oct int (0o)
-
-    FLOAT,
-    FLOAT32,
-    FLOAT64
-
-  PTokenKind = enum
-    NL       # New line \n
-    SEP      # =
-    SEQOPEN  # @[ or [
+  SyntaxError* = object of ValueError
+  PTokenKind* = enum
+    NL # New line \n
+    GREATER # >
+    EQUAL # =
+    SEQOPEN # @[ or [
     SEQCLOSE # ]
 
     KEY
-    VAL
-    GREATER  # >
-    INDEN
-    INDIN
-    INDOUT
+    INDEN # One or more spaces/tabs
 
-    EOF      # End Of File
+    # Values
+    NIL # nil
+    BOOL # true or false
+    CHAR # 'a'
+    OBJECT
+    EMPTYOBJ # {:} or {}
+    STRING # "hello"
+    RAWSTRING # r"hello"
 
-  PToken = object
-    case kind*: PTokenKind
-    of VAL:
-      valKind: PValKind
-    else:
-      discard
+    # Numbers
+    DEC # Decimal int
+    HEX # Hex int (0x)
+    BIN # Bin int (0b)
+    OCT # Oct int (0o)
 
+    FLOAT
+    FLOAT32
+    FLOAT64
+
+    EOF # End Of File
+
+  PTokenPos* = tuple[line: int, col: int, idx: int]
+  PToken* = object
+    kind*: PTokenKind
     lexeme*: string
-    pos*: tuple[line: int, col: int, idx: int]
+    pos*: PTokenPos
 
   PLexer = object
     ok*: bool # Successful
@@ -52,39 +49,41 @@ type
     stack*: seq[PToken]
     source*: string
     indentLevel*: int
-    # lines*: seq[string] # Each element represents the length of each line
 
-proc getPos(str: string, idx: int): tuple[line: int, col: int, idx: int] =
+proc getPos(str: string, idx: int): PTokenPos =
   ## Get the line:col position of `idx` in `str` adn returns a tuple with the line, col, idx.
 
   # Split the lines until `idx`
   let lines = str[0..<idx].splitLines(keepEol = true)
+
   result = (lines.len, lines[^1].len+1, idx+1)
 
 proc `$`(lexer: PLexer): string =
   result.add &"{lexer.ok} {lexer.matchLen}/{lexer.matchMax}\n"
+  
+  for token in lexer.stack:
+    case token.kind
+    of NL:
+      result.add "\n"
+    of INDEN:
+      result.add '-'.repeat(token.lexeme.len)
+      result.add ' '
+    else:
+      result.add &"{token.kind} "
 
+  #[
   for token in lexer.stack:
     result.add &"{token.lexeme.escape} "
 
-    case token.kind
-    of VAL:
-      result.add &"{token.kind} ({token.valKind})"
-    else:
-      result.add &"{token.kind}"
+    result.add &"{token.kind}"
 
     result.add &" at {token.pos.line}:{token.pos.col} (#{token.pos.idx})\n"
+  ]#
 
 proc addToken(lexer: var PLexer, kind: PTokenKind, lexeme: string, idx: int) =
   let pos = lexer.source.getPos(idx)
   # echo &"{lexeme} of {kind} at {pos.line}:{pos.col}"
   lexer.stack.add PToken(kind: kind, lexeme: lexeme, pos: pos)
-
-proc addToken(lexer: var PLexer, kind: PValKind, lexeme: string, idx: int) =
-  let pos = lexer.source.getPos(idx)
-  # echo &"{lexeme} of {kind} at {pos.line}:{pos.col}"
-  lexer.stack.add PToken(kind: VAL, valKind: kind, lexeme: lexeme,
-      pos: pos)
 
 grammar "number":
   minus <- '-'
@@ -120,9 +119,11 @@ grammar "str":
     'a' | 'b' | 'e' | ('x' * Xdigit[2])
   escape <- '\\' * ('p' | escapeSeq | ('u' * Xdigit[4]) | ('u' * '{' * +Xdigit * '}'))
   escapeChar <- '\\' * escapeSeq
+  strChars <- {'\x20'..'\xff'} - {'"'} - {'\\'} # String valid characters
+  rawStrChars <- {'\x20'..'\xff'} - {'"'} # Raw string valid characters
   charBody <- escapeChar | {0..255}
-  strBody <- ?escape * *( +( {'\x20'..'\xff'} - {'"'} - {'\\'}) * *escape)
-  rawStrBody <- *( +( {'\x20'..'\xff'} - {'"'}) | "\"\"")
+  strBody <- ?escape * *(+strChars * *escape)
+  rawStrBody <- *("\"\"" | rawStrChars)
 
 let lexer = peg(tokens, data: PLexer):
   S <- Space - '\n'
@@ -131,46 +132,38 @@ let lexer = peg(tokens, data: PLexer):
   items(rule) <- ?spaced(rule * *(spaced(',') * rule) * ?',')
 
   tokens <- *token * EOF
-  token <- *S * '\n' | pair
+  token <- sep | greater | val | comment | inden | newLn | key | error
 
   EOF <- !1:
     data.addToken(EOF, $0, @0)
 
-  comment <- '#' * *(1 - '\n')
-  emptyLn <- *S * ?comment * endLn
-  endLn <- newLn | !1
+  error <- 1:
+    let pos = data.source.getPos(@0)
+    raise newException(SyntaxError, &"Unexpected character at {pos.line}:{pos.col} (#{pos.idx})")
+
+  comment <- *S * '#' * *(1 - '\n')
   newLn <- '\n':
     data.addToken(NL, $0, @0)
 
-  pair <- inden * key * spaced(sep) * (obj | val * (emptyLn |
-      E"new line or the end"))
-
-  key <- +({'\x20'..'\xff'} - {'=', '\n', '#'}):
+  key <- +({'\x20'..'\xff'} - {'=', '\n', '#', '/'}):
     data.addToken(KEY, $0, @0)
 
-  sep <- '=' | E"separator '='":
-    data.addToken(SEP, $0, @0)
+  sep <- '=':
+    data.addToken(EQUAL, $0, @0)
 
   greater <- '>':
     data.addToken(GREATER, $0, @0)
 
-  inden <- *indentChar * &1:
+  inden <- +indentChar:
     data.addToken(INDEN, $0, @0)
-
-  indin <- *indentChar:
-    data.addToken(INDIN, $0, @0)
-
-  indout <- *indentChar:
-    data.addToken(INDOUT, $0, @0)
 
   obj <- greater * *S * ?comment * (newLn | E"new line") * &indin * (+token |
       E"one or more pairs") * &indout
 
-  val <- (seq | num | char | bool | null | string | rawString | emptyObj |
-      E"value") * *S * (comment | !(1 - '\n')) | E"only one value"
+  val <- seq | num | char | bool | null | string | rawString | emptyObj
 
   null <- "nil":
-    data.addToken(VAL, $0, @0)
+    data.addToken(NIL, $0, @0)
 
   bool <- "true" | "false":
     data.addToken(BOOL, $0, @0)
@@ -186,22 +179,22 @@ let lexer = peg(tokens, data: PLexer):
     data.addToken(SEQOPEN, $0, @0)
 
   seqClose <- "]":
-    data.addToken(SEQClOSE, $0, @0)
+    data.addToken(SEQCLOSE, $0, @0)
 
   # Strings and chars
   string <- '"' * str.strBody * '"':
     data.addToken(STRING, $0, @0)
 
-  rawString <- i"r" * '"' * str.strBody * '"':
+  rawString <- i"r" * '"' * str.rawStrBody * '"':
     data.addToken(RAWSTRING, $0, @0)
 
   char <- '\'' * str.charBody * '\'':
     data.addToken(CHAR, $0, @0)
 
   # Numbers
-  num <- (float | float32 | float64) | int
+  num <- (float64 | float32 | float) | int
 
-  int <- dec | hex | oct | bin
+  int <- hex | oct | bin | dec
 
   dec <- number.Dec:
     data.addToken(DEC, $0, @0)
@@ -224,7 +217,7 @@ let lexer = peg(tokens, data: PLexer):
   float64 <- number.Float64:
     data.addToken(FLOAT64, $0, @0)
 
-proc scanPrefs(source: string): PLexer =
+proc scanPrefs*(source: string): PLexer =
   result.source = source
 
   let output = lexer.match(source, result)
@@ -233,8 +226,9 @@ proc scanPrefs(source: string): PLexer =
   result.matchLen = output.matchLen
   result.matchMax = output.matchMax
 
-proc readPrefs(path: string): PLexer =
+proc scanPrefsFile*(path: string): PLexer =
   scanPrefs(readFile(path))
 
-let result = readPrefs("prefs.niprefs")
-echo result
+when isMainModule:
+  let result = scanPrefsFile("prefs.niprefs")
+  echo result

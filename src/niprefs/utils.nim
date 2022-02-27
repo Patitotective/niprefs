@@ -29,8 +29,7 @@ proc checkPath*(path: string) =
       if not dirExists(path):
         createDir(path)
 
-proc changeNested*(table: PObjectType, key: string, val: PrefsNode,
-    keyPathSep: char, autoGenKeys: bool): PObjectType =
+proc changeNested*(table: PObjectType, key: string, val: PrefsNode, keyPathSep: char): PObjectType =
   ## Changes the `val` of `key` in `table`, being `key`'s path separated by `keyPathSep`.
   ## If ``autoGenKeys`` is true, it will generated the missing keys in the path.
   ## Returns a new table.
@@ -38,7 +37,7 @@ proc changeNested*(table: PObjectType, key: string, val: PrefsNode,
   result = table
   var keyPath = key.split(keyPathSep)
 
-  if keyPath[0] notin result and autoGenKeys:
+  if keyPath[0] notin result:
     result[keyPath[0]] = newPObject()
 
   var scnDict = result[keyPath[0]]
@@ -48,14 +47,13 @@ proc changeNested*(table: PObjectType, key: string, val: PrefsNode,
     if e == keyPath.len - 1:
       scnDict[i] = val
     else:
-      if (i notin scnDict.objectV or (i in scnDict.objectV and scnDict[
-          i].kind != PObject)) and autoGenKeys:
+      if i notin scnDict.objectV or (i in scnDict.objectV and scnDict[
+          i].kind != PObject):
         scnDict[i] = newPObject()
 
       scnDict = scnDict[i]
 
-proc change*(table: PObjectType, key: string, val: PrefsNode,
-    keyPathSep: char, autoGenKeys: bool): PObjectType =
+proc change*(table: PObjectType, key: string, val: PrefsNode, keyPathSep: char): PObjectType =
   ## Changes `key` to the given `val`, if `keyPathSep` in `key`, calls `changeNested`.
   ## Returns a new table.
 
@@ -64,7 +62,6 @@ proc change*(table: PObjectType, key: string, val: PrefsNode,
       key,
       val,
       keyPathSep,
-      autoGenKeys,
     )
   else:
     result = table
