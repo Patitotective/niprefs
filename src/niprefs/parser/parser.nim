@@ -256,7 +256,9 @@ proc parsePrefs*(tokens: seq[PToken]): PObjectType =
     raise newException(SyntaxError, &"Error while parsing at {pos.line}:{pos.col} (#{pos.idx}), parsed table: {result}")
 
 proc parsePrefs*(source: string): PObjectType =
+  ## Parse a string as a NiPrefs file.
   parsePrefs(source.scanPrefs().stack)
 
 proc readPrefs*(path: string): PObjectType =
+  ## Read a file and parse it.
   parsePrefs(path.scanPrefsFile().stack)

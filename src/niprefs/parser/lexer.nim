@@ -58,28 +58,6 @@ proc getPos(str: string, idx: int): PTokenPos =
 
   result = (lines.len, lines[^1].len+1, idx+1)
 
-proc `$`(lexer: PLexer): string =
-  result.add &"{lexer.ok} {lexer.matchLen}/{lexer.matchMax}\n"
-  
-  for token in lexer.stack:
-    case token.kind
-    of NL:
-      result.add "\n"
-    of INDEN:
-      result.add '-'.repeat(token.lexeme.len)
-      result.add ' '
-    else:
-      result.add &"{token.kind} "
-
-  #[
-  for token in lexer.stack:
-    result.add &"{token.lexeme.escape} "
-
-    result.add &"{token.kind}"
-
-    result.add &" at {token.pos.line}:{token.pos.col} (#{token.pos.idx})\n"
-  ]#
-
 proc addToken(lexer: var PLexer, kind: PTokenKind, lexeme: string, idx: int) =
   let pos = lexer.source.getPos(idx)
   # echo &"{lexeme} of {kind} at {pos.line}:{pos.col}"

@@ -147,19 +147,20 @@ macro toPrefs*(obj: untyped): PrefsNode =
   ## Converts the given object into a `PrefsNode` if possible
   ## - Arrays are converted into sequences
   ## - `{key: val, ..}` are converted to ordered tables.
-
-  runnableExamples:
-    var table = toPrefs({
-      "lang": "es",
-      "dark": true,
-      "users": @[],
-      "names": [],
-      "keybindings": {: },
-      "scheme": {
-        "background": "#000000",
-        "font": "UbuntuMono"
-      }
-    }).getObject()
+  ## **Example:**
+  ##
+  ## .. code-block:: Nim
+  ##   var table = toPrefs({
+  ##     "lang": "es",
+  ##     "dark": true,
+  ##     "users": @[],
+  ##     "names": [],
+  ##     "keybindings": {: },
+  ##     "scheme": {
+  ##       "background": "#000000",
+  ##       "font": "UbuntuMono"
+  ##     }
+  ##   }).getObject()
 
   case obj.kind
   of nnkTableConstr: # Object {key: val, ...} or {:}

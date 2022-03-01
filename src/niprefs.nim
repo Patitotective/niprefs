@@ -25,7 +25,8 @@
 
 ## # Basic usage
 runnableExamples:
-  let defaultPrefs = toPrefs({
+
+  let defaultPrefs = toPrefs { # The default prefs are used the first time or when the preferences file gets removed.
     "lang": "en",
     "dark": true,
     "keybindings": {:},
@@ -37,7 +38,7 @@ runnableExamples:
         "color": "#73D216"
       }
     }
-  })
+  }
 
   var prefs = initPrefs(defaultPrefs, "settings.niprefs")
 
@@ -64,7 +65,7 @@ runnableExamples:
 ## ```
 ## To read a nested key you must use something called *key paths*, which are in essence a path to a nested key separated by a slash `/`:
 ## ```nim
-## echo prefs["scheme/font/family"]
+## echo prefs["scheme/font/family"] # Same as prefs["scheme"]["font"]["family"]
 ## >>> "UbuntuMono"
 ## ```
 
@@ -77,15 +78,34 @@ runnableExamples:
 ## ```
 ## Same with nested keys:
 ## ```nim
-## prefs["scheme/font/size"] = 20
+## prefs["scheme/font/size"] = 20 # prefs["scheme"]["font"]["size"] = 20 wont' work
 ## echo prefs["scheme/font/size"]
 ## >>> 20
 ## ```
 
 ## ## Removing
-## To remove a key from your preferences you can use either `del` or `pop`.
-## [`del`]() deletes the `key` **if** it exists, does nothing if it does not.
-## [`pop`]() deletes the `key`, returns true if it existed and sets `val` to the value that the `key` had. Otherwise, returns false, and `val` is unchanged.
+## To remove a key from your preferences you can use either `del` or `pop`:
+## - [del](#del%2CPrefs%2Cstring) deletes the `key` **if** it exists, does nothing if it does not.
+## - [pop](#pop%2CPrefs%2Cstring%2CPrefsNode) deletes the `key`, returns true if it existed and sets `val` to the value that the `key` had. Otherwise, returns false, and `val` is unchanged.
+## ```nim
+## prefs.del("lang")
+## assert "lang" notin prefs
+## 
+## var val: PrefsNode
+## prefs.pop("scheme/font/size")
+## assert val == 20
+## ```
+
+## ## More
+## There are more useful procedures.
+##
+## Check them here:
+## - [writeMany](prefsbase.html#writeMany%2CPrefsBase%2CPObjectType)
+## - [clear](#clear%2CPrefs)
+## - [overwrite](prefsbase.html#overwrite%2CPrefsBase%2Cstring)
+## - [delete](prefsbase.html#delete%2CPrefsBase)
+## - [parsePrefs](parser/parser.html#parsePrefs%2Cstring)
+## - [readPrefs](parser/parser.html#readPrefs%2Cstring)
 
 import std/tables
 import niprefs/prefsbase
