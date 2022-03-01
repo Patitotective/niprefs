@@ -35,9 +35,9 @@ runnableExamples:
         "size": 15,
         "family": "UbuntuMono",
         "color": "#73D216"
+      }
     }
-  }
-})
+  })
 
   var prefs = initPrefs(defaultPrefs, "settings.niprefs")
 
@@ -89,20 +89,17 @@ runnableExamples:
 
 import std/tables
 import niprefs/prefsbase
-
 export prefsbase, tables
 
 type
   Prefs* = object of PrefsBase ## Provides a table-like interface for the PrefsBase object
 
-proc initPrefs*(table: PObjectType = default PObjectType,
-    path: string = "prefs.niprefs"): Prefs =
+proc initPrefs*(table: PObjectType = default PObjectType, path: string = "prefs.niprefs"): Prefs =
   ## Creates a new Prefs object and checks if a file exists at `path` to create it if it doesn't.
   result = Prefs(table: table, path: path)
   result.checkFile()
 
-proc initPrefs*(table: PrefsNode = newPObject(),
-    path: string = "prefs.niprefs"): Prefs =
+proc initPrefs*(table: PrefsNode = newPObject(), path: string = "prefs.niprefs"): Prefs =
   ## Creates a new Prefs object and checks if a file exists at `path` to create it if it doesn't.
   initPrefs(table = table.getObject(), path = path)
 
@@ -116,7 +113,6 @@ template len*(prefs: Prefs): int =
     assert prefs.len == 2
 
   prefs.content.len
-
 
 template pairs*(prefs: Prefs) =
   ## Same as `prefs.content.pairs`

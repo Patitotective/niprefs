@@ -144,12 +144,12 @@ proc newPNode*(obj: string): PrefsNode =
   newPString(obj)
 
 macro toPrefs*(obj: untyped): PrefsNode =
-  ## Convert the given object into a `PrefsNode` if possible
+  ## Converts the given object into a `PrefsNode` if possible
   ## - Arrays are converted into sequences
   ## - `{key: val, ..}` are converted to ordered tables.
 
   runnableExamples:
-    var node = toPrefs {
+    var table = toPrefs({
       "lang": "es",
       "dark": true,
       "users": @[],
@@ -159,7 +159,7 @@ macro toPrefs*(obj: untyped): PrefsNode =
         "background": "#000000",
         "font": "UbuntuMono"
       }
-    }
+    }).getObject()
 
   case obj.kind
   of nnkTableConstr: # Object {key: val, ...} or {:}
@@ -170,15 +170,12 @@ macro toPrefs*(obj: untyped): PrefsNode =
       i.expectKind(nnkExprColonExpr) # Expects key:val
       result.add nnkExprColonExpr.newTree(i[0], newCall("toPrefs", i[1]))
 
-    result = newCall("newPObject", newCall("toOrderedTable", result))
-
+    result = newCall("newPObject", newCall(bindSym"toOrderedTable", result))
   of nnkCurly: # Empty object {}
     obj.expectLen(0)
     result = newCall("newPObject")
-
   of nnkNilLit: # nil
     result = newCall("newPNil")
-
   of nnkBracket: # Array [ele, ...]
     if obj.len == 0: return newCall("newPSeq")
     result = newNimNode(nnkBracket)
@@ -187,7 +184,6 @@ macro toPrefs*(obj: untyped): PrefsNode =
       result.add newCall("toPrefs", i)
 
     result = newCall("newPSeq", result)
-
   elif obj.kind == nnkPrefix and obj[0].repr == "@": # Sequence @[ele, ...]
     if obj[1].len == 0: return newCall("newPSeq")
     result = newNimNode(nnkBracket)
@@ -196,7 +192,6 @@ macro toPrefs*(obj: untyped): PrefsNode =
       result.add newCall("toPrefs", i)
 
     result = newCall("newPSeq", result)
-
   else:
     result = newCall("newPNode", obj)
 

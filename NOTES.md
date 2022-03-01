@@ -10,6 +10,4 @@ nim doc --project --outdir:docs src/niprefs.nim
 - Object end is detected by the difference between indentations.
 
 ## TODO
-- Fix nested assignment on `PObjectType` (`tests/test1.nim`).
-- Finish tests.
-- Remake docs.
+- Rewrite docs.

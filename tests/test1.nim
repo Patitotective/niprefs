@@ -10,7 +10,7 @@ import niprefs
 
 const path = "settings.niprefs"
 
-let defaultPrefs = toPrefs({
+let defaultPrefs = toPrefs {
   "lang": "en",
   "dark": true,
   "keybindings": {:},
@@ -22,7 +22,7 @@ let defaultPrefs = toPrefs({
       "color": "#73D216"
     }
   }
-})
+}
 
 var prefs = initPrefs(defaultPrefs, path)
 prefs.overwrite()
