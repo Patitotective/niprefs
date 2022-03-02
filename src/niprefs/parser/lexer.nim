@@ -6,29 +6,29 @@ export prefsnode
 type
   SyntaxError* = object of ValueError
   PTokenKind* = enum
-    NL # New line \n
-    GREATER # >
-    EQUAL # =
-    SEQOPEN # @[ or [
-    SEQCLOSE # ]
+    NL ## New line \n
+    GREATER ## >
+    EQUAL ## =
+    SEQOPEN ## @[ or [
+    SEQCLOSE ## ]
 
     KEY
-    INDEN # One or more spaces/tabs
+    INDEN ## One or more spaces/tabs
 
     # Values
-    NIL # nil
-    BOOL # true or false
-    CHAR # 'a'
+    NIL ## nil
+    BOOL ## true or false
+    CHAR ## 'a'
     OBJECT
-    EMPTYOBJ # {:} or {}
-    STRING # "hello"
-    RAWSTRING # r"hello"
+    EMPTYOBJ ## {:} or {}
+    STRING ## "hello"
+    RAWSTRING ## r"hello"
 
     # Numbers
-    DEC # Decimal int
-    HEX # Hex int (0x)
-    BIN # Bin int (0b)
-    OCT # Oct int (0o)
+    DEC ## Decimal int
+    HEX ## Hex int (0x)
+    BIN ## Bin int (0b)
+    OCT ## Oct int (0o)
 
     FLOAT
     FLOAT32
@@ -36,13 +36,13 @@ type
 
     EOF # End Of File
 
-  PTokenPos* = tuple[line: int, col: int, idx: int]
+  PTokenPos* = tuple[line: int, col: int, idx: int] ## Position of a token in the source string
   PToken* = object
     kind*: PTokenKind
     lexeme*: string
     pos*: PTokenPos
 
-  PLexer = object
+  PLexer = object ## Data used when scanning
     ok*: bool # Successful
     matchLen*: int
     matchMax*: int
@@ -196,6 +196,7 @@ let lexer = peg(tokens, data: PLexer):
     data.addToken(FLOAT64, $0, @0)
 
 proc scanPrefs*(source: string): PLexer =
+  ## Lexical analysis for a string representing a NiPrefs file. 
   result.source = source
 
   let output = lexer.match(source, result)
@@ -205,8 +206,5 @@ proc scanPrefs*(source: string): PLexer =
   result.matchMax = output.matchMax
 
 proc scanPrefsFile*(path: string): PLexer =
+  ## Lexical analysis for a NiPrefs file.
   scanPrefs(readFile(path))
-
-when isMainModule:
-  let result = scanPrefsFile("prefs.niprefs")
-  echo result

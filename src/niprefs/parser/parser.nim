@@ -3,12 +3,12 @@ import npeg, npeg/codegen
 import lexer, escaper
 
 type
-  PNestData = ref object
+  PNestData = ref object ## Data used to parse nested (structured) data types.
     inside*: bool
     child*: PrefsNode
     parent*: Option[PNestData]
 
-  PParseData = object
+  PParseData = object ## Data used when parsing.
     table*: PObjectType
     indentStack*: seq[int]
     objData*: PNestData
@@ -33,24 +33,31 @@ proc `$`(data: PParseData): string =
   &"table={data.table}\nindentStack={data.indentStack}\nobjData=>\n{indent($data.objData, 2)}\nseqData=>\n{indent($data.seqData, 2)}"
 ]#
 
-proc `[]=`(data: var PParseData, key: string, val: PrefsNode) =
+template `[]=`(data: var PParseData, key: string, val: PrefsNode) =
+  ## Alias for `data.table[]=`.
   data.table[key] = val
+
+template `top`(data: PParseData): tuple[key: string, val: PrefsNode] =
+  ## Alias for `data.table.top`.
+  data.table.top
+
+template `top`[A](list: openArray[A]): A =
+  ## Top (last element) of an openArray.
+  list[^1]
 
 proc `==`(token: PToken, kind: PTokenKind): bool = token.kind == kind
 
-proc `top`[A](list: openArray[A]): A =
-  list[^1]
-
 proc `top`[K, V](table: OrderedTable[K, V]): tuple[key: K, val: V] =
-  (key: table.keys.toSeq[^1], val: table[table.keys.toSeq[^1]])
+  ## Get the last key and value from an ordered table.
+  let lastKey = table.keys.toSeq[^1]
+  (key: lastKey, val: table[lastKey])
 
 proc `top=`[K, V](table: var OrderedTable[K, V], val: V) =
+  ## Change the last key of an ordered table.
   table[table.top.key] = val
 
-proc `top`(data: PParseData): tuple[key: string, val: PrefsNode] =
-  data.table.top
-
 proc removeTypeSuf(num: string): string =
+  ## Remove the type suffix from a string.
   result = num
 
   let idx = num.find('\'')
@@ -58,8 +65,11 @@ proc removeTypeSuf(num: string): string =
     result = num[0..<idx]
 
 proc parseInt(lexeme: string, kind: PTokenKind): PrefsNode =
-  var lexeme = lexeme.removeTypeSuf()
-  var num: int
+  ## Parse an string representation of an integer.
+
+  var
+    lexeme = lexeme.removeTypeSuf()
+    num: int
 
   let negative = if lexeme.startsWith('-'): true else: false
   lexeme.removePrefix('-')
@@ -83,6 +93,8 @@ proc parseInt(lexeme: string, kind: PTokenKind): PrefsNode =
   result = num.newPInt()
 
 proc parseFloat(lexeme: string, kind: PTokenKind): PrefsNode =
+  ## Parse an string representation of a float.
+  
   var lexeme = lexeme.removeTypeSuf()
 
   let negative = if lexeme.startsWith('-'): true else: false
@@ -109,6 +121,8 @@ proc parseFloat(lexeme: string, kind: PTokenKind): PrefsNode =
     result = num.newPFloat()
 
 proc parseVal(token: PToken): PrefsNode =
+  ## Parses a token to get an actual PrefsNode.
+
   case token.kind
   of DEC, BIN, OCT, HEX:
     result = token.lexeme.parseInt(token.kind)
@@ -129,6 +143,8 @@ proc parseVal(token: PToken): PrefsNode =
     result = newPEmpty()
 
 proc addToTable(data: var PParseData, key: string, val: PrefsNode) =
+  ## Add key an val to `data.table` or to `data.objData.child` depending on `data.objData.inside`.
+  
   let key = key.strip()
 
   if data.objData.inside:
@@ -137,6 +153,8 @@ proc addToTable(data: var PParseData, key: string, val: PrefsNode) =
     data[key] = val
 
 proc addToTable(data: var PParseData, key: string, val: PToken) =
+  ## Same as [addToTable](#addToTable%2CPParseData%2Cstring%2CPrefsNode) but calling [parseVal](#parseVal%2CPToken) on `val`.
+
   if val.kind == SEQOPEN:
     data.addToTable(key, data.seqData.child)
   else:
@@ -257,8 +275,21 @@ proc parsePrefs*(tokens: seq[PToken]): PObjectType =
 
 proc parsePrefs*(source: string): PObjectType =
   ## Parse a string as a NiPrefs file.
+  runnableExamples:
+    import niprefs
+    import std/strutils
+
+    let text = """
+    #NiPrefs
+    lang="en"
+    dark=true
+    """.dedent()
+
+    assert text.parsePrefs() == toPrefs({"lang": "en", "dark": true}).getObject()
+
   parsePrefs(source.scanPrefs().stack)
 
 proc readPrefs*(path: string): PObjectType =
   ## Read a file and parse it.
+  
   parsePrefs(path.scanPrefsFile().stack)

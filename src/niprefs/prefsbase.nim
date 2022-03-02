@@ -19,6 +19,7 @@ type
     path*: string
 
 proc checkKey(key: string) = 
+  ## Checks if a key is valid and raises an error if it is not.
   if invalidKeyChars.anyIt(it in key):
     raise newException(InvalidKey, &"{key} must not contain any of {invalidKeyChars}")
 

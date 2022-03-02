@@ -34,6 +34,13 @@ template nextIsSet(`set`: set[char]): bool =
   (not (pos == str.high)) and (str[pos + 1] in `set`)
 
 proc parseEscapedChar*(str: string, start: Natural = 0): char =
+  ## Parses an escaped string representing a char as it were unescaped.
+  ##
+  ## Check the [manual](https://nim-lang.org/docs/manual.html#lexical-analysis-character-literals) for valid character literals.
+  runnableExamples:
+    let text = r"\x23"
+    assert text.parseEscapedChar() == '\x23'
+
   if str.len == 0:
     return
 
@@ -61,6 +68,13 @@ proc parseEscapedChar*(str: string, start: Natural = 0): char =
     result = str[start]
 
 proc parseEscaped*(str: string): string =
+  ## Parses an escaped string as it were unescaped.
+  ##
+  ## Check the [manual](https://nim-lang.org/docs/manual.html#lexical-analysis-string-literals) for valid string literals.
+  runnableExamples:
+    let text = r"\u1235"
+    assert text.parseEscaped() == "\u1235"
+
   var pos = 0
 
   while pos < str.len:

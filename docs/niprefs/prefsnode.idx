@@ -1,0 +1,52 @@
+PSeqParam	niprefs/prefsnode.html#PSeqParam	prefsnode: PSeqParam	
+PSeqType	niprefs/prefsnode.html#PSeqType	prefsnode: PSeqType	
+PObjectType	niprefs/prefsnode.html#PObjectType	prefsnode: PObjectType	
+PEmpty	niprefs/prefsnode.html#PEmpty	PrefsNKind.PEmpty	
+PInt	niprefs/prefsnode.html#PInt	PrefsNKind.PInt	
+PNil	niprefs/prefsnode.html#PNil	PrefsNKind.PNil	
+PSeq	niprefs/prefsnode.html#PSeq	PrefsNKind.PSeq	
+PBool	niprefs/prefsnode.html#PBool	PrefsNKind.PBool	
+PChar	niprefs/prefsnode.html#PChar	PrefsNKind.PChar	
+PFloat	niprefs/prefsnode.html#PFloat	PrefsNKind.PFloat	
+PObject	niprefs/prefsnode.html#PObject	PrefsNKind.PObject	
+PString	niprefs/prefsnode.html#PString	PrefsNKind.PString	
+PrefsNKind	niprefs/prefsnode.html#PrefsNKind	prefsnode: PrefsNKind	
+PrefsNode	niprefs/prefsnode.html#PrefsNode	prefsnode: PrefsNode	
+PrefsNodeObj	niprefs/prefsnode.html#PrefsNodeObj	prefsnode: PrefsNodeObj	
+isNil	niprefs/prefsnode.html#isNil,PrefsNode	prefsnode: isNil(node: PrefsNode): bool	
+isEmpty	niprefs/prefsnode.html#isEmpty,PrefsNode	prefsnode: isEmpty(node: PrefsNode): bool	
+getInt	niprefs/prefsnode.html#getInt,PrefsNode	prefsnode: getInt(node: PrefsNode): int	
+getSeq	niprefs/prefsnode.html#getSeq,PrefsNode	prefsnode: getSeq(node: PrefsNode): PSeqType	
+getBool	niprefs/prefsnode.html#getBool,PrefsNode	prefsnode: getBool(node: PrefsNode): bool	
+getChar	niprefs/prefsnode.html#getChar,PrefsNode	prefsnode: getChar(node: PrefsNode): char	
+getFloat	niprefs/prefsnode.html#getFloat,PrefsNode	prefsnode: getFloat(node: PrefsNode): float	
+getObject	niprefs/prefsnode.html#getObject,PrefsNode	prefsnode: getObject(node: PrefsNode): PObjectType	
+getString	niprefs/prefsnode.html#getString,PrefsNode	prefsnode: getString(node: PrefsNode): string	
+newPInt	niprefs/prefsnode.html#newPInt,int	prefsnode: newPInt(val: int = default int): PrefsNode	
+newPNil	niprefs/prefsnode.html#newPNil	prefsnode: newPNil(): PrefsNode	
+newPSeq	niprefs/prefsnode.html#newPSeq,PSeqParam	prefsnode: newPSeq(val: PSeqParam = default PSeqType): PrefsNode	
+newPBool	niprefs/prefsnode.html#newPBool,bool	prefsnode: newPBool(val: bool = default bool): PrefsNode	
+newPChar	niprefs/prefsnode.html#newPChar,char	prefsnode: newPChar(val: char = default char): PrefsNode	
+newPChar	niprefs/prefsnode.html#newPChar,string,Natural	prefsnode: newPChar(val: string = default string; start: Natural = 0): PrefsNode	
+newPEmpty	niprefs/prefsnode.html#newPEmpty	prefsnode: newPEmpty(): PrefsNode	
+newPFloat	niprefs/prefsnode.html#newPFloat,float	prefsnode: newPFloat(val: float = default float): PrefsNode	
+newPObject	niprefs/prefsnode.html#newPObject,PObjectType	prefsnode: newPObject(val: PObjectType = default PObjectType): PrefsNode	
+newPString	niprefs/prefsnode.html#newPString,string	prefsnode: newPString(val: string = default string): PrefsNode	
+newPNode	niprefs/prefsnode.html#newPNode,int	prefsnode: newPNode(obj: int): PrefsNode	
+newPNode	niprefs/prefsnode.html#newPNode,PSeqParam	prefsnode: newPNode(obj: PSeqParam): PrefsNode	
+newPNode	niprefs/prefsnode.html#newPNode,bool	prefsnode: newPNode(obj: bool): PrefsNode	
+newPNode	niprefs/prefsnode.html#newPNode,char	prefsnode: newPNode(obj: char): PrefsNode	
+newPNode	niprefs/prefsnode.html#newPNode,float	prefsnode: newPNode(obj: float): PrefsNode	
+newPNode	niprefs/prefsnode.html#newPNode,PObjectType	prefsnode: newPNode(obj: PObjectType): PrefsNode	
+newPNode	niprefs/prefsnode.html#newPNode,string	prefsnode: newPNode(obj: string): PrefsNode	
+toPrefs	niprefs/prefsnode.html#toPrefs.m,untyped	prefsnode: toPrefs(obj: untyped): PrefsNode	
+`==`	niprefs/prefsnode.html#==,PrefsNode,PrefsNode	prefsnode: `==`(node1: PrefsNode; node2: PrefsNode): bool	
+`==`	niprefs/prefsnode.html#==,PrefsNode,T	prefsnode: `==`[T: not PrefsNode](node1: PrefsNode; node2: T): bool	
+`$`	niprefs/prefsnode.html#$,PrefsNode	prefsnode: `$`(node: PrefsNode): string	
+`[]`	niprefs/prefsnode.html#[],PrefsNode,string	prefsnode: `[]`(node: var PrefsNode; key: string): var PrefsNode	
+`[]`	niprefs/prefsnode.html#[],PrefsNode,string_2	prefsnode: `[]`(node: PrefsNode; key: string): PrefsNode	
+`[]`	niprefs/prefsnode.html#[],PrefsNode,int	prefsnode: `[]`(node: PrefsNode; index: int): PrefsNode	
+`[]`	niprefs/prefsnode.html#[],PrefsNode,BackwardsIndex	prefsnode: `[]`(node: PrefsNode; index: BackwardsIndex): PrefsNode	
+`[]=`	niprefs/prefsnode.html#[]=,PrefsNode,string,T	prefsnode: `[]=`[T: not PrefsNode](node: var PrefsNode; key: string; val: T)	
+`[]=`	niprefs/prefsnode.html#[]=,PrefsNode,string,PrefsNode	prefsnode: `[]=`(node: var PrefsNode; key: string; val: PrefsNode)	
+del	niprefs/prefsnode.html#del,PrefsNode,string	prefsnode: del(node: var PrefsNode; key: string)	

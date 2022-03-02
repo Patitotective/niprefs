@@ -13,12 +13,13 @@
 ## NiPrefs writes the preferences down to a text file using a pretty straightforward syntax that goes like this:
 ## ```nim
 ## # Comment
+## # key=val
 ## lang="en" # Keys do not require quotes
 ## dark=false
 ## scheme=> # Nested tables are defined with a greater than symbol and indentation-in
 ##   background="#ffffff" # background belongs to scheme
 ##   font=>
-##     family="UbuntuMono"
+##     family="UbuntuMono" # scheme/font/family
 ##     size=15
 ##     color="#000000"
 ## ```

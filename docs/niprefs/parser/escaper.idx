@@ -1,0 +1,2 @@
+parseEscapedChar	niprefs/parser/escaper.html#parseEscapedChar,string,Natural	escaper: parseEscapedChar(str: string; start: Natural = 0): char	
+parseEscaped	niprefs/parser/escaper.html#parseEscaped,string	escaper: parseEscaped(str: string): string	
