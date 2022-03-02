@@ -71,7 +71,7 @@ Check the [docs](https://patitotective.github.io/niprefs) for more.
 
 Contact me:
 - Discord: **Patitotective#0127**.
-- Tiwtter: [@patitotective](https://twitter.com/patitotective).
+- Twitter: [**@patitotective**](https://twitter.com/patitotective).
 - Email: **cristobalriaga@gmail.com**.
 
-***v.1.0***
+***v0.1.0***
