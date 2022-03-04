@@ -117,6 +117,14 @@ window.addEventListener('DOMContentLoaded', main);
   </ul>
 </li>
 <li>
+  <a class="reference reference-toplevel" href="#10" id="60">Consts</a>
+  <ul class="simple simple-toc-section">
+      <li><a class="reference" href="#keyPathSep"
+    title="keyPathSep = '/'">keyPathSep</a></li>
+
+  </ul>
+</li>
+<li>
   <a class="reference reference-toplevel" href="#12" id="62">Procs</a>
   <ul class="simple simple-toc-section">
       <ul class="simple nested-toc-section">checkFile
@@ -144,9 +152,19 @@ window.addEventListener('DOMContentLoaded', main);
     title="delKey(prefs: PrefsBase; key: string)">delKey(prefs: PrefsBase; key: string)</a></li>
 
   </ul>
+  <ul class="simple nested-toc-section">delPath
+      <li><a class="reference" href="#delPath%2CPrefsBase%2Cvarargs%5Bstring%5D"
+    title="delPath(prefs: PrefsBase; keys: varargs[string])">delPath(prefs: PrefsBase; keys: varargs[string])</a></li>
+
+  </ul>
   <ul class="simple nested-toc-section">get
       <li><a class="reference" href="#get%2CPrefsBase%2Cstring"
     title="get(prefs: PrefsBase; key: string): PrefsNode">get(prefs: PrefsBase; key: string): PrefsNode</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">getPath
+      <li><a class="reference" href="#getPath%2CPrefsBase%2Cvarargs%5Bstring%5D"
+    title="getPath(prefs: PrefsBase; keys: varargs[string]): PrefsNode">getPath(prefs: PrefsBase; keys: varargs[string]): PrefsNode</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">hasKey
@@ -154,11 +172,14 @@ window.addEventListener('DOMContentLoaded', main);
     title="hasKey(prefs: PrefsBase; key: string): bool">hasKey(prefs: PrefsBase; key: string): bool</a></li>
 
   </ul>
+  <ul class="simple nested-toc-section">hasPath
+      <li><a class="reference" href="#hasPath%2CPrefsBase%2Cvarargs%5Bstring%5D"
+    title="hasPath(prefs: PrefsBase; keys: varargs[string]): bool">hasPath(prefs: PrefsBase; keys: varargs[string]): bool</a></li>
+
+  </ul>
   <ul class="simple nested-toc-section">initPrefsBase
       <li><a class="reference" href="#initPrefsBase%2CPObjectType%2Cstring"
     title="initPrefsBase(table: PObjectType; path: string): PrefsBase">initPrefsBase(table: PObjectType; path: string): PrefsBase</a></li>
-  <li><a class="reference" href="#initPrefsBase%2CPrefsNode%2Cstring"
-    title="initPrefsBase(table: PrefsNode; path: string): PrefsBase">initPrefsBase(table: PrefsNode; path: string): PrefsBase</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">overwrite
@@ -174,23 +195,44 @@ window.addEventListener('DOMContentLoaded', main);
 
   </ul>
   <ul class="simple nested-toc-section">toPTree
-      <li><a class="reference" href="#toPTree%2CPrefsNode%2Cint"
-    title="toPTree(node: PrefsNode; depth: int = 0): string">toPTree(node: PrefsNode; depth: int = 0): string</a></li>
-  <li><a class="reference" href="#toPTree%2CPObjectType%2Cint"
+      <li><a class="reference" href="#toPTree%2CPObjectType%2Cint"
     title="toPTree(table: PObjectType; depth: int = 0): string">toPTree(table: PObjectType; depth: int = 0): string</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">write
       <li><a class="reference" href="#write%2CPrefsBase%2Cstring%2CPrefsNode"
     title="write(prefs: PrefsBase; key: string; val: PrefsNode)">write(prefs: PrefsBase; key: string; val: PrefsNode)</a></li>
+  <li><a class="reference" href="#write%2CPrefsBase%2Cvarargs%5Bstring%5D%2CPrefsNode"
+    title="write(prefs: PrefsBase; keys: varargs[string]; val: PrefsNode)">write(prefs: PrefsBase; keys: varargs[string]; val: PrefsNode)</a></li>
   <li><a class="reference" href="#write%2CPrefsBase%2Cstring%2CT"
     title="write[T](prefs: PrefsBase; key: string; val: T)">write[T](prefs: PrefsBase; key: string; val: T)</a></li>
+  <li><a class="reference" href="#write%2CPrefsBase%2Cvarargs%5Bstring%5D%2CT"
+    title="write[T](prefs: PrefsBase; keys: varargs[string]; val: T)">write[T](prefs: PrefsBase; keys: varargs[string]; val: T)</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">writeMany
       <li><a class="reference" href="#writeMany%2CPrefsBase%2CPObjectType"
     title="writeMany(prefs: PrefsBase; items: PObjectType)">writeMany(prefs: PrefsBase; items: PObjectType)</a></li>
-  <li><a class="reference" href="#writeMany%2CPrefsBase%2CPrefsNode"
+
+  </ul>
+
+  </ul>
+</li>
+<li>
+  <a class="reference reference-toplevel" href="#18" id="68">Templates</a>
+  <ul class="simple simple-toc-section">
+      <ul class="simple nested-toc-section">initPrefsBase
+      <li><a class="reference" href="#initPrefsBase.t%2CPrefsNode%2Cstring"
+    title="initPrefsBase(table: PrefsNode; path: string): PrefsBase">initPrefsBase(table: PrefsNode; path: string): PrefsBase</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">toPTree
+      <li><a class="reference" href="#toPTree.t%2CPrefsNode%2Cint"
+    title="toPTree(node: PrefsNode; depth: int = 0): string">toPTree(node: PrefsNode; depth: int = 0): string</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">writeMany
+      <li><a class="reference" href="#writeMany.t%2CPrefsBase%2CPrefsNode"
     title="writeMany(prefs: PrefsBase; items: PrefsNode)">writeMany(prefs: PrefsBase; items: PrefsNode)</a></li>
 
   </ul>
@@ -236,6 +278,19 @@ window.addEventListener('DOMContentLoaded', main);
 <dd>
 
 Base object to manage a <em>prefs</em> file.
+
+</dd>
+</div>
+
+</dl></div>
+<div class="section" id="10">
+<h1><a class="toc-backref" href="#10">Consts</a></h1>
+<dl class="item">
+<div id="keyPathSep">
+<dt><pre><a href="prefsbase.html#keyPathSep"><span class="Identifier">keyPathSep</span></a> <span class="Other">=</span> <span class="CharLit">'/'</span></pre></dt>
+<dd>
+
+
 
 </dd>
 </div>
@@ -290,7 +345,7 @@ Deletes the <em>prefs</em> file.
 <dd>
 
 <p>Deletes <tt class="docutils literal"><span class="pre"><span class="Identifier">key</span></span></tt> from the <em>prefs</em> file.</p>
-<p>Supports <em>key path</em>.</p>
+<p>Supports key path.</p>
 
 <p><strong class="examples_text">Example:</strong></p>
 <pre class="listing"><span class="Keyword">var</span> <span class="Identifier">prefs</span> <span class="Operator">=</span> <span class="Identifier">initPrefsBase</span><span class="Punctuation">(</span><span class="Identifier">table</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;es&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;dark&quot;</span><span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Punctuation">,</span> 
@@ -304,6 +359,26 @@ Deletes the <em>prefs</em> file.
 
 </dd>
 </div>
+<div id="delPath,PrefsBase,varargs[string]">
+<dt><pre><span class="Keyword">proc</span> <a href="#delPath%2CPrefsBase%2Cvarargs%5Bstring%5D"><span class="Identifier">delPath</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a><span class="Other">;</span> <span class="Identifier">keys</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">,</span>
+    <span class="Identifier">SyntaxError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">NPegException</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">OSError</span><span class="Other">,</span>
+    <span class="Identifier">InvalidKey</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span>
+                        <span class="Identifier">WriteDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Deletes the last key from <tt class="docutils literal"><span class="pre"><span class="Identifier">keys</span></span></tt>, the other elements being it's path, from the <em>prefs</em> file.
+<p><strong class="examples_text">Example:</strong></p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">prefs</span> <span class="Operator">=</span> <span class="Identifier">initPrefsBase</span><span class="Punctuation">(</span><span class="Identifier">table</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span><span class="StringLit">&quot;scheme&quot;</span><span class="Punctuation">:</span> <span class="Punctuation">{</span><span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;dark&quot;</span><span class="Punctuation">}</span><span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Punctuation">,</span> 
+  <span class="Identifier">path</span> <span class="Operator">=</span> <span class="StringLit">&quot;settings.niprefs&quot;</span><span class="Punctuation">)</span>
+
+<span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">overwrite</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Comment"># To avoid conflicts</span>
+
+<span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">delPath</span><span class="Punctuation">(</span><span class="StringLit">&quot;scheme&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">)</span>
+
+<span class="Identifier">assert</span> <span class="Keyword">not</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">hasPath</span><span class="Punctuation">(</span><span class="StringLit">&quot;scheme&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">)</span></pre>
+
+</dd>
+</div>
 <div id="get,PrefsBase,string">
 <dt><pre><span class="Keyword">proc</span> <a href="#get%2CPrefsBase%2Cstring"><span class="Identifier">get</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span>
     <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">SyntaxError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">NPegException</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">]</span><span class="Other">,</span>
@@ -311,10 +386,10 @@ Deletes the <em>prefs</em> file.
 <dd>
 
 <p>Access to <tt class="docutils literal"><span class="pre"><span class="Identifier">key</span></span></tt> in the <em>prefs</em> file.</p>
-<p>Supports <em>key path</em>.</p>
+<p>Supports key path.</p>
 
 <p><strong class="examples_text">Example:</strong></p>
-<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">prefs</span> <span class="Operator">=</span> <span class="Identifier">initPrefsBase</span><span class="Punctuation">(</span><span class="Identifier">table</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;es&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;dark&quot;</span><span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Punctuation">,</span> 
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">prefs</span> <span class="Operator">=</span> <span class="Identifier">initPrefsBase</span><span class="Punctuation">(</span><span class="Identifier">table</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;es&quot;</span><span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Punctuation">,</span> 
   <span class="Identifier">path</span> <span class="Operator">=</span> <span class="StringLit">&quot;settings.niprefs&quot;</span><span class="Punctuation">)</span>
 
 <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">overwrite</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Comment"># To avoid conflicts</span>
@@ -323,15 +398,34 @@ Deletes the <em>prefs</em> file.
 
 </dd>
 </div>
-<div id="hasKey,PrefsBase,string">
-<dt><pre><span class="Keyword">proc</span> <a href="#hasKey%2CPrefsBase%2Cstring"><span class="Identifier">hasKey</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.
-    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">SyntaxError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">NPegException</span><span class="Other">]</span><span class="Other">,</span>
+<div id="getPath,PrefsBase,varargs[string]">
+<dt><pre><span class="Keyword">proc</span> <a href="#getPath%2CPrefsBase%2Cvarargs%5Bstring%5D"><span class="Identifier">getPath</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a><span class="Other">;</span> <span class="Identifier">keys</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span>
+    <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">SyntaxError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">NPegException</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
-Checks if <tt class="docutils literal"><span class="pre"><span class="Identifier">key</span></span></tt> exists in the <em>prefs</em> file.
+Access to the last key from <tt class="docutils literal"><span class="pre"><span class="Identifier">keys</span></span></tt>, the other elements being it's path, in the preferences file.
 <p><strong class="examples_text">Example:</strong></p>
-<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">prefs</span> <span class="Operator">=</span> <span class="Identifier">initPrefsBase</span><span class="Punctuation">(</span><span class="Identifier">table</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;es&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;dark&quot;</span><span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Punctuation">,</span> 
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">prefs</span> <span class="Operator">=</span> <span class="Identifier">initPrefsBase</span><span class="Punctuation">(</span><span class="Identifier">table</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span><span class="StringLit">&quot;scheme&quot;</span><span class="Punctuation">:</span> <span class="Punctuation">{</span><span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;dark&quot;</span><span class="Punctuation">}</span><span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Punctuation">,</span> 
+  <span class="Identifier">path</span> <span class="Operator">=</span> <span class="StringLit">&quot;settings.niprefs&quot;</span><span class="Punctuation">)</span>
+
+<span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">overwrite</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Comment"># To avoid conflicts</span>
+
+<span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">getPath</span><span class="Punctuation">(</span><span class="StringLit">&quot;scheme&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">&quot;dark&quot;</span></pre>
+
+</dd>
+</div>
+<div id="hasKey,PrefsBase,string">
+<dt><pre><span class="Keyword">proc</span> <a href="#hasKey%2CPrefsBase%2Cstring"><span class="Identifier">hasKey</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span>
+    <span class="Identifier">SyntaxError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">NPegException</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+<p>Checks if <tt class="docutils literal"><span class="pre"><span class="Identifier">key</span></span></tt> exists in the <em>prefs</em> file.</p>
+<p>Supports key path.</p>
+
+<p><strong class="examples_text">Example:</strong></p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">prefs</span> <span class="Operator">=</span> <span class="Identifier">initPrefsBase</span><span class="Punctuation">(</span><span class="Identifier">table</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span><span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;dark&quot;</span><span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Punctuation">,</span> 
   <span class="Identifier">path</span> <span class="Operator">=</span> <span class="StringLit">&quot;settings.niprefs&quot;</span><span class="Punctuation">)</span>
 
 <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">overwrite</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Comment"># To avoid conflicts</span>
@@ -340,17 +434,25 @@ Checks if <tt class="docutils literal"><span class="pre"><span class="Identifier
 
 </dd>
 </div>
-<div id="initPrefsBase,PObjectType,string">
-<dt><pre><span class="Keyword">proc</span> <a href="#initPrefsBase%2CPObjectType%2Cstring"><span class="Identifier">initPrefsBase</span></a><span class="Other">(</span><span class="Identifier">table</span><span class="Other">:</span> <a href="prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a><span class="Other">;</span> <span class="Identifier">path</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
-    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<div id="hasPath,PrefsBase,varargs[string]">
+<dt><pre><span class="Keyword">proc</span> <a href="#hasPath%2CPrefsBase%2Cvarargs%5Bstring%5D"><span class="Identifier">hasPath</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a><span class="Other">;</span> <span class="Identifier">keys</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">SyntaxError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">NPegException</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
+Checks if the last key from <tt class="docutils literal"><span class="pre"><span class="Identifier">keys</span></span></tt> exists the other elements being it's path in the <em>prefs</em> file.
+<p><strong class="examples_text">Example:</strong></p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">prefs</span> <span class="Operator">=</span> <span class="Identifier">initPrefsBase</span><span class="Punctuation">(</span><span class="Identifier">table</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span><span class="StringLit">&quot;scheme&quot;</span><span class="Punctuation">:</span> <span class="Punctuation">{</span><span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;dark&quot;</span><span class="Punctuation">}</span><span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Punctuation">,</span> 
+  <span class="Identifier">path</span> <span class="Operator">=</span> <span class="StringLit">&quot;settings.niprefs&quot;</span><span class="Punctuation">)</span>
 
+<span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">overwrite</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Comment"># To avoid conflicts</span>
+
+<span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">hasPath</span><span class="Punctuation">(</span><span class="StringLit">&quot;scheme&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">)</span></pre>
 
 </dd>
 </div>
-<div id="initPrefsBase,PrefsNode,string">
-<dt><pre><span class="Keyword">proc</span> <a href="#initPrefsBase%2CPrefsNode%2Cstring"><span class="Identifier">initPrefsBase</span></a><span class="Other">(</span><span class="Identifier">table</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">path</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+<div id="initPrefsBase,PObjectType,string">
+<dt><pre><span class="Keyword">proc</span> <a href="#initPrefsBase%2CPObjectType%2Cstring"><span class="Identifier">initPrefsBase</span></a><span class="Other">(</span><span class="Identifier">table</span><span class="Other">:</span> <a href="prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a><span class="Other">;</span> <span class="Identifier">path</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
@@ -365,7 +467,9 @@ Checks if <tt class="docutils literal"><span class="pre"><span class="Identifier
     <span class="Identifier">RootEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
-Overwrites <tt class="docutils literal"><span class="pre"><span class="Identifier">key</span></span></tt> in the <em>prefs</em> file with it's default value (from <tt class="docutils literal"><span class="pre"><span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">table</span></span></tt>).
+<p>Overwrites <tt class="docutils literal"><span class="pre"><span class="Identifier">key</span></span></tt> in the <em>prefs</em> file with it's default value (from <tt class="docutils literal"><span class="pre"><span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">table</span></span></tt>).</p>
+<p>Support key path.</p>
+
 <p><strong class="examples_text">Example:</strong></p>
 <pre class="listing"><span class="Keyword">var</span> <span class="Identifier">prefs</span> <span class="Operator">=</span> <span class="Identifier">initPrefsBase</span><span class="Punctuation">(</span><span class="Identifier">table</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;es&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;dark&quot;</span><span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Punctuation">,</span> 
   <span class="Identifier">path</span> <span class="Operator">=</span> <span class="StringLit">&quot;settings.niprefs&quot;</span><span class="Punctuation">)</span>
@@ -417,26 +521,6 @@ Parses the file at <tt class="docutils literal"><span class="pre"><span class="I
 
 </dd>
 </div>
-<div id="toPTree,PrefsNode,int">
-<dt><pre><span class="Keyword">proc</span> <a href="#toPTree%2CPrefsNode%2Cint"><span class="Identifier">toPTree</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">depth</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> {.
-    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">InvalidKey</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
-<dd>
-
-Given a <tt class="docutils literal"><span class="pre"><span class="Identifier">table</span></span></tt> convert it to Prefs format and return it.
-<p><strong class="examples_text">Example:</strong></p>
-<pre class="listing"><span class="Keyword">import</span> <span class="Identifier">std</span><span class="Operator">/</span><span class="Identifier">strutils</span>
-
-<span class="Keyword">var</span> <span class="Identifier">table</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;en&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;dark&quot;</span><span class="Punctuation">}</span><span class="Punctuation">)</span>
-<span class="Keyword">let</span> <span class="Identifier">str</span> <span class="Operator">=</span> <span class="LongStringLit">&quot;&quot;&quot;
-    #NiPrefs
-    lang=&quot;en&quot;
-    theme=&quot;dark&quot;
-    &quot;&quot;&quot;</span>
-
-<span class="Identifier">assert</span> <span class="Identifier">table</span><span class="Operator">.</span><span class="Identifier">toPTree</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">dedent</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
-
-</dd>
-</div>
 <div id="toPTree,PObjectType,int">
 <dt><pre><span class="Keyword">proc</span> <a href="#toPTree%2CPObjectType%2Cint"><span class="Identifier">toPTree</span></a><span class="Other">(</span><span class="Identifier">table</span><span class="Other">:</span> <a href="prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a><span class="Other">;</span> <span class="Identifier">depth</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> {.
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">InvalidKey</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
@@ -477,6 +561,24 @@ Given a <tt class="docutils literal"><span class="pre"><span class="Identifier">
 
 </dd>
 </div>
+<div id="write,PrefsBase,varargs[string],PrefsNode">
+<dt><pre><span class="Keyword">proc</span> <a href="#write%2CPrefsBase%2Cvarargs%5Bstring%5D%2CPrefsNode"><span class="Identifier">write</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a><span class="Other">;</span> <span class="Identifier">keys</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span>
+    <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">InvalidKey</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">SyntaxError</span><span class="Other">,</span>
+    <span class="Identifier">NPegException</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span>
+                           <span class="Identifier">WriteDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">,</span> <span class="Identifier">RootEffect</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Changes the last key from <tt class="docutils literal"><span class="pre"><span class="Identifier">keys</span></span></tt>, the other elements being it's path, for <tt class="docutils literal"><span class="pre"><span class="Identifier">val</span></span></tt> in the <em>prefs</em> file.
+<p><strong class="examples_text">Example:</strong></p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">prefs</span> <span class="Operator">=</span> <span class="Identifier">initPrefsBase</span><span class="Punctuation">(</span><span class="Identifier">table</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;es&quot;</span><span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Punctuation">,</span>
+  <span class="Identifier">path</span> <span class="Operator">=</span> <span class="StringLit">&quot;settings.niprefs&quot;</span><span class="Punctuation">)</span>
+
+<span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">overwrite</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Comment"># To avoid conflicts</span>
+
+<span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">write</span><span class="Punctuation">(</span><span class="StringLit">&quot;keybindings&quot;</span><span class="Punctuation">,</span> <span class="Identifier">toPrefs</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="Punctuation">{</span><span class="StringLit">&quot;keys&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;Ctrl+C&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;command&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;copy&quot;</span><span class="Punctuation">}</span><span class="Punctuation">]</span><span class="Punctuation">)</span></pre>
+
+</dd>
+</div>
 <div id="write,PrefsBase,string,T">
 <dt><pre><span class="Keyword">proc</span> <a href="#write%2CPrefsBase%2Cstring%2CT"><span class="Identifier">write</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span></pre></dt>
 <dd>
@@ -484,6 +586,23 @@ Given a <tt class="docutils literal"><span class="pre"><span class="Identifier">
 <p>Changes <tt class="docutils literal"><span class="pre"><span class="Identifier">key</span></span></tt> for <tt class="docutils literal"><span class="pre"><span class="Identifier">newPNode</span><span class="Punctuation">(</span><span class="Identifier">val</span><span class="Punctuation">)</span></span></tt> in the <em>prefs</em> file.</p>
 <p>Supports <em>key path</em>.</p>
 
+<p><strong class="examples_text">Example:</strong></p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">prefs</span> <span class="Operator">=</span> <span class="Identifier">initPrefsBase</span><span class="Punctuation">(</span><span class="Identifier">table</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;es&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;dark&quot;</span><span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Punctuation">,</span> 
+  <span class="Identifier">path</span> <span class="Operator">=</span> <span class="StringLit">&quot;settings.niprefs&quot;</span><span class="Punctuation">)</span>
+
+<span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">overwrite</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Comment"># To avoid conflicts</span>
+
+<span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">write</span><span class="Punctuation">(</span><span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;light&quot;</span><span class="Punctuation">)</span> <span class="Comment"># newPNode(&quot;light&quot;) is not needed</span>
+
+<span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">&quot;light&quot;</span></pre>
+
+</dd>
+</div>
+<div id="write,PrefsBase,varargs[string],T">
+<dt><pre><span class="Keyword">proc</span> <a href="#write%2CPrefsBase%2Cvarargs%5Bstring%5D%2CT"><span class="Identifier">write</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a><span class="Other">;</span> <span class="Identifier">keys</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span></pre></dt>
+<dd>
+
+Changes the last key from <tt class="docutils literal"><span class="pre"><span class="Identifier">keys</span></span></tt>, the other elements being it's path, for <tt class="docutils literal"><span class="pre"><span class="Identifier">newPNode</span><span class="Punctuation">(</span><span class="Identifier">val</span><span class="Punctuation">)</span></span></tt> in the <em>prefs</em> file.
 <p><strong class="examples_text">Example:</strong></p>
 <pre class="listing"><span class="Keyword">var</span> <span class="Identifier">prefs</span> <span class="Operator">=</span> <span class="Identifier">initPrefsBase</span><span class="Punctuation">(</span><span class="Identifier">table</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;es&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;dark&quot;</span><span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Punctuation">,</span> 
   <span class="Identifier">path</span> <span class="Operator">=</span> <span class="StringLit">&quot;settings.niprefs&quot;</span><span class="Punctuation">)</span>
@@ -520,27 +639,32 @@ Given a <tt class="docutils literal"><span class="pre"><span class="Identifier">
 
 </dd>
 </div>
-<div id="writeMany,PrefsBase,PrefsNode">
-<dt><pre><span class="Keyword">proc</span> <a href="#writeMany%2CPrefsBase%2CPrefsNode"><span class="Identifier">writeMany</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a><span class="Other">;</span> <span class="Identifier">items</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">,</span>
-    <span class="Identifier">SyntaxError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">NPegException</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">OSError</span><span class="Other">,</span>
-    <span class="Identifier">InvalidKey</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span>
-                        <span class="Identifier">WriteDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
+
+</dl></div>
+<div class="section" id="18">
+<h1><a class="toc-backref" href="#18">Templates</a></h1>
+<dl class="item">
+<div id="initPrefsBase.t,PrefsNode,string">
+<dt><pre><span class="Keyword">template</span> <a href="#initPrefsBase.t%2CPrefsNode%2Cstring"><span class="Identifier">initPrefsBase</span></a><span class="Other">(</span><span class="Identifier">table</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">path</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a></pre></dt>
 <dd>
 
-<p>To efficiently write multiple prefs at once (by opening the file just once).</p>
-<p>Supports <em>key path</em>.</p>
+Same as <tt class="docutils literal"><span class="pre"><span class="Identifier">initPrefsBase</span><span class="Punctuation">(</span><span class="Identifier">table</span><span class="Operator">.</span><span class="Identifier">getObject</span><span class="Punctuation">(</span><span class="Punctuation">)</span><span class="Punctuation">,</span> <span class="Identifier">path</span><span class="Punctuation">)</span></span></tt>.
 
-<p><strong class="examples_text">Example:</strong></p>
-<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">prefs</span> <span class="Operator">=</span> <span class="Identifier">initPrefsBase</span><span class="Punctuation">(</span><span class="Identifier">table</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;es&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;dark&quot;</span><span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Punctuation">,</span> 
-  <span class="Identifier">path</span> <span class="Operator">=</span> <span class="StringLit">&quot;settings.niprefs&quot;</span><span class="Punctuation">)</span>
+</dd>
+</div>
+<div id="toPTree.t,PrefsNode,int">
+<dt><pre><span class="Keyword">template</span> <a href="#toPTree.t%2CPrefsNode%2Cint"><span class="Identifier">toPTree</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">depth</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dd>
 
-<span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">overwrite</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Comment"># To avoid conflicts</span>
+Same as <tt class="docutils literal"><span class="pre"><span class="Identifier">toPTree</span><span class="Punctuation">(</span><span class="Identifier">node</span><span class="Operator">.</span><span class="Identifier">getObject</span><span class="Punctuation">(</span><span class="Punctuation">)</span><span class="Punctuation">,</span> <span class="Identifier">depth</span><span class="Punctuation">)</span></span></tt>.
 
-<span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">writeMany</span><span class="Punctuation">(</span><span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;en&quot;</span><span class="Punctuation">,</span>
-    <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;light&quot;</span><span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Punctuation">)</span>
+</dd>
+</div>
+<div id="writeMany.t,PrefsBase,PrefsNode">
+<dt><pre><span class="Keyword">template</span> <a href="#writeMany.t%2CPrefsBase%2CPrefsNode"><span class="Identifier">writeMany</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a><span class="Other">;</span> <span class="Identifier">items</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span></pre></dt>
+<dd>
 
-<span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">&quot;en&quot;</span>
-<span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">&quot;light&quot;</span></pre>
+Same as <tt class="docutils literal"><span class="pre"><span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">writeMany</span><span class="Punctuation">(</span><span class="Identifier">prefs</span><span class="Punctuation">,</span> <span class="Identifier">items</span><span class="Operator">.</span><span class="Identifier">getObject</span><span class="Punctuation">(</span><span class="Punctuation">)</span><span class="Punctuation">)</span></span></tt>
 
 </dd>
 </div>
@@ -559,7 +683,7 @@ Given a <tt class="docutils literal"><span class="pre"><span class="Identifier">
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-03-02 00:49:31 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-03-04 03:24:04 UTC</small>
       </div>
     </div>
   </div>

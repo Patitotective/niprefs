@@ -9,8 +9,12 @@ type
     NL ## New line \n
     GREATER ## >
     EQUAL ## =
+    COMMA ## ,
+    COLON ## :
     SEQOPEN ## @[ or [
     SEQCLOSE ## ]
+    TABLEOPEN ## {
+    TABLECLOSE ## }
 
     KEY
     INDEN ## One or more spaces/tabs
@@ -20,7 +24,6 @@ type
     BOOL ## true or false
     CHAR ## 'a'
     OBJECT
-    EMPTYOBJ ## {:} or {}
     STRING ## "hello"
     RAWSTRING ## r"hello"
 
@@ -50,6 +53,19 @@ type
     source*: string
     indentLevel*: int
 
+proc `$`*(lexer: PLexer): string =
+  result.add &"{lexer.ok} {lexer.matchLen}/{lexer.matchMax}\n"
+  
+  for token in lexer.stack:
+    case token.kind
+    of NL:
+      result.add "\n"
+    of INDEN:
+      result.add '-'.repeat(token.lexeme.len)
+      result.add ' '
+    else:
+      result.add &"{token.kind} "
+
 proc getPos(str: string, idx: int): PTokenPos =
   ## Get the line:col position of `idx` in `str` adn returns a tuple with the line, col, idx.
 
@@ -60,7 +76,6 @@ proc getPos(str: string, idx: int): PTokenPos =
 
 proc addToken(lexer: var PLexer, kind: PTokenKind, lexeme: string, idx: int) =
   let pos = lexer.source.getPos(idx)
-  # echo &"{lexeme} of {kind} at {pos.line}:{pos.col}"
   lexer.stack.add PToken(kind: kind, lexeme: lexeme, pos: pos)
 
 grammar "number":
@@ -107,7 +122,7 @@ let lexer = peg(tokens, data: PLexer):
   S <- Space - '\n'
   indentChar <- {' ', '\t'}
   spaced(rule) <- *S * rule * *S
-  items(rule) <- ?spaced(rule * *(spaced(',') * rule) * ?',')
+  items(rule) <- ?spaced(rule * *(spaced(comma) * rule) * ?comma)
 
   tokens <- *token * EOF
   token <- sep | greater | val | comment | inden | newLn | key | error
@@ -132,13 +147,16 @@ let lexer = peg(tokens, data: PLexer):
   greater <- '>':
     data.addToken(GREATER, $0, @0)
 
+  comma <- ',':
+    data.addToken(COMMA, $0, @0)
+
+  colon <- ':':
+    data.addToken(COLON, $0, @0)
+
   inden <- +indentChar:
     data.addToken(INDEN, $0, @0)
 
-  obj <- greater * *S * ?comment * (newLn | E"new line") * &indin * (+token |
-      E"one or more pairs") * &indout
-
-  val <- seq | num | char | bool | null | string | rawString | emptyObj
+  val <- seq | table | num | char | bool | null | string | rawString
 
   null <- "nil":
     data.addToken(NIL, $0, @0)
@@ -146,9 +164,15 @@ let lexer = peg(tokens, data: PLexer):
   bool <- "true" | "false":
     data.addToken(BOOL, $0, @0)
 
-  # Object
-  emptyObj <- "{" * ?spaced(":") * "}":
-    data.addToken(EMPTYOBJ, $0, @0)
+  table <- tableOpen * (colon | items(tablePair)) * tableClose
+
+  tableOpen <- "{":
+    data.addToken(TABLEOPEN, $0, @0)
+
+  tableClose <- "}":
+    data.addToken(TABLECLOSE, $0, @0)
+
+  tablePair <- string * spaced(colon) * (val | E"value")
 
   # Sequence
   seq <- seqOpen * items(val) * seqClose

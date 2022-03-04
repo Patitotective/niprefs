@@ -7,7 +7,7 @@ const
   firstLine = &"{commentChar}NiPrefs"
   endChar = '\n'
   indentChar = "  "
-  keyPathSep = '/'
+  keyPathSep* = '/'
   sepChar = '='
   continueChar = '>'
   invalidKeyChars = [commentChar, sepChar, keyPathSep]
@@ -18,16 +18,31 @@ type
     table*: PObjectType
     path*: string
 
+proc get(table: PObjectType, key: string): PrefsNode = 
+  if keyPathSep in key:
+    table.getNested(key.split(keyPathSep))
+  else:
+    table[key]
+
+proc change(table: PObjectType, key: string, val: PrefsNode): PObjectType = 
+  if keyPathSep in key:
+    result = table.changeNested(key.split(keyPathSep), val)
+  else:
+    result = table
+    result[key] = val
+
 proc checkKey(key: string) = 
   ## Checks if a key is valid and raises an error if it is not.
+ 
   if invalidKeyChars.anyIt(it in key):
     raise newException(InvalidKey, &"{key} must not contain any of {invalidKeyChars}")
 
 proc initPrefsBase*(table: PObjectType, path: string): PrefsBase =
   PrefsBase(table: table, path: path)
 
-proc initPrefsBase*(table: PrefsNode, path: string): PrefsBase =
-  PrefsBase(table: table.getObject(), path: path)
+template initPrefsBase*(table: PrefsNode, path: string): PrefsBase =
+  ## Same as `initPrefsBase(table.getObject(), path)`.
+  initPrefsBase(table.getObject(), path)
 
 proc read*(prefs: PrefsBase): PObjectType =
   ## Parses the file at `prefs.path` with [`readPrefs`](parser.html#readPrefs%2Cstring).
@@ -65,21 +80,10 @@ proc toPTree*(table: PObjectType, depth: int = 0): string =
 
       result.add &"{indent}{key.strip}{sepChar}{val}{endChar}"
 
-proc toPTree*(node: PrefsNode, depth: int = 0): string =
-  ## Given a `table` convert it to Prefs format and return it.
-  runnableExamples:
-    import std/strutils
+template toPTree*(node: PrefsNode, depth: int = 0): string =
+  ## Same as `toPTree(node.getObject(), depth)`.
 
-    var table = toPrefs({"lang": "en", "theme": "dark"})
-    let str = """
-    #NiPrefs
-    lang="en"
-    theme="dark"
-    """
-
-    assert table.toPTree() == str.dedent()
-
-  toPTree(node.objectV, depth)
+  toPTree(node.getObject(), depth)
 
 proc create*(prefs: PrefsBase, table = prefs.table) =
   ## Checks that all directories in `prefs.path` exists and writes `table.toPTree()` into it.
@@ -96,7 +100,6 @@ proc write*[T](prefs: PrefsBase, key: string, val: T) =
   ## Changes `key` for `newPNode(val)` in the *prefs* file.
   ##
   ## Supports *key path*.
-
   runnableExamples:
     var prefs = initPrefsBase(table = toPrefs({"lang": "es", "theme": "dark"}), 
       path = "settings.niprefs")
@@ -107,13 +110,12 @@ proc write*[T](prefs: PrefsBase, key: string, val: T) =
 
     assert prefs.get("theme") == "light"
 
-  prefs.create(prefs.content.change(key, newPNode(val), keyPathSep))
+  prefs.create(prefs.content.change(key, newPNode(val)))
 
 proc write*(prefs: PrefsBase, key: string, val: PrefsNode) =
   ## Changes `key` for `val` in the *prefs* file.
   ##
   ## Supports *key path*.
-
   runnableExamples:
     var prefs = initPrefsBase(table = toPrefs({"lang": "es"}),
       path = "settings.niprefs")
@@ -122,7 +124,33 @@ proc write*(prefs: PrefsBase, key: string, val: PrefsNode) =
 
     prefs.write("keybindings", toPrefs @[{"keys": "Ctrl+C", "command": "copy"}])
 
-  prefs.create(prefs.content.change(key, val, keyPathSep))
+  prefs.create(prefs.content.change(key, val))
+
+proc write*[T](prefs: PrefsBase, keys: varargs[string], val: T) =
+  ## Changes the last key from `keys`, the other elements being it's path, for `newPNode(val)` in the *prefs* file.
+  runnableExamples:
+    var prefs = initPrefsBase(table = toPrefs({"lang": "es", "theme": "dark"}), 
+      path = "settings.niprefs")
+
+    prefs.overwrite() # To avoid conflicts
+
+    prefs.write("theme", "light") # newPNode("light") is not needed
+
+    assert prefs.get("theme") == "light"
+
+  prefs.create(prefs.content.changeNested(keys, newPNode(val)))
+
+proc write*(prefs: PrefsBase, keys: varargs[string], val: PrefsNode) =
+  ## Changes the last key from `keys`, the other elements being it's path, for `val` in the *prefs* file.
+  runnableExamples:
+    var prefs = initPrefsBase(table = toPrefs({"lang": "es"}),
+      path = "settings.niprefs")
+
+    prefs.overwrite() # To avoid conflicts
+
+    prefs.write("keybindings", toPrefs @[{"keys": "Ctrl+C", "command": "copy"}])
+
+  prefs.create(prefs.content.changeNested(keys, val))
 
 proc writeMany*(prefs: PrefsBase, items: PObjectType) =
   ## To efficiently write multiple prefs at once (by opening the file just once).
@@ -144,38 +172,45 @@ proc writeMany*(prefs: PrefsBase, items: PObjectType) =
   var table = prefs.content
 
   for key, val in items.pairs():
-    table = table.change(key, val, keyPathSep)
+    table = table.change(key, val)
 
   prefs.create(table)
 
-proc writeMany*(prefs: PrefsBase, items: PrefsNode) =
-  ## To efficiently write multiple prefs at once (by opening the file just once).
-  ##
-  ## Supports *key path*.
+template writeMany*(prefs: PrefsBase, items: PrefsNode) =
+  ## Same as `prefs.writeMany(prefs, items.getObject())`
+  prefs.writeMany(items.getObject())
+
+proc delPath*(prefs: PrefsBase, keys: varargs[string]) =
+  ## Deletes the last key from `keys`, the other elements being it's path, from the *prefs* file.
 
   runnableExamples:
-    var prefs = initPrefsBase(table = toPrefs({"lang": "es", "theme": "dark"}), 
+    var prefs = initPrefsBase(table = toPrefs({"scheme": {"theme": "dark"}}), 
       path = "settings.niprefs")
 
     prefs.overwrite() # To avoid conflicts
 
-    prefs.writeMany(toPrefs({"lang": "en",
-        "theme": "light"}))
+    prefs.delPath("scheme", "theme")
 
-    assert prefs.get("lang") == "en"
-    assert prefs.get("theme") == "light"
+    assert not prefs.hasPath("scheme", "theme")
 
-  var table = prefs.content
+  var content = prefs.content
 
-  for key, val in items.getObject().pairs():
-    table = table.change(key, val, keyPathSep)
+  var keys = keys.toSeq()
+  var table = content[keys[0]]
+  keys.delete(0)
 
-  prefs.create(table)
+  for e, key in keys:
+    if e == keys.len - 1:
+      table.objectV.del(key)
+    else:
+      table = table[key]
+
+  prefs.create(content)
 
 proc delKey*(prefs: PrefsBase, key: string) =
   ## Deletes `key` from the *prefs* file.
   ##
-  ## Supports *key path*.
+  ## Supports key path.
 
   runnableExamples:
     var prefs = initPrefsBase(table = toPrefs({"lang": "es", "theme": "dark"}), 
@@ -187,57 +222,79 @@ proc delKey*(prefs: PrefsBase, key: string) =
 
     assert not prefs.hasKey("theme")
 
-  var content = prefs.content
-
   if keyPathSep in key:
-    var keys = key.split(keyPathSep)
-    var table = content[keys[0]]
-    keys.delete(0)
-
-    for e, key in keys:
-      if e == keys.len - 1:
-        table.objectV.del(key)
-      else:
-        table = table[key]
+    prefs.delPath(key.split(keyPathSep))
   else:
+    var content = prefs.content
     content.del(key)
+    prefs.create(content)
 
-  prefs.create(content)
+proc getPath*(prefs: PrefsBase, keys: varargs[string]): PrefsNode =
+  ## Access to the last key from `keys`, the other elements being it's path, in the preferences file.
+
+  runnableExamples:
+    var prefs = initPrefsBase(table = toPrefs({"scheme": {"theme": "dark"}}), 
+      path = "settings.niprefs")
+
+    prefs.overwrite() # To avoid conflicts
+
+    assert prefs.getPath("scheme", "theme") == "dark"
+
+  prefs.content.getNested(keys)
 
 proc get*(prefs: PrefsBase, key: string): PrefsNode =
   ## Access to `key` in the *prefs* file.
   ##
-  ## Supports *key path*.
+  ## Supports key path.
 
   runnableExamples:
-    var prefs = initPrefsBase(table = toPrefs({"lang": "es", "theme": "dark"}), 
+    var prefs = initPrefsBase(table = toPrefs({"lang": "es"}), 
       path = "settings.niprefs")
 
     prefs.overwrite() # To avoid conflicts
 
     assert prefs.get("lang") == "es"
 
-  prefs.content.get(key, keyPathSep)
+  prefs.content.get(key)
+
+proc hasPath*(prefs: PrefsBase, keys: varargs[string]): bool =
+  ## Checks if the last key from `keys` exists the other elements being it's path in the *prefs* file.
+  runnableExamples:
+    var prefs = initPrefsBase(table = toPrefs({"scheme": {"theme": "dark"}}), 
+      path = "settings.niprefs")
+
+    prefs.overwrite() # To avoid conflicts
+
+    assert prefs.hasPath("scheme", "theme")
+
+  try:
+    discard prefs.getPath(keys)
+    result = true
+  except KeyError:
+    result = false
 
 proc hasKey*(prefs: PrefsBase, key: string): bool =
   ## Checks if `key` exists in the *prefs* file.
-
+  ##
+  ## Supports key path.
   runnableExamples:
-    var prefs = initPrefsBase(table = toPrefs({"lang": "es", "theme": "dark"}), 
+    var prefs = initPrefsBase(table = toPrefs({"theme": "dark"}), 
       path = "settings.niprefs")
 
     prefs.overwrite() # To avoid conflicts
 
     assert prefs.hasKey("theme")
 
-  try:
-    discard prefs.get(key)
-    result = true
-  except KeyError:
-    result = false
+  if keyPathSep in key:
+    prefs.hasPath(key.split(keyPathSep))
+  else:
+    prefs.content.hasKey(key)
 
 proc overwrite*(prefs: PrefsBase, key: string) =
   ## Overwrites `key` in the *prefs* file with it's default value (from `prefs.table`).
+  ##
+  ## Support key path.
+
   runnableExamples:
     var prefs = initPrefsBase(table = toPrefs({"lang": "es", "theme": "dark"}), 
       path = "settings.niprefs")
@@ -254,7 +311,7 @@ proc overwrite*(prefs: PrefsBase, key: string) =
     assert prefs.get("lang") == "es" # "es" is the default value
     assert prefs.get("theme") == "light" # "theme" was not overwritten
 
-  prefs.write(key, prefs.table.get(key, keyPathSep))
+  prefs.write(key, prefs.table.get(key))
 
 proc overwrite*(prefs: PrefsBase, table: PObjectType = prefs.table) =
   ## Overwrites the whole *prefs* file with `table`.

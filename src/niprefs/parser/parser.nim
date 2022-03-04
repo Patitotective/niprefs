@@ -136,10 +136,8 @@ proc parseVal(token: PToken): PrefsNode =
     result = token.lexeme[1..^2].parseEscaped().newPString()
   of RAWSTRING:
     result = token.lexeme[2..^2].newPString()
-  of EMPTYOBJ:
-    result = newPObject()
   else:
-    echo &"Unkown token {token.lexeme} of {token.kind}"
+    # echo &"Unkown token {token.lexeme} of {token.kind}"
     result = newPEmpty()
 
 proc addToTable(data: var PParseData, key: string, val: PrefsNode) =
@@ -154,9 +152,10 @@ proc addToTable(data: var PParseData, key: string, val: PrefsNode) =
 
 proc addToTable(data: var PParseData, key: string, val: PToken) =
   ## Same as [addToTable](#addToTable%2CPParseData%2Cstring%2CPrefsNode) but calling [parseVal](#parseVal%2CPToken) on `val`.
-
   if val.kind == SEQOPEN:
     data.addToTable(key, data.seqData.child)
+  elif val.kind == TABLEOPEN:
+    data.addToTable(key, data.objData.child)
   else:
     data.addToTable(key, parseVal(val))
 
@@ -177,6 +176,14 @@ proc closeObj(data: var PParseData) =
     data.objData.inside = false
     data.addToTable(data.top.key, data.objData.child)
 
+proc closeTable(data: var PParseData) =
+  if data.objData.parent.isSome:
+    data.objData.parent.get().child.objectV.top = data.objData.child
+    data.objData = data.objData.parent.get()
+    data.objData.inside = true
+  else:
+    data.objData.inside = false
+
 proc indOut(data: var PParseData, ind: int, pos: PTokenPos) =
   for i in countdown(data.indentStack.high, 0):
     if ind < data.indentStack[i]:
@@ -189,9 +196,11 @@ proc indOut(data: var PParseData, ind: int, pos: PTokenPos) =
 
 let parser = peg(content, PToken, data: PParseData):
   spaced(rule) <- *[INDEN] * rule * *[INDEN]
+  items(rule) <- ?spaced(rule * *(spaced([COMMA]) * rule) * ?[COMMA])
 
   content <- *token
   token <- ?[INDEN] * [NL] | obj | pair
+  sep <- [EQUAL] | E"separator '='"
   
   endLn <- [NL] | "":
     if ($0).kind notin [NL, EOF]:
@@ -232,7 +241,23 @@ let parser = peg(content, PToken, data: PParseData):
     data.objData.inside = true
     data.objData.child = newPObject()
 
-  sep <- [EQUAL] | E"separator '='"
+  emptyTable <- [TABLEOPEN] * ?[COLON] * [TABLECLOSE]:
+    data.objData.child = newPObject()
+  
+  TABLE <- tableOpen * items(tablePair) * tableClose
+  tableOpen <- [TABLEOPEN]:
+    if data.objData.inside:
+      data.objData.parent = initPNestData(parent = data.objData.parent, child = data.objData.child).some
+
+    data.objData.child = newPObject()
+    data.objData.inside = true
+
+  tableClose <- [TABLECLOSE]:
+    data.closeTable()
+
+  tablePair <- >[STRING] * [COLON] * >val:
+    data.addToTable(($1).lexeme[1..^2].parseEscaped(), $2)
+
   seqOpen <- [SEQOPEN]:
     if data.seqData.inside:
       data.seqData.parent = initPNestData(parent = data.seqData.parent, child = data.seqData.child).some
@@ -247,11 +272,11 @@ let parser = peg(content, PToken, data: PParseData):
     if ($0).kind != SEQOPEN:
       data.seqData.child.seqV.add parseVal($0)
 
-  SEQ <- seqOpen * *seqVal * seqClose
+  SEQ <- seqOpen * items(seqVal) * seqClose
 
-  val <- [NIL] | [BOOL] | [CHAR] | [OBJECT] | [EMPTYOBJ] | [STRING] | [
+  val <- [NIL] | [BOOL] | [CHAR] | [OBJECT] | [STRING] | [
       RAWSTRING] | [DEC] | [HEX] | [BIN] | [OCT] | [FLOAT] | [FLOAT32] | [
-          FLOAT64] | SEQ
+          FLOAT64] | SEQ | emptyTable | TABLE
 
 proc parsePrefs*(tokens: seq[PToken]): PObjectType =
   var data = initPParseData()
@@ -293,3 +318,10 @@ proc readPrefs*(path: string): PObjectType =
   ## Read a file and parse it.
   
   parsePrefs(path.scanPrefsFile().stack)
+
+echo """
+seq={"lang": {}}
+table={"lang": "es"}
+obj=>
+  lang="es"
+""".parsePrefs()

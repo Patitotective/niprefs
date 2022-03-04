@@ -1,4 +1,3 @@
 checkPath	niprefs/utils.html#checkPath,string	utils: checkPath(path: string)	
-changeNested	niprefs/utils.html#changeNested,PObjectType,string,PrefsNode,char	utils: changeNested(table: PObjectType; key: string; val: PrefsNode; keyPathSep: char): PObjectType	
-change	niprefs/utils.html#change,PObjectType,string,PrefsNode,char	utils: change(table: PObjectType; key: string; val: PrefsNode; keyPathSep: char): PObjectType	
-get	niprefs/utils.html#get,PObjectType,string,char	utils: get(table: PObjectType; key: string; keyPathSep: char): PrefsNode	
+changeNested	niprefs/utils.html#changeNested,PObjectType,varargs[string],PrefsNode	utils: changeNested(table: PObjectType; keys: varargs[string]; val: PrefsNode): PObjectType	
+getNested	niprefs/utils.html#getNested,PObjectType,varargs[string]	utils: getNested(table: PObjectType; keys: varargs[string]): PrefsNode	

@@ -25,12 +25,13 @@
 ## ```
 
 ## # Basic usage
-runnableExamples:
+## To generate a `OrderedTable[string, PrefsNode]` or a `PrefsNode` you may want to use the [toPrefs](prefsnode.html#toPrefs.m%2Cuntyped) macro.
 
+runnableExamples:
   let defaultPrefs = toPrefs { # The default prefs are used the first time or when the preferences file gets removed.
     "lang": "en",
     "dark": true,
-    "keybindings": {:},
+    keybindings: {:}, # Quotes are not required
     "scheme": {
       "background": "#000000",
       "font": {
@@ -61,27 +62,28 @@ runnableExamples:
 ## ## Reading
 ## To read a key from your preferences file you can access to it as it were a table:
 ## ```nim
-## echo prefs["lang"]
-## >>> "en"
+## assert prefs["lang"] == "en"
 ## ```
-## To read a nested key you must use something called *key paths*, which are in essence a path to a nested key separated by a slash `/`:
+## To read a nested key you must use something called *key paths*, which are in essence a path to a nested key separated by a slash `/`.
+##
+## Or you can pass the *key path* separated by a comma:
 ## ```nim
-## echo prefs["scheme/font/family"] # Same as prefs["scheme"]["font"]["family"]
-## >>> "UbuntuMono"
+## assert prefs["scheme/font/family"] == "UbuntuMono" # Same as prefs["scheme"]["font"]["family"]
+## assert prefs["scheme", "font", "family"] == "UbuntuMono"
 ## ```
 
 ## ## Writing
 ## To change the value of a key or create a new one you can do it as it were table:
 ## ```nim
 ## prefs["lang"] = "es"
-## echo prefs["lang"]
-## >>> "es"
+## assert prefs["lang"] == "es"
 ## ```
 ## Same with nested keys:
 ## ```nim
 ## prefs["scheme/font/size"] = 20 # prefs["scheme"]["font"]["size"] = 20 wont' work
-## echo prefs["scheme/font/size"]
-## >>> 20
+## assert prefs["scheme/font/size"] == 20
+## prefs["scheme", "font", "size"] = 21
+## assert prefs["scheme", "font", "size"] == 21
 ## ```
 
 ## ## Removing
@@ -110,7 +112,8 @@ runnableExamples:
 
 import std/tables
 import niprefs/prefsbase
-export prefsbase, tables
+export prefsbase except keyPathSep
+export tables
 
 type
   Prefs* = object of PrefsBase ## Provides a table-like interface for the PrefsBase object
@@ -158,8 +161,21 @@ proc `$`*(prefs: Prefs): string =
 
   $prefs.content
 
+proc `[]`*(prefs: Prefs, keys: varargs[string]): PrefsNode = 
+  ## Get the last key from `keys`, the other elements being it's path, from the preferences file by separating the keys with a comma.
+
+  runnableExamples:
+    var prefs = toPrefs({"lang": "en", "scheme": {
+        "font": "UbuntuMono"}}).initPrefs
+
+    prefs.overwrite() # To avoid conflicts
+
+    assert prefs["scheme", "font"] == "UbuntuMono"
+
+  prefs.getPath(keys)
+
 proc `[]`*(prefs: Prefs, key: string): PrefsNode =
-  ## Get a key from the *prefs* file reading it
+  ## Get a key from the preferences file.
   ##
   ## Supports *key path*.
 
@@ -172,7 +188,20 @@ proc `[]`*(prefs: Prefs, key: string): PrefsNode =
     assert prefs["lang"] == "en" # newPNode("en") is not required
     assert prefs["scheme/font"] == "UbuntuMono"
 
-  prefs.get(key)
+  result = prefs.get(key)
+
+proc `[]=`*[T: not PrefsNode](prefs: Prefs, keys: varargs[string], val: T) = 
+  ## Write the last key from `keys`, the other elements being it's path, in the preferences file.
+  ##
+  ## `newPNode` is called on `val`, meaning that for [structured types](https://nim-lang.org/docs/manual.html#types-structured-types) you may want to use the [toPrefs](prefsnode.html#toPrefs.m%2Cuntyped) macro.
+  runnableExamples:
+    var prefs = toPrefs({"lang": "en", "theme": "dark"}).initPrefs
+
+    prefs.overwrite() # To avoid conflicts
+
+    prefs["lang"] = "es" # newPString("es") is not required, since `string` is not a structured type
+
+  prefs.write(keys, newPNode(val))
 
 proc `[]=`*[T: not PrefsNode](prefs: Prefs, key: string, val: T) =
   ## Write in the *prefs* file the given key-value pair.
@@ -208,15 +237,23 @@ proc `[]=`*(prefs: Prefs, key: string, val: PrefsNode) =
 
     prefs["keybindings"] = toPrefs @[{"keys": "Ctrl+C",
         "command": "copy"}]
-    # It is converted into
-    # newPNode(@[newPNode(
-    #   {
-    #     "keys": newPNode("Ctrl+C"),
-    #     "command": newPNode("copy")
-    #   }.toOrderedTable
-    # )])
 
   prefs.write(key, val)
+
+proc `[]=`*(prefs: Prefs, keys: varargs[string], val: PrefsNode) =
+  ## Write the last key from `keys`, the other elements being it's path, in the preferences file.
+  ##
+  ## Use this procedure for [structured types](https://nim-lang.org/docs/manual.html#types-structured-types) with the [toPrefs](prefsnode.html#toPrefs.m%2Cuntyped) macro.
+  ##
+  ## *(See the example below)*
+
+  runnableExamples:
+    var prefs = toPrefs({"lang": "en"}).initPrefs
+
+    prefs["keybindings"] = toPrefs @[{"keys": "Ctrl+C",
+        "command": "copy"}]
+
+  prefs.write(keys, val)
 
 proc clear*(prefs: Prefs) =
   ## Clears the content of the file.
@@ -263,5 +300,29 @@ proc pop*(prefs: Prefs, key: string, val: var PrefsNode): bool =
     val = prefs[key]
     result = true
     prefs.delKey(key)
+  else:
+    result = false
+
+proc pop*(prefs: Prefs, keys: varargs[string], val: var PrefsNode): bool =
+  ## Deletes the last key from `keys`, the other elements being it's path, from the *prefs* file.
+  ## Returns `true`, if the key existed, and sets `val` to the
+  ## mapping of the key. Otherwise, returns `false`, and `val` is
+  ## unchanged.
+
+  runnableExamples:
+    var
+      prefs = toPrefs({"scheme": {"theme": "dark"}}).initPrefs
+      s: PrefsNode
+
+    prefs.overwrite() # To avoid conflicts
+
+    assert prefs.pop("scheme", "theme", s) == true
+    assert "scheme/theme" notin prefs
+    assert s == "dark"
+
+  if prefs.hasPath(keys):
+    val = prefs[keys]
+    result = true
+    prefs.delPath(keys)
   else:
     result = false

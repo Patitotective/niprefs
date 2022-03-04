@@ -169,7 +169,10 @@ macro toPrefs*(obj: untyped): PrefsNode =
 
     for i in obj:
       i.expectKind(nnkExprColonExpr) # Expects key:val
-      result.add nnkExprColonExpr.newTree(i[0], newCall("toPrefs", i[1]))
+      if i[0].kind == nnkStrLit:
+        result.add nnkExprColonExpr.newTree(i[0], newCall("toPrefs", i[1]))
+      elif i[0].kind == nnkIdent:
+        result.add nnkExprColonExpr.newTree(i[0].toStrLit, newCall("toPrefs", i[1]))
 
     result = newCall("newPObject", newCall(bindSym"toOrderedTable", result))
   of nnkCurly: # Empty object {}

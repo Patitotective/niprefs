@@ -13,7 +13,8 @@ const path = "settings.niprefs"
 let defaultPrefs = toPrefs {
   "lang": "en",
   "dark": true,
-  "keybindings": {:},
+  "keybindings": [],
+  "users": {:},
   "scheme": {
     "background": "#000000",
     "font": {

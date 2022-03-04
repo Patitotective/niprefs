@@ -1,19 +1,25 @@
+keyPathSep	niprefs/prefsbase.html#keyPathSep	prefsbase: keyPathSep	
 InvalidKey	niprefs/prefsbase.html#InvalidKey	prefsbase: InvalidKey	
 PrefsBase	niprefs/prefsbase.html#PrefsBase	prefsbase: PrefsBase	
 initPrefsBase	niprefs/prefsbase.html#initPrefsBase,PObjectType,string	prefsbase: initPrefsBase(table: PObjectType; path: string): PrefsBase	
-initPrefsBase	niprefs/prefsbase.html#initPrefsBase,PrefsNode,string	prefsbase: initPrefsBase(table: PrefsNode; path: string): PrefsBase	
+initPrefsBase	niprefs/prefsbase.html#initPrefsBase.t,PrefsNode,string	prefsbase: initPrefsBase(table: PrefsNode; path: string): PrefsBase	
 read	niprefs/prefsbase.html#read,PrefsBase	prefsbase: read(prefs: PrefsBase): PObjectType	
 content	niprefs/prefsbase.html#content,PrefsBase	prefsbase: content(prefs: PrefsBase): PObjectType	
 toPTree	niprefs/prefsbase.html#toPTree,PObjectType,int	prefsbase: toPTree(table: PObjectType; depth: int = 0): string	
-toPTree	niprefs/prefsbase.html#toPTree,PrefsNode,int	prefsbase: toPTree(node: PrefsNode; depth: int = 0): string	
+toPTree	niprefs/prefsbase.html#toPTree.t,PrefsNode,int	prefsbase: toPTree(node: PrefsNode; depth: int = 0): string	
 create	niprefs/prefsbase.html#create,PrefsBase,OrderedTable[system.string, prefsnode.PrefsNode]	prefsbase: create(prefs: PrefsBase; table = prefs.table)	
 checkFile	niprefs/prefsbase.html#checkFile,PrefsBase	prefsbase: checkFile(prefs: PrefsBase)	
 write	niprefs/prefsbase.html#write,PrefsBase,string,T	prefsbase: write[T](prefs: PrefsBase; key: string; val: T)	
 write	niprefs/prefsbase.html#write,PrefsBase,string,PrefsNode	prefsbase: write(prefs: PrefsBase; key: string; val: PrefsNode)	
+write	niprefs/prefsbase.html#write,PrefsBase,varargs[string],T	prefsbase: write[T](prefs: PrefsBase; keys: varargs[string]; val: T)	
+write	niprefs/prefsbase.html#write,PrefsBase,varargs[string],PrefsNode	prefsbase: write(prefs: PrefsBase; keys: varargs[string]; val: PrefsNode)	
 writeMany	niprefs/prefsbase.html#writeMany,PrefsBase,PObjectType	prefsbase: writeMany(prefs: PrefsBase; items: PObjectType)	
-writeMany	niprefs/prefsbase.html#writeMany,PrefsBase,PrefsNode	prefsbase: writeMany(prefs: PrefsBase; items: PrefsNode)	
+writeMany	niprefs/prefsbase.html#writeMany.t,PrefsBase,PrefsNode	prefsbase: writeMany(prefs: PrefsBase; items: PrefsNode)	
+delPath	niprefs/prefsbase.html#delPath,PrefsBase,varargs[string]	prefsbase: delPath(prefs: PrefsBase; keys: varargs[string])	
 delKey	niprefs/prefsbase.html#delKey,PrefsBase,string	prefsbase: delKey(prefs: PrefsBase; key: string)	
+getPath	niprefs/prefsbase.html#getPath,PrefsBase,varargs[string]	prefsbase: getPath(prefs: PrefsBase; keys: varargs[string]): PrefsNode	
 get	niprefs/prefsbase.html#get,PrefsBase,string	prefsbase: get(prefs: PrefsBase; key: string): PrefsNode	
+hasPath	niprefs/prefsbase.html#hasPath,PrefsBase,varargs[string]	prefsbase: hasPath(prefs: PrefsBase; keys: varargs[string]): bool	
 hasKey	niprefs/prefsbase.html#hasKey,PrefsBase,string	prefsbase: hasKey(prefs: PrefsBase; key: string): bool	
 overwrite	niprefs/prefsbase.html#overwrite,PrefsBase,string	prefsbase: overwrite(prefs: PrefsBase; key: string)	
 overwrite	niprefs/prefsbase.html#overwrite,PrefsBase,PObjectType	prefsbase: overwrite(prefs: PrefsBase; table: PObjectType = prefs.table)	

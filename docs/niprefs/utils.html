@@ -107,14 +107,9 @@ window.addEventListener('DOMContentLoaded', main);
 <li>
   <a class="reference reference-toplevel" href="#12" id="62">Procs</a>
   <ul class="simple simple-toc-section">
-      <ul class="simple nested-toc-section">change
-      <li><a class="reference" href="#change%2CPObjectType%2Cstring%2CPrefsNode%2Cchar"
-    title="change(table: PObjectType; key: string; val: PrefsNode; keyPathSep: char): PObjectType">change(table: PObjectType; key: string; val: PrefsNode; keyPathSep: char): PObjectType</a></li>
-
-  </ul>
-  <ul class="simple nested-toc-section">changeNested
-      <li><a class="reference" href="#changeNested%2CPObjectType%2Cstring%2CPrefsNode%2Cchar"
-    title="changeNested(table: PObjectType; key: string; val: PrefsNode; keyPathSep: char): PObjectType">changeNested(table: PObjectType; key: string; val: PrefsNode; keyPathSep: char): PObjectType</a></li>
+      <ul class="simple nested-toc-section">changeNested
+      <li><a class="reference" href="#changeNested%2CPObjectType%2Cvarargs%5Bstring%5D%2CPrefsNode"
+    title="changeNested(table: PObjectType; keys: varargs[string]; val: PrefsNode): PObjectType">changeNested(table: PObjectType; keys: varargs[string]; val: PrefsNode): PObjectType</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">checkPath
@@ -122,9 +117,9 @@ window.addEventListener('DOMContentLoaded', main);
     title="checkPath(path: string)">checkPath(path: string)</a></li>
 
   </ul>
-  <ul class="simple nested-toc-section">get
-      <li><a class="reference" href="#get%2CPObjectType%2Cstring%2Cchar"
-    title="get(table: PObjectType; key: string; keyPathSep: char): PrefsNode">get(table: PObjectType; key: string; keyPathSep: char): PrefsNode</a></li>
+  <ul class="simple nested-toc-section">getNested
+      <li><a class="reference" href="#getNested%2CPObjectType%2Cvarargs%5Bstring%5D"
+    title="getNested(table: PObjectType; keys: varargs[string]): PrefsNode">getNested(table: PObjectType; keys: varargs[string]): PrefsNode</a></li>
 
   </ul>
 
@@ -147,21 +142,12 @@ window.addEventListener('DOMContentLoaded', main);
 <div class="section" id="12">
 <h1><a class="toc-backref" href="#12">Procs</a></h1>
 <dl class="item">
-<div id="change,PObjectType,string,PrefsNode,char">
-<dt><pre><span class="Keyword">proc</span> <a href="#change%2CPObjectType%2Cstring%2CPrefsNode%2Cchar"><span class="Identifier">change</span></a><span class="Other">(</span><span class="Identifier">table</span><span class="Other">:</span> <a href="prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">keyPathSep</span><span class="Other">:</span> <span class="Identifier">char</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a> {.
+<div id="changeNested,PObjectType,varargs[string],PrefsNode">
+<dt><pre><span class="Keyword">proc</span> <a href="#changeNested%2CPObjectType%2Cvarargs%5Bstring%5D%2CPrefsNode"><span class="Identifier">changeNested</span></a><span class="Other">(</span><span class="Identifier">table</span><span class="Other">:</span> <a href="prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a><span class="Other">;</span> <span class="Identifier">keys</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a> {.
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
-Changes <tt class="docutils literal"><span class="pre"><span class="Identifier">key</span></span></tt> to the given <tt class="docutils literal"><span class="pre"><span class="Identifier">val</span></span></tt>, if <tt class="docutils literal"><span class="pre"><span class="Identifier">keyPathSep</span></span></tt> in <tt class="docutils literal"><span class="pre"><span class="Identifier">key</span></span></tt>, calls <tt class="docutils literal"><span class="pre"><span class="Identifier">changeNested</span></span></tt>. Returns a new table.
-
-</dd>
-</div>
-<div id="changeNested,PObjectType,string,PrefsNode,char">
-<dt><pre><span class="Keyword">proc</span> <a href="#changeNested%2CPObjectType%2Cstring%2CPrefsNode%2Cchar"><span class="Identifier">changeNested</span></a><span class="Other">(</span><span class="Identifier">table</span><span class="Other">:</span> <a href="prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span>
-                  <span class="Identifier">keyPathSep</span><span class="Other">:</span> <span class="Identifier">char</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
-<dd>
-
-Changes the <tt class="docutils literal"><span class="pre"><span class="Identifier">val</span></span></tt> of <tt class="docutils literal"><span class="pre"><span class="Identifier">key</span></span></tt> in <tt class="docutils literal"><span class="pre"><span class="Identifier">table</span></span></tt>, being <tt class="docutils literal"><span class="pre"><span class="Identifier">key</span></span></tt>'s path separated by <tt class="docutils literal"><span class="pre"><span class="Identifier">keyPathSep</span></span></tt>. If <tt class="docutils literal"><span class="pre">autoGenKeys</span></tt> is true, it will generated the missing keys in the path. Returns a new table.
+Changes nested <tt class="docutils literal"><span class="pre"><span class="Identifier">keys</span></span></tt> for <tt class="docutils literal"><span class="pre"><span class="Identifier">val</span></span></tt> in <tt class="docutils literal"><span class="pre"><span class="Identifier">table</span></span></tt>. Returns a new table.
 
 </dd>
 </div>
@@ -174,12 +160,12 @@ Given a file path creates all the directories until the file if they don't exist
 
 </dd>
 </div>
-<div id="get,PObjectType,string,char">
-<dt><pre><span class="Keyword">proc</span> <a href="#get%2CPObjectType%2Cstring%2Cchar"><span class="Identifier">get</span></a><span class="Other">(</span><span class="Identifier">table</span><span class="Other">:</span> <a href="prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">keyPathSep</span><span class="Other">:</span> <span class="Identifier">char</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a> {.
+<div id="getNested,PObjectType,varargs[string]">
+<dt><pre><span class="Keyword">proc</span> <a href="#getNested%2CPObjectType%2Cvarargs%5Bstring%5D"><span class="Identifier">getNested</span></a><span class="Other">(</span><span class="Identifier">table</span><span class="Other">:</span> <a href="prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a><span class="Other">;</span> <span class="Identifier">keys</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a> {.
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
-Looks for the given <tt class="docutils literal"><span class="pre"><span class="Identifier">key</span></span></tt> in the <tt class="docutils literal"><span class="pre"><span class="Identifier">table</span></span></tt>, if <tt class="docutils literal"><span class="pre"><span class="Identifier">keyPathSep</span></span></tt> in <tt class="docutils literal"><span class="pre"><span class="Identifier">key</span></span></tt>, looks for nested tables.
+Looks for the given nested <tt class="docutils literal"><span class="pre"><span class="Identifier">keys</span></span></tt> in the <tt class="docutils literal"><span class="pre"><span class="Identifier">table</span></span></tt>.
 
 </dd>
 </div>
@@ -193,7 +179,7 @@ Looks for the given <tt class="docutils literal"><span class="pre"><span class="
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-03-02 00:49:24 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-03-04 03:23:54 UTC</small>
       </div>
     </div>
   </div>

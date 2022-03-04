@@ -1,4 +1,4 @@
-import std/[strutils, tables, os]
+import std/[strutils, sequtils, tables, os]
 import prefsnode
 
 proc splitDir(path: string): seq[string] =
@@ -29,22 +29,23 @@ proc checkPath*(path: string) =
       if not dirExists(path):
         createDir(path)
 
-proc changeNested*(table: PObjectType, key: string, val: PrefsNode, keyPathSep: char): PObjectType =
-  ## Changes the `val` of `key` in `table`, being `key`'s path separated by `keyPathSep`.
-  ## If ``autoGenKeys`` is true, it will generated the missing keys in the path.
+proc changeNested*(table: PObjectType, keys: varargs[string], val: PrefsNode): PObjectType =
+  ## Changes nested `keys` for `val` in `table`.
   ## Returns a new table.
+  
+  assert keys.len > 0
 
   result = table
-  var keyPath = key.split(keyPathSep)
+  var keys = keys.toSeq()
 
-  if keyPath[0] notin result:
-    result[keyPath[0]] = newPObject()
+  if keys[0] notin result:
+    result[keys[0]] = newPObject()
 
-  var scnDict = result[keyPath[0]]
-  keyPath.delete(0)
+  var scnDict = result[keys[0]]
+  keys.delete(0)
 
-  for e, i in keyPath:
-    if e == keyPath.len - 1:
+  for e, i in keys:
+    if e == keys.len - 1:
       scnDict[i] = val
     else:
       if i notin scnDict.objectV or (i in scnDict.objectV and scnDict[
@@ -53,34 +54,17 @@ proc changeNested*(table: PObjectType, key: string, val: PrefsNode, keyPathSep: 
 
       scnDict = scnDict[i]
 
-proc change*(table: PObjectType, key: string, val: PrefsNode, keyPathSep: char): PObjectType =
-  ## Changes `key` to the given `val`, if `keyPathSep` in `key`, calls `changeNested`.
-  ## Returns a new table.
+proc getNested*(table: PObjectType, keys: varargs[string]): PrefsNode =
+  ## Looks for the given nested `keys` in the `table`.
 
-  if keyPathSep in key:
-    result = table.changeNested(
-      key,
-      val,
-      keyPathSep,
-    )
-  else:
-    result = table
-    result[key] = val
+  assert keys.len > 0
 
-proc get*(table: PObjectType, key: string, keyPathSep: char): PrefsNode =
-  ## Looks for the given `key` in the `table`,
-  ## if `keyPathSep` in `key`, looks for nested tables.
+  var keys = keys.toSeq()
+  result = table[keys[0]]
+  keys.delete(0)
 
-  if keyPathSep in key:
-    var keys = key.split(keyPathSep)
-    result = table[keys[0]]
-    keys.delete(0)
-
-    for i in keys:
-      if i in result.objectV:
-        result = result[i]
-      else:
-        raise newException(KeyError, key)
-
-  else:
-    result = table[key]
+  for i in keys:
+    if i in result.objectV:
+      result = result[i]
+    else:
+      raise newException(KeyError, keys.join("/"))
