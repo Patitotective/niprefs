@@ -12,6 +12,7 @@ type
     table*: PObjectType
     indentStack*: seq[int]
     objData*: PNestData
+    tableData*: seq[PrefsNode]
     seqData*: PNestData
 
 proc initPNestData(inside: bool = false, child: PrefsNode = newPEmpty(),
@@ -25,17 +26,13 @@ proc initPParseData(table: PObjectType = default PObjectType,
   PParseData(table: table, indentStack: @[0], objData: objData,
       seqData: seqData)
 
-#[
+# #[
 proc `$`(data: PNestData): string =
   &"inside={data.inside}\nchild={data.child}\nparent={data.parent.isSome}"
 
 proc `$`(data: PParseData): string =
   &"table={data.table}\nindentStack={data.indentStack}\nobjData=>\n{indent($data.objData, 2)}\nseqData=>\n{indent($data.seqData, 2)}"
-]#
-
-template `[]=`(data: var PParseData, key: string, val: PrefsNode) =
-  ## Alias for `data.table[]=`.
-  data.table[key] = val
+#]#
 
 template `top`(data: PParseData): tuple[key: string, val: PrefsNode] =
   ## Alias for `data.table.top`.
@@ -137,10 +134,10 @@ proc parseVal(token: PToken): PrefsNode =
   of RAWSTRING:
     result = token.lexeme[2..^2].newPString()
   else:
-    # echo &"Unkown token {token.lexeme} of {token.kind}"
+    echo &"Unkown token {token.lexeme} of {token.kind}"
     result = newPEmpty()
 
-proc addToTable(data: var PParseData, key: string, val: PrefsNode) =
+proc addToTable(data: var PParseData, key: string, val: PrefsNode, to: var PObjectType = data.table) =
   ## Add key an val to `data.table` or to `data.objData.child` depending on `data.objData.inside`.
   
   let key = key.strip()
@@ -148,16 +145,22 @@ proc addToTable(data: var PParseData, key: string, val: PrefsNode) =
   if data.objData.inside:
     data.objData.child[key] = val
   else:
-    data[key] = val
+    to[key] = val
 
-proc addToTable(data: var PParseData, key: string, val: PToken) =
+proc addToTable(data: var PParseData, key: string, val: PToken, to: var PObjectType = data.table) =
   ## Same as [addToTable](#addToTable%2CPParseData%2Cstring%2CPrefsNode) but calling [parseVal](#parseVal%2CPToken) on `val`.
-  if val.kind == SEQOPEN:
-    data.addToTable(key, data.seqData.child)
-  elif val.kind == TABLEOPEN:
-    data.addToTable(key, data.objData.child)
+  
+  var value: PrefsNode
+
+  case val.kind
+  of SEQOPEN:
+    value = data.seqData.child
+  of TABLEOPEN:
+    value = data.tableData.top
   else:
-    data.addToTable(key, parseVal(val))
+    value = parseVal(val)
+
+  data.addToTable(key, value, to)
 
 proc closeSeq(data: var PParseData) =
   if data.seqData.parent.isSome:
@@ -196,22 +199,23 @@ proc indOut(data: var PParseData, ind: int, pos: PTokenPos) =
 
 let parser = peg(content, PToken, data: PParseData):
   spaced(rule) <- *[INDEN] * rule * *[INDEN]
-  items(rule) <- ?spaced(rule * *(spaced([COMMA]) * rule) * ?[COMMA])
+  items(rule) <- ?(rule * *([COMMA] * rule) * ?[COMMA])
 
   content <- *token
   token <- ?[INDEN] * [NL] | obj | pair
+  key <- [KEY]
   sep <- [EQUAL] | E"separator '='"
-  
+
   endLn <- [NL] | "":
     if ($0).kind notin [NL, EOF]:
       let lexeme = ($0).lexeme
       let pos = ($0).pos
       raise newException(SyntaxError, &"Expected new line or end of the file at {pos.line}:{pos.col} (#{pos.idx}), found \"{lexeme}\"")
 
-  pair <- indSame * >[KEY] * spaced(sep) * >(val | E"value") * endLn:
+  pair <- indSame * >key * spaced(sep) * >(val | E"value") * endLn:
     data.addToTable(($1).lexeme, $2)
 
-  objOpen <- indSame * >[KEY] * spaced(sep) * [GREATER]:
+  objOpen <- indSame * >key * spaced(sep) * [GREATER]:
     data.addToTable(($1).lexeme, newPObject())
 
   obj <- objOpen * ([NL] | E"new line") * *[NL] * (
@@ -242,21 +246,17 @@ let parser = peg(content, PToken, data: PParseData):
     data.objData.child = newPObject()
 
   emptyTable <- [TABLEOPEN] * ?[COLON] * [TABLECLOSE]:
-    data.objData.child = newPObject()
+    data.tableData.add newPObject()
   
-  TABLE <- tableOpen * items(tablePair) * tableClose
   tableOpen <- [TABLEOPEN]:
-    if data.objData.inside:
-      data.objData.parent = initPNestData(parent = data.objData.parent, child = data.objData.child).some
+    data.tableData.add newPObject()
 
-    data.objData.child = newPObject()
-    data.objData.inside = true
+  tableClose <- [TABLECLOSE]
+  tableVal <- val | E"value"
+  tablePair <- >[STRING] * ([COLON] | E"colon") * >tableVal:
+    data.addToTable(($1).lexeme[1..^2].parseEscaped(), $2, data.tableData.top.objectV)
 
-  tableClose <- [TABLECLOSE]:
-    data.closeTable()
-
-  tablePair <- >[STRING] * [COLON] * >val:
-    data.addToTable(($1).lexeme[1..^2].parseEscaped(), $2)
+  table <- tableOpen * items(tablePair) * tableClose
 
   seqOpen <- [SEQOPEN]:
     if data.seqData.inside:
@@ -268,7 +268,7 @@ let parser = peg(content, PToken, data: PParseData):
   seqClose <- [SEQCLOSE] | E"sequence close":
     data.closeSeq()
 
-  seqVal <- val:
+  seqVal <- val | E"value":
     if ($0).kind != SEQOPEN:
       data.seqData.child.seqV.add parseVal($0)
 
@@ -276,7 +276,7 @@ let parser = peg(content, PToken, data: PParseData):
 
   val <- [NIL] | [BOOL] | [CHAR] | [OBJECT] | [STRING] | [
       RAWSTRING] | [DEC] | [HEX] | [BIN] | [OCT] | [FLOAT] | [FLOAT32] | [
-          FLOAT64] | SEQ | emptyTable | TABLE
+          FLOAT64] | SEQ | emptyTable | table
 
 proc parsePrefs*(tokens: seq[PToken]): PObjectType =
   var data = initPParseData()
@@ -319,9 +319,5 @@ proc readPrefs*(path: string): PObjectType =
   
   parsePrefs(path.scanPrefsFile().stack)
 
-echo """
-seq={"lang": {}}
-table={"lang": "es"}
-obj=>
-  lang="es"
-""".parsePrefs()
+# echo scanPrefsFile("prefs.niprefs")
+echo readPrefs("prefs.niprefs")["a"]["lang"]
