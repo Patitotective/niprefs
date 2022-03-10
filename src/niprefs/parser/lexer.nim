@@ -122,7 +122,7 @@ let lexer = peg(tokens, data: PLexer):
   S <- Space - '\n'
   indentChar <- {' ', '\t'}
   spaced(rule) <- *S * rule * *S
-  items(rule) <- ?spaced(rule * *(spaced(comma) * rule) * ?comma)
+  items(rule) <- ?spaced(rule * *(spaced(comma) * rule) * ?spaced(','))
 
   tokens <- *token * EOF
   token <- sep | greater | val | comment | inden | newLn | key | error
@@ -164,7 +164,7 @@ let lexer = peg(tokens, data: PLexer):
   bool <- "true" | "false":
     data.addToken(BOOL, $0, @0)
 
-  table <- tableOpen * (colon | items(tablePair)) * tableClose
+  table <- tableOpen * (spaced(colon) | items(tablePair)) * tableClose
 
   tableOpen <- "{":
     data.addToken(TABLEOPEN, $0, @0)
