@@ -2,7 +2,7 @@
 
 version = "0.1.0"
 author = "Patitotective"
-description = "Store and manage preferences in a text file within table-like structure."
+description = "Store and manage preferences dynamically in a text file within table-like structure."
 license = "MIT"
 srcDir = "src"
 

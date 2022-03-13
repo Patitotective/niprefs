@@ -75,6 +75,8 @@ window.addEventListener('DOMContentLoaded', main);
 <li><a class="reference external"
           data-doc-search-tag="niprefs: `$`(prefs: Prefs): string" href="niprefs.html#%24%2CPrefs">niprefs: `$`(prefs: Prefs): string</a></li>
           <li><a class="reference external"
+          data-doc-search-tag="lexer: `$`(lexer: PLexer): string" href="niprefs/parser/lexer.html#%24%2CPLexer">lexer: `$`(lexer: PLexer): string</a></li>
+          <li><a class="reference external"
           data-doc-search-tag="prefsnode: `$`(node: PrefsNode): string" href="niprefs/prefsnode.html#%24%2CPrefsNode">prefsnode: `$`(node: PrefsNode): string</a></li>
           </ul></dd>
 <dt><a name="%60%3D%3D%60" href="#%60%3D%3D%60"><span>`==`:</span></a></dt><dd><ul class="simple">
@@ -89,6 +91,10 @@ window.addEventListener('DOMContentLoaded', main);
           <li><a class="reference external"
           data-doc-search-tag="niprefs: `[]=`[T: not PrefsNode](prefs: Prefs; key: string; val: T)" href="niprefs.html#%5B%5D%3D%2CPrefs%2Cstring%2CT">niprefs: `[]=`[T: not PrefsNode](prefs: Prefs; key: string; val: T)</a></li>
           <li><a class="reference external"
+          data-doc-search-tag="niprefs: `[]=`(prefs: Prefs; keys: varargs[string]; val: PrefsNode)" href="niprefs.html#%5B%5D%3D%2CPrefs%2Cvarargs%5Bstring%5D%2CPrefsNode">niprefs: `[]=`(prefs: Prefs; keys: varargs[string]; val: PrefsNode)</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="niprefs: `[]=`[T: not PrefsNode](prefs: Prefs; keys: varargs[string]; val: T)" href="niprefs.html#%5B%5D%3D%2CPrefs%2Cvarargs%5Bstring%5D%2CT">niprefs: `[]=`[T: not PrefsNode](prefs: Prefs; keys: varargs[string]; val: T)</a></li>
+          <li><a class="reference external"
           data-doc-search-tag="prefsnode: `[]=`(node: var PrefsNode; key: string; val: PrefsNode)" href="niprefs/prefsnode.html#%5B%5D%3D%2CPrefsNode%2Cstring%2CPrefsNode">prefsnode: `[]=`(node: var PrefsNode; key: string; val: PrefsNode)</a></li>
           <li><a class="reference external"
           data-doc-search-tag="prefsnode: `[]=`[T: not PrefsNode](node: var PrefsNode; key: string; val: T)" href="niprefs/prefsnode.html#%5B%5D%3D%2CPrefsNode%2Cstring%2CT">prefsnode: `[]=`[T: not PrefsNode](node: var PrefsNode; key: string; val: T)</a></li>
@@ -96,6 +102,8 @@ window.addEventListener('DOMContentLoaded', main);
 <dt><a name="%60%5B%5D%60" href="#%60%5B%5D%60"><span>`[]`:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="niprefs: `[]`(prefs: Prefs; key: string): PrefsNode" href="niprefs.html#%5B%5D%2CPrefs%2Cstring">niprefs: `[]`(prefs: Prefs; key: string): PrefsNode</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="niprefs: `[]`(prefs: Prefs; keys: varargs[string]): PrefsNode" href="niprefs.html#%5B%5D%2CPrefs%2Cvarargs%5Bstring%5D">niprefs: `[]`(prefs: Prefs; keys: varargs[string]): PrefsNode</a></li>
           <li><a class="reference external"
           data-doc-search-tag="prefsnode: `[]`(node: PrefsNode; index: BackwardsIndex): PrefsNode" href="niprefs/prefsnode.html#%5B%5D%2CPrefsNode%2CBackwardsIndex">prefsnode: `[]`(node: PrefsNode; index: BackwardsIndex): PrefsNode</a></li>
           <li><a class="reference external"
@@ -113,13 +121,9 @@ window.addEventListener('DOMContentLoaded', main);
 <li><a class="reference external"
           data-doc-search-tag="PTokenKind.BOOL" href="niprefs/parser/lexer.html#BOOL">PTokenKind.BOOL</a></li>
           </ul></dd>
-<dt><a name="change" href="#change"><span>change:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="utils: change(table: PObjectType; key: string; val: PrefsNode; keyPathSep: char): PObjectType" href="niprefs/utils.html#change%2CPObjectType%2Cstring%2CPrefsNode%2Cchar">utils: change(table: PObjectType; key: string; val: PrefsNode; keyPathSep: char): PObjectType</a></li>
-          </ul></dd>
 <dt><a name="changeNested" href="#changeNested"><span>changeNested:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="utils: changeNested(table: PObjectType; key: string; val: PrefsNode; keyPathSep: char): PObjectType" href="niprefs/utils.html#changeNested%2CPObjectType%2Cstring%2CPrefsNode%2Cchar">utils: changeNested(table: PObjectType; key: string; val: PrefsNode; keyPathSep: char): PObjectType</a></li>
+          data-doc-search-tag="utils: changeNested(table: PObjectType; keys: varargs[string]; val: PrefsNode): PObjectType" href="niprefs/utils.html#changeNested%2CPObjectType%2Cvarargs%5Bstring%5D%2CPrefsNode">utils: changeNested(table: PObjectType; keys: varargs[string]; val: PrefsNode): PObjectType</a></li>
           </ul></dd>
 <dt><a name="CHAR" href="#CHAR"><span>CHAR:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -136,6 +140,14 @@ window.addEventListener('DOMContentLoaded', main);
 <dt><a name="clear" href="#clear"><span>clear:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="niprefs: clear(prefs: Prefs)" href="niprefs.html#clear%2CPrefs">niprefs: clear(prefs: Prefs)</a></li>
+          </ul></dd>
+<dt><a name="COLON" href="#COLON"><span>COLON:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="PTokenKind.COLON" href="niprefs/parser/lexer.html#COLON">PTokenKind.COLON</a></li>
+          </ul></dd>
+<dt><a name="COMMA" href="#COMMA"><span>COMMA:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="PTokenKind.COMMA" href="niprefs/parser/lexer.html#COMMA">PTokenKind.COMMA</a></li>
           </ul></dd>
 <dt><a name="contains" href="#contains"><span>contains:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -167,9 +179,9 @@ window.addEventListener('DOMContentLoaded', main);
 <li><a class="reference external"
           data-doc-search-tag="prefsbase: delKey(prefs: PrefsBase; key: string)" href="niprefs/prefsbase.html#delKey%2CPrefsBase%2Cstring">prefsbase: delKey(prefs: PrefsBase; key: string)</a></li>
           </ul></dd>
-<dt><a name="EMPTYOBJ" href="#EMPTYOBJ"><span>EMPTYOBJ:</span></a></dt><dd><ul class="simple">
+<dt><a name="delPath" href="#delPath"><span>delPath:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="PTokenKind.EMPTYOBJ" href="niprefs/parser/lexer.html#EMPTYOBJ">PTokenKind.EMPTYOBJ</a></li>
+          data-doc-search-tag="prefsbase: delPath(prefs: PrefsBase; keys: varargs[string])" href="niprefs/prefsbase.html#delPath%2CPrefsBase%2Cvarargs%5Bstring%5D">prefsbase: delPath(prefs: PrefsBase; keys: varargs[string])</a></li>
           </ul></dd>
 <dt><a name="EOF" href="#EOF"><span>EOF:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -194,8 +206,6 @@ window.addEventListener('DOMContentLoaded', main);
 <dt><a name="get" href="#get"><span>get:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="prefsbase: get(prefs: PrefsBase; key: string): PrefsNode" href="niprefs/prefsbase.html#get%2CPrefsBase%2Cstring">prefsbase: get(prefs: PrefsBase; key: string): PrefsNode</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="utils: get(table: PObjectType; key: string; keyPathSep: char): PrefsNode" href="niprefs/utils.html#get%2CPObjectType%2Cstring%2Cchar">utils: get(table: PObjectType; key: string; keyPathSep: char): PrefsNode</a></li>
           </ul></dd>
 <dt><a name="getBool" href="#getBool"><span>getBool:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -213,9 +223,17 @@ window.addEventListener('DOMContentLoaded', main);
 <li><a class="reference external"
           data-doc-search-tag="prefsnode: getInt(node: PrefsNode): int" href="niprefs/prefsnode.html#getInt%2CPrefsNode">prefsnode: getInt(node: PrefsNode): int</a></li>
           </ul></dd>
+<dt><a name="getNested" href="#getNested"><span>getNested:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="utils: getNested(table: PObjectType; keys: varargs[string]): PrefsNode" href="niprefs/utils.html#getNested%2CPObjectType%2Cvarargs%5Bstring%5D">utils: getNested(table: PObjectType; keys: varargs[string]): PrefsNode</a></li>
+          </ul></dd>
 <dt><a name="getObject" href="#getObject"><span>getObject:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="prefsnode: getObject(node: PrefsNode): PObjectType" href="niprefs/prefsnode.html#getObject%2CPrefsNode">prefsnode: getObject(node: PrefsNode): PObjectType</a></li>
+          </ul></dd>
+<dt><a name="getPath" href="#getPath"><span>getPath:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="prefsbase: getPath(prefs: PrefsBase; keys: varargs[string]): PrefsNode" href="niprefs/prefsbase.html#getPath%2CPrefsBase%2Cvarargs%5Bstring%5D">prefsbase: getPath(prefs: PrefsBase; keys: varargs[string]): PrefsNode</a></li>
           </ul></dd>
 <dt><a name="getSeq" href="#getSeq"><span>getSeq:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -232,6 +250,10 @@ window.addEventListener('DOMContentLoaded', main);
 <dt><a name="hasKey" href="#hasKey"><span>hasKey:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="prefsbase: hasKey(prefs: PrefsBase; key: string): bool" href="niprefs/prefsbase.html#hasKey%2CPrefsBase%2Cstring">prefsbase: hasKey(prefs: PrefsBase; key: string): bool</a></li>
+          </ul></dd>
+<dt><a name="hasPath" href="#hasPath"><span>hasPath:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="prefsbase: hasPath(prefs: PrefsBase; keys: varargs[string]): bool" href="niprefs/prefsbase.html#hasPath%2CPrefsBase%2Cvarargs%5Bstring%5D">prefsbase: hasPath(prefs: PrefsBase; keys: varargs[string]): bool</a></li>
           </ul></dd>
 <dt><a name="HEX" href="#HEX"><span>HEX:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -253,7 +275,7 @@ window.addEventListener('DOMContentLoaded', main);
 <li><a class="reference external"
           data-doc-search-tag="prefsbase: initPrefsBase(table: PObjectType; path: string): PrefsBase" href="niprefs/prefsbase.html#initPrefsBase%2CPObjectType%2Cstring">prefsbase: initPrefsBase(table: PObjectType; path: string): PrefsBase</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsbase: initPrefsBase(table: PrefsNode; path: string): PrefsBase" href="niprefs/prefsbase.html#initPrefsBase%2CPrefsNode%2Cstring">prefsbase: initPrefsBase(table: PrefsNode; path: string): PrefsBase</a></li>
+          data-doc-search-tag="prefsbase: initPrefsBase(table: PrefsNode; path: string): PrefsBase" href="niprefs/prefsbase.html#initPrefsBase.t%2CPrefsNode%2Cstring">prefsbase: initPrefsBase(table: PrefsNode; path: string): PrefsBase</a></li>
           </ul></dd>
 <dt><a name="InvalidKey" href="#InvalidKey"><span>InvalidKey:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -270,6 +292,10 @@ window.addEventListener('DOMContentLoaded', main);
 <dt><a name="KEY" href="#KEY"><span>KEY:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="PTokenKind.KEY" href="niprefs/parser/lexer.html#KEY">PTokenKind.KEY</a></li>
+          </ul></dd>
+<dt><a name="keyPathSep" href="#keyPathSep"><span>keyPathSep:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="prefsbase: keyPathSep" href="niprefs/prefsbase.html#keyPathSep">prefsbase: keyPathSep</a></li>
           </ul></dd>
 <dt><a name="keys" href="#keys"><span>keys:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -408,6 +434,8 @@ window.addEventListener('DOMContentLoaded', main);
 <dt><a name="pop" href="#pop"><span>pop:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="niprefs: pop(prefs: Prefs; key: string; val: var PrefsNode): bool" href="niprefs.html#pop%2CPrefs%2Cstring%2CPrefsNode">niprefs: pop(prefs: Prefs; key: string; val: var PrefsNode): bool</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="niprefs: pop(prefs: Prefs; keys: varargs[string]; val: var PrefsNode): bool" href="niprefs.html#pop%2CPrefs%2Cvarargs%5Bstring%5D%2CPrefsNode">niprefs: pop(prefs: Prefs; keys: varargs[string]; val: var PrefsNode): bool</a></li>
           </ul></dd>
 <dt><a name="Prefs" href="#Prefs"><span>Prefs:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -493,6 +521,14 @@ window.addEventListener('DOMContentLoaded', main);
 <li><a class="reference external"
           data-doc-search-tag="lexer: SyntaxError" href="niprefs/parser/lexer.html#SyntaxError">lexer: SyntaxError</a></li>
           </ul></dd>
+<dt><a name="TABLECLOSE" href="#TABLECLOSE"><span>TABLECLOSE:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="PTokenKind.TABLECLOSE" href="niprefs/parser/lexer.html#TABLECLOSE">PTokenKind.TABLECLOSE</a></li>
+          </ul></dd>
+<dt><a name="TABLEOPEN" href="#TABLEOPEN"><span>TABLEOPEN:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="PTokenKind.TABLEOPEN" href="niprefs/parser/lexer.html#TABLEOPEN">PTokenKind.TABLEOPEN</a></li>
+          </ul></dd>
 <dt><a name="toPrefs" href="#toPrefs"><span>toPrefs:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="prefsnode: toPrefs(obj: untyped): PrefsNode" href="niprefs/prefsnode.html#toPrefs.m%2Cuntyped">prefsnode: toPrefs(obj: untyped): PrefsNode</a></li>
@@ -501,7 +537,7 @@ window.addEventListener('DOMContentLoaded', main);
 <li><a class="reference external"
           data-doc-search-tag="prefsbase: toPTree(table: PObjectType; depth: int = 0): string" href="niprefs/prefsbase.html#toPTree%2CPObjectType%2Cint">prefsbase: toPTree(table: PObjectType; depth: int = 0): string</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsbase: toPTree(node: PrefsNode; depth: int = 0): string" href="niprefs/prefsbase.html#toPTree%2CPrefsNode%2Cint">prefsbase: toPTree(node: PrefsNode; depth: int = 0): string</a></li>
+          data-doc-search-tag="prefsbase: toPTree(node: PrefsNode; depth: int = 0): string" href="niprefs/prefsbase.html#toPTree.t%2CPrefsNode%2Cint">prefsbase: toPTree(node: PrefsNode; depth: int = 0): string</a></li>
           </ul></dd>
 <dt><a name="values" href="#values"><span>values:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -512,19 +548,23 @@ window.addEventListener('DOMContentLoaded', main);
           data-doc-search-tag="prefsbase: write(prefs: PrefsBase; key: string; val: PrefsNode)" href="niprefs/prefsbase.html#write%2CPrefsBase%2Cstring%2CPrefsNode">prefsbase: write(prefs: PrefsBase; key: string; val: PrefsNode)</a></li>
           <li><a class="reference external"
           data-doc-search-tag="prefsbase: write[T](prefs: PrefsBase; key: string; val: T)" href="niprefs/prefsbase.html#write%2CPrefsBase%2Cstring%2CT">prefsbase: write[T](prefs: PrefsBase; key: string; val: T)</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="prefsbase: write(prefs: PrefsBase; keys: varargs[string]; val: PrefsNode)" href="niprefs/prefsbase.html#write%2CPrefsBase%2Cvarargs%5Bstring%5D%2CPrefsNode">prefsbase: write(prefs: PrefsBase; keys: varargs[string]; val: PrefsNode)</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="prefsbase: write[T](prefs: PrefsBase; keys: varargs[string]; val: T)" href="niprefs/prefsbase.html#write%2CPrefsBase%2Cvarargs%5Bstring%5D%2CT">prefsbase: write[T](prefs: PrefsBase; keys: varargs[string]; val: T)</a></li>
           </ul></dd>
 <dt><a name="writeMany" href="#writeMany"><span>writeMany:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="prefsbase: writeMany(prefs: PrefsBase; items: PObjectType)" href="niprefs/prefsbase.html#writeMany%2CPrefsBase%2CPObjectType">prefsbase: writeMany(prefs: PrefsBase; items: PObjectType)</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsbase: writeMany(prefs: PrefsBase; items: PrefsNode)" href="niprefs/prefsbase.html#writeMany%2CPrefsBase%2CPrefsNode">prefsbase: writeMany(prefs: PrefsBase; items: PrefsNode)</a></li>
+          data-doc-search-tag="prefsbase: writeMany(prefs: PrefsBase; items: PrefsNode)" href="niprefs/prefsbase.html#writeMany.t%2CPrefsBase%2CPrefsNode">prefsbase: writeMany(prefs: PrefsBase; items: PrefsNode)</a></li>
           </ul></dd>
 </dl>
     <div class="row">
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-03-02 00:49:37 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-03-13 17:19:20 UTC</small>
       </div>
     </div>
   </div>

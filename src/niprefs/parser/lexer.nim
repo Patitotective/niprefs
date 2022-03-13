@@ -53,6 +53,7 @@ type
     source*: string
     indentLevel*: int
 
+
 proc `$`*(lexer: PLexer): string =
   result.add &"{lexer.ok} {lexer.matchLen}/{lexer.matchMax}\n"
   
@@ -65,6 +66,7 @@ proc `$`*(lexer: PLexer): string =
       result.add ' '
     else:
       result.add &"{token.kind} "
+
 
 proc getPos(str: string, idx: int): PTokenPos =
   ## Get the line:col position of `idx` in `str` adn returns a tuple with the line, col, idx.
@@ -138,7 +140,7 @@ let lexer = peg(tokens, data: PLexer):
   newLn <- '\n':
     data.addToken(NL, $0, @0)
 
-  key <- +({'\x20'..'\xff'} - {'=', '\n', '#', '/'}):
+  key <- +({'\x20'..'\xff'} - {'\n', '#', '/', '='}):
     data.addToken(KEY, $0, @0)
 
   sep <- '=':

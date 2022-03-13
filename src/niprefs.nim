@@ -1,5 +1,5 @@
-## NiPrefs is a library that offers a preferences-system in a text file within a table-like structure.
-## It stores the preferences in an `OrderedTable[string, PrefsNode]` where `PrefsNode` is an object variation that supports the following types:  
+## NiPrefs is a library that offers a dynamic preferences-system in a text file within a table-like structure.
+## It stores the preferences in an `OrderedTable[string, PrefsNode]`, where `PrefsNode` is an object variation that supports the following types:  
 ## - `int`
 ## - `nil`
 ## - `seq` (there are no arrays)
@@ -22,30 +22,28 @@
 ##     family="UbuntuMono" # scheme/font/family
 ##     size=15
 ##     color="#000000"
+## users={"ElegantBeef": 28, "Rika": 22} # Tables are also supported (and keys do require quotes inside tables)
 ## ```
 
 ## # Basic usage
 ## To generate a `OrderedTable[string, PrefsNode]` or a `PrefsNode` you may want to use the [toPrefs](prefsnode.html#toPrefs.m%2Cuntyped) macro.
 
 runnableExamples:
-  let defaultPrefs = toPrefs { # The default prefs are used the first time or when the preferences file gets removed.
-    "lang": "en",
-    "dark": true,
-    keybindings: {:}, # Quotes are not required
-    "scheme": {
-      "background": "#000000",
-      "font": {
-        "size": 15,
-        "family": "UbuntuMono",
-        "color": "#73D216"
+  var prefs = toPrefs({
+    "lang": "en", # Keys do not require quotes when using toPrefs macro.
+    dark: true,
+    keybindings: {:},
+    scheme: {
+      background: "#000000",
+      font: {
+        size: 15,
+        family: "UbuntuMono",
+        color: "#73D216"
       }
     }
-  }
-
-  var prefs = initPrefs(defaultPrefs, "settings.niprefs")
+  }).initPrefs(path = "settings.niprefs")
 
 ## After the above example, a new `settings.niprefs` file should be created:
-##
 ## ```nim
 ## #NiPrefs
 ## lang="en"

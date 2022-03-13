@@ -10,7 +10,7 @@ const
   keyPathSep* = '/'
   sepChar = '='
   continueChar = '>'
-  invalidKeyChars = [commentChar, sepChar, keyPathSep]
+  invalidKeyChars = [commentChar, keyPathSep]
 
 type
   InvalidKey* = object of ValueError

@@ -36,6 +36,12 @@ proc `top=`[K, V](table: var OrderedTable[K, V], val: V) =
   ## Change the last key of an ordered table.
   table[table.top.key] = val
 
+proc checkKey(token: PToken): bool = 
+  if token.kind in {INDEN, EOF}:
+    false
+  else:
+    true
+
 proc removeTypeSuf(num: string): string =
   ## Remove the type suffix from a string.
   result = num
@@ -193,7 +199,9 @@ let parser = peg(content, PToken, data: PParseData):
 
   content <- *token
   token <- ?[INDEN] * [NL] | obj | pair
-  key <- [KEY]
+  key <- 1:
+    validate checkKey($0)
+
   sep <- [EQUAL] | E"separator '='"
   endLn <- [NL] | &1:
     if ($0).kind notin [NL, EOF]:
@@ -201,7 +209,7 @@ let parser = peg(content, PToken, data: PParseData):
       let pos = ($0).pos
       raise newException(SyntaxError, &"Expected new line or end of the file at {pos.line}:{pos.col} (#{pos.idx}), found \"{lexeme}\"")
 
-  pair <- indSame * >key * spaced(sep) * (>val | invalidVal) * endLn:
+  pair <- indSame * (>key | E"key") * spaced(sep) * (>val | invalidVal) * endLn:
     data.add(($1).lexeme, $2)
 
   # Objects
@@ -213,7 +221,7 @@ let parser = peg(content, PToken, data: PParseData):
 
   indSame <- [INDEN] | &1:
     var ind = ($0).lexeme.len
-    if ($0).kind == KEY: # A KEY would mean zero indentation
+    if checkKey($0): # A KEY would mean zero indentation
       ind = 0
     elif ($0).kind != INDEN: # Otherwise is invalid
       fail
@@ -242,7 +250,7 @@ let parser = peg(content, PToken, data: PParseData):
   tableClose <- [TABLECLOSE] | E"table close"
   tableVal <- val | invalidVal
   tablePair <- >[STRING] * ([COLON] | E"colon") * >tableVal:
-    let key = ($1).lexeme[1..^2].parseEscaped()
+    let key = ($1).lexeme[1..^2]
     data.addToTable(key, $2)
 
   table <- tableOpen * items(tablePair) * tableClose

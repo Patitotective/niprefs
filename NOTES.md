@@ -10,5 +10,4 @@ nim doc --project --outdir:docs src/niprefs.nim
 - Object end is detected by the difference between indentations.
 
 ## TODO
-- Make numbers valid keys too.
-- Generate the docs to test it.
+- Nothing :D
