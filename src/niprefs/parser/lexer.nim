@@ -172,7 +172,7 @@ let lexer = peg(tokens, data: PLexer):
   tableClose <- "}":
     data.addToken(TABLECLOSE, $0, @0)
 
-  tablePair <- string * spaced(colon) * (val | E"value")
+  tablePair <- string * spaced(colon) * val
 
   # Sequence
   seq <- seqOpen * items(val) * seqClose

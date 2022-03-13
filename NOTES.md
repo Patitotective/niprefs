@@ -10,5 +10,4 @@ nim doc --project --outdir:docs src/niprefs.nim
 - Object end is detected by the difference between indentations.
 
 ## TODO
-- Add table support to the parser.
 - Generate the docs to test it.

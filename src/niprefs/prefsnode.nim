@@ -233,6 +233,7 @@ proc `==`*[T: not PrefsNode](node1: PrefsNode, node2: T): bool =
 
 proc `$`*(node: PrefsNode): string =
   ## Return the value of the node as a string.
+
   case node.kind:
   of PInt:
     result = $node.getInt()
@@ -254,7 +255,7 @@ proc `$`*(node: PrefsNode): string =
     result.addQuoted(node.getString())
 
 proc `[]`*(node: var PrefsNode, key: string): var PrefsNode =
-  ## Access to the value of `key` in `node.objectV`. The value can be modified.
+  ## Access to the value of `key` in `node.obj°ectV`. The value can be modified.
   node.objectV[key]
 
 proc `[]`*(node: PrefsNode, key: string): PrefsNode =
