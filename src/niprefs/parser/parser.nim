@@ -3,31 +3,31 @@ import npeg, npeg/codegen
 import lexer, escaper
 
 type
-  PNestData = ref object ## Data used to parse nested (structured) data types.
+  PObjData = ref object ## Data used to parse objects.
     inside*: bool
     child*: PrefsNode
-    parent*: Option[PNestData]
+    parent*: Option[PObjData]
 
   PParseData = object ## Data used when parsing.
     table*: PObjectType
     indentStack*: seq[int]
-    objData*: PNestData
+    objData*: PObjData
     tableData*: seq[PrefsNode]
     seqData*: seq[PrefsNode]
 
-proc initPNestData(inside: bool = false, child: PrefsNode = newPEmpty(),
-    parent: Option[PNestData] = PNestData.none): PNestData =
-  PNestData(inside: inside, child: child, parent: parent)
+proc initPObjData(inside: bool = false, child: PrefsNode = newPEmpty(),
+    parent: Option[PObjData] = PObjData.none): PObjData =
+  PObjData(inside: inside, child: child, parent: parent)
 
-proc initPParseData(table: PObjectType = default PObjectType, objData: PNestData = initPNestData()): PParseData =
-  PParseData(table: table, indentStack: @[0], objData: objData)
+proc initPParseData(table: PObjectType = default PObjectType): PParseData =
+  PParseData(table: table, indentStack: @[0], objData: initPObjData())
 
 #[
-proc `$`(data: PNestData): string =
+proc `$`(data: PObjData): string =
   &"inside={data.inside}\nchild={data.child}\nparent={data.parent.isSome}"
 
 proc `$`(data: PParseData): string =
-  &"table={data.table}\nindentStack={data.indentStack}\ntableData={data.tableData}\nobjData=>\n{indent($data.objData, 2)}\nseqData=>\n{indent($data.seqData, 2)}"
+  &"table={data.table}\nindentStack={data.indentStack}\ntableData={data.tableData}\nseqData=>\n{data.seqData}\nobjData=>\n{indent($data.objData, 2)}"
 ]#
 
 template `top`(data: PParseData): tuple[key: string, val: PrefsNode] =
@@ -143,7 +143,6 @@ proc add(data: var PParseData, key: string, val: PrefsNode) =
 
 proc add(data: var PParseData, key: string, val: PToken) =
   ## Same as [add](#add%2CPParseData%2Cstring%2CPrefsNode) but calling [parseVal](#parseVal%2CPToken) on `val`.
-
   var value: PrefsNode
   case val.kind
   of SEQOPEN:
@@ -155,36 +154,31 @@ proc add(data: var PParseData, key: string, val: PToken) =
 
   data.add(key, value)
 
-proc addToTable(data: var PParseData, key: string, val: PrefsNode) = 
-  let key = key.strip()
-  data.tableData.top.objectV[key] = val
-
 proc addToTable(data: var PParseData, key: string, val: PToken) = 
-  var value: PrefsNode
+  let key = key.strip()
+  var toAdd: PrefsNode
+
   case val.kind
   of SEQOPEN:
-    value = data.seqData.pop()
+    toAdd = data.seqData.pop()
   of TABLEOPEN:
-    value = data.tableData.pop()
+    toAdd = data.tableData.pop()
   else:
-    value = parseVal(val)
+    toAdd = parseVal(val)
 
-  data.addToTable(key, value)
-
-proc addToSeq(data: var PParseData, val: PrefsNode) = 
-  data.seqData.top.seqV.add val
+  data.tableData.top.objectV[key] = toAdd
 
 proc addToSeq(data: var PParseData, val: PToken) = 
-  var value: PrefsNode
+  var toAdd: PrefsNode
   case val.kind
   of SEQOPEN:
-    value = data.seqData.pop()
+    toAdd = data.seqData.pop()
   of TABLEOPEN:
-    value = data.tableData.pop()
+    toAdd = data.tableData.pop()
   else:
-    value = parseVal(val)
+    toAdd = parseVal(val)
 
-  data.addToSeq(value)
+  data.seqData.top.seqV.add toAdd
 
 proc closeObj(data: var PParseData) =
   if data.objData.parent.isSome:
@@ -251,7 +245,7 @@ let parser = peg(content, PToken, data: PParseData):
     data.indentStack.add ($0).lexeme.len
 
     if data.objData.inside:
-      data.objData.parent = initPNestData(parent = data.objData.parent, child = data.objData.child).some
+      data.objData.parent = initPObjData(parent = data.objData.parent, child = data.objData.child).some
 
     data.objData.inside = true
     data.objData.child = newPObject()
@@ -267,11 +261,7 @@ let parser = peg(content, PToken, data: PParseData):
   tableVal <- val | invalidVal
   tablePair <- >[STRING] * ([COLON] | E"colon") * >tableVal:
     let key = ($1).lexeme[1..^2].parseEscaped()
-
-    if ($2).kind == TABLEOPEN:
-      data.addToTable(key, data.tableData.pop())
-    else:
-      data.addToTable(key, $2)
+    data.addToTable(key, $2)
 
   table <- tableOpen * items(tablePair) * tableClose
 
@@ -284,12 +274,7 @@ let parser = peg(content, PToken, data: PParseData):
 
   seqClose <- [SEQCLOSE] | E"sequence close"
   seqVal <- val | E"value":
-    if ($0).kind == TABLEOPEN:
-      data.addToSeq data.tableData.pop()
-    elif ($0).kind == SEQOPEN:
-      data.addToSeq data.seqData.pop()
-    else:
-      data.addToSeq parseVal($0)
+    data.addToSeq $0
 
   SEQ <- seqOpen * items(seqVal) * seqClose
 

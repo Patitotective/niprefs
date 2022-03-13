@@ -11,16 +11,19 @@ import niprefs
 const path = "settings.niprefs"
 
 let defaultPrefs = toPrefs {
-  "lang": "en",
-  "dark": true,
-  "keybindings": [],
-  "users": {:},
-  "scheme": {
-    "background": "#000000",
-    "font": {
-      "size": 15,
-      "family": "UbuntuMono",
-      "color": "#73D216"
+  lang: "en",
+  dark: true,
+  keybindings: [],
+  users: {:},
+  test: {
+    c: [1, 2, [3, {d: 4}], 5]
+  }, 
+  scheme: {
+    background: "#000000",
+    font: {
+      size: 15,
+      family: "UbuntuMono",
+      color: "#73D216"
     }
   }
 }
