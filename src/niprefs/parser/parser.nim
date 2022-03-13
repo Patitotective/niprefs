@@ -7,7 +7,6 @@ type
     table*: PObjectType
     indentStack*: seq[int]
     inObj*: bool
-    objData*: seq[PrefsNode]
     tableData*: seq[PrefsNode]
     seqData*: seq[PrefsNode]
 
@@ -15,7 +14,7 @@ proc initPParseData(table: PObjectType = default PObjectType): PParseData =
   PParseData(table: table, indentStack: @[0])
 
 # proc `$`(data: PParseData): string =
-#   &"table={data.table}\nindentStack={data.indentStack}\ntableData={data.tableData}\nseqData={data.seqData}\nobjData=\n{data.objData}\ninObj={data.inObj}"
+#   &"table={data.table}\nindentStack={data.indentStack}\nseqData={data.seqData}\ntableData={data.tableData}\ninObj={data.inObj}"
 
 template `top`(data: PParseData): tuple[key: string, val: PrefsNode] =
   ## Alias for `data.table.top`.
@@ -126,11 +125,11 @@ proc parseVal(token: PToken): PrefsNode =
     raise newException(SyntaxError, &"Unkown token {token.lexeme} of {token.kind} at {token.pos}")
 
 proc add(data: var PParseData, key: string, val: PrefsNode) =
-  ## Add key an val to `data.table` or to `data.objData.child` depending on `data.objData.inside`.
+  ## Add key an val to `data.table` or to `data.tableData.child` depending on `data.tableData.inside`.
   let key = key.strip()
 
   if data.inObj:
-    data.objData.top[key] = val
+    data.tableData.top[key] = val
   else:
     data.table[key] = val
 
@@ -174,11 +173,11 @@ proc addToSeq(data: var PParseData, val: PToken) =
   data.seqData.top.seqV.add toAdd
 
 proc closeObj(data: var PParseData) =
-  if data.objData.len >= 2:
-    data.objData[^2].objectV.top = data.objData.pop()
+  if data.tableData.len >= 2:
+    data.tableData[^2].objectV.top = data.tableData.pop()
   else:
     data.inObj = false
-    data.add(data.top.key, data.objData.pop())
+    data.add(data.top.key, data.tableData.pop())
 
 proc indenOut(data: var PParseData, ind: int, pos: PTokenPos) =
   for i in countdown(data.indentStack.high, 0):
@@ -238,7 +237,7 @@ let parser = peg(content, PToken, data: PParseData):
     data.indentStack.add ($0).lexeme.len
 
     data.inObj = true
-    data.objData.add newPObject()
+    data.tableData.add newPObject()
 
   # Tables
   emptyTable <- [TABLEOPEN] * ?[COLON] * [TABLECLOSE]:
