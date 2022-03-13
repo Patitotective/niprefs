@@ -8,6 +8,7 @@ type
   PTokenKind* = enum
     NL ## New line \n
     GREATER ## >
+    HYPHEN ## -
     EQUAL ## =
     COMMA ## ,
     COLON ## :
@@ -62,7 +63,7 @@ proc `$`*(lexer: PLexer): string =
     of NL:
       result.add "\n"
     of INDEN:
-      result.add '-'.repeat(token.lexeme.len)
+      result.add "—".repeat(token.lexeme.len)
       result.add ' '
     else:
       result.add &"{token.kind} "
@@ -127,7 +128,7 @@ let lexer = peg(tokens, data: PLexer):
   items(rule) <- ?spaced(rule * *(spaced(comma) * rule) * ?comma)
 
   tokens <- *token * EOF
-  token <- sep | greater | val | comment | inden | newLn | key | error
+  token <- sep | greater | val | hyphen | comment | inden | newLn | key | error
 
   EOF <- !1:
     data.addToken(EOF, $0, @0)
@@ -142,6 +143,9 @@ let lexer = peg(tokens, data: PLexer):
 
   key <- +({'\x20'..'\xff'} - {'\n', '#', '/', '='}):
     data.addToken(KEY, $0, @0)
+
+  hyphen <- '-':
+    data.addToken(HYPHEN, $0, @0)
 
   sep <- '=':
     data.addToken(EQUAL, $0, @0)

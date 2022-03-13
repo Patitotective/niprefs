@@ -52,6 +52,12 @@ proc `content`*(prefs: PrefsBase): PObjectType =
   ## Calls `read` on `prefs`.
   prefs.read()
 
+proc toPTree*(node: PrefsNode, depth: int = 0): string
+
+proc toPTree*(sequence: seq[PrefsNode], depth: int = 0): string = 
+  for ele in sequence:
+    result.add &"{indentChar.repeat(depth)}- {ele.toPTree()}"
+
 proc toPTree*(table: PObjectType, depth: int = 0): string =
   ## Given a `table` convert it to Prefs format and return it.
   runnableExamples:
@@ -67,23 +73,25 @@ proc toPTree*(table: PObjectType, depth: int = 0): string =
     assert table.toPTree() == str.dedent()
 
   if depth == 0: result.add &"{firstLine}{endChar}"
-  let indent = indentChar.repeat depth
 
   for key, val in table.pairs:
     checkKey(key)
-    if val.kind == PObject and val.objectV.len > 0:
-      result.add &"{indent}{key.strip}{sepChar}{continueChar}{endChar}"
-      result.add toPTree(val.objectV, depth = depth+1)
-    else:
-      if val.kind == PEmpty:
-        let val = newPNil()
+    result.add fmt"{key.strip}{sepChar}{val.toPTree(depth)}".indent(depth, indentChar)
 
-      result.add &"{indent}{key.strip}{sepChar}{val}{endChar}"
+proc toPTree*(node: PrefsNode, depth: int = 0): string = 
+  if node.kind == PObject and node.getObject().len > 0:
+    result.add &"{continueChar}{endChar}"
+    result.add node.getObject().toPTree(depth+1)
+  
+  elif node.kind == PSeq and node.getSeq().len > 0:
+    result.add &"{continueChar}{endChar}"
+    result.add node.getSeq().toPTree(depth+1)
+  
+  else:
+    if node.kind == PEmpty:
+      let node = newPNil()
 
-template toPTree*(node: PrefsNode, depth: int = 0): string =
-  ## Same as `toPTree(node.getObject(), depth)`.
-
-  toPTree(node.getObject(), depth)
+    result.add &"{node}{endChar}"
 
 proc create*(prefs: PrefsBase, table = prefs.table) =
   ## Checks that all directories in `prefs.path` exists and writes `table.toPTree()` into it.

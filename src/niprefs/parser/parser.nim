@@ -7,19 +7,15 @@ type
     table*: PObjectType
     indentStack*: seq[int]
     inObj*: bool
-    objData*: seq[PrefsNode]
     tableData*: seq[PrefsNode]
+    inList*: bool
     seqData*: seq[PrefsNode]
 
 proc initPParseData(table: PObjectType = default PObjectType): PParseData =
   PParseData(table: table, indentStack: @[0])
 
-# proc `$`(data: PParseData): string =
-#   &"table={data.table}\nindentStack={data.indentStack}\ntableData={data.tableData}\nseqData={data.seqData}\nobjData=\n{data.objData}\ninObj={data.inObj}"
-
-template `top`(data: PParseData): tuple[key: string, val: PrefsNode] =
-  ## Alias for `data.table.top`.
-  data.table.top
+proc `$`(data: PParseData): string =
+ &"table={data.table}\nindentStack={data.indentStack}\nseqData={data.seqData}\ninList={data.inList}\nobjData={data.tableData}\ninObj={data.inObj}"
 
 template `top`[A](list: openArray[A]): A =
   ## Top (last element) of an openArray.
@@ -126,11 +122,11 @@ proc parseVal(token: PToken): PrefsNode =
     raise newException(SyntaxError, &"Unkown token {token.lexeme} of {token.kind} at {token.pos}")
 
 proc add(data: var PParseData, key: string, val: PrefsNode) =
-  ## Add key an val to `data.table` or to `data.objData.child` depending on `data.objData.inside`.
+  ## Add key an val to `data.table` or to `data.tableData.child` depending on `data.tableData.inside`.
   let key = key.strip()
 
   if data.inObj:
-    data.objData.top[key] = val
+    data.tableData.top[key] = val
   else:
     data.table[key] = val
 
@@ -174,17 +170,32 @@ proc addToSeq(data: var PParseData, val: PToken) =
   data.seqData.top.seqV.add toAdd
 
 proc closeObj(data: var PParseData) =
-  if data.objData.len >= 2:
-    data.objData[^2].objectV.top = data.objData.pop()
+  if data.tableData.len >= 2:
+    data.tableData[^2].objectV.top = data.tableData.pop()
+  elif data.inList:
+    data.inObj = false
+    data.seqData.add data.tableData.pop()    
   else:
     data.inObj = false
-    data.add(data.top.key, data.objData.pop())
+    data.table.top = data.tableData.pop()
 
-proc indenOut(data: var PParseData, ind: int, pos: PTokenPos) =
+proc closeList(data: var PParseData) = 
+  if data.seqData.len >= 2:
+    data.seqData[^2].seqV.add data.seqData.pop()
+  else:
+    data.inList = false
+    data.table.top = data.seqData.pop()
+
+proc indOut(data: var PParseData, ind: int, pos: PTokenPos) =
   for i in countdown(data.indentStack.high, 0):
     if ind < data.indentStack[i]:
-      data.closeObj()
+      if data.inObj:
+        data.closeObj()
+      elif data.inList:
+        data.closeList()
+    
       data.indentStack.pop()
+    
     elif ind == data.indentStack[i]:
       break
     else:
@@ -198,7 +209,13 @@ let parser = peg(content, PToken, data: PParseData):
     raise newException(SyntaxError, &"Expected value at {token.pos.line}:{token.pos.col} found \"{token.lexeme}\"")
 
   content <- *token
-  token <- ?[INDEN] * [NL] | obj | pair
+  token <- ?[INDEN] * [NL] | objEle | ele | obj | pair
+  hyphen <- [HYPHEN] | &1:
+    validate ($0).lexeme[0] == '-'
+    if ($0).kind != HYPHEN:
+      let pos = ($0).pos
+      raise newException(SyntaxError, &"Expected space at {pos.line}:{pos.col}")
+
   key <- 1:
     validate checkKey($0)
 
@@ -209,25 +226,40 @@ let parser = peg(content, PToken, data: PParseData):
       let pos = ($0).pos
       raise newException(SyntaxError, &"Expected new line or end of the file at {pos.line}:{pos.col} (#{pos.idx}), found \"{lexeme}\"")
 
-  pair <- indSame * (>key | E"key") * spaced(sep) * (>val | invalidVal) * endLn:
+  pair <- indSame * >key * spaced(sep) * (>val | invalidVal) * endLn:
+    if data.inList and not data.inObj:
+      let pos = ($0).pos
+      raise newException(SyntaxError, &"Pairs cannot be inside a list {pos}")
+
     data.add(($1).lexeme, $2)
 
-  # Objects
-  objOpen <- indSame * >key * spaced(sep) * [GREATER]:
-    data.add(($1).lexeme, newPObject())
+  objEle <- indSame * hyphen * spaced([GREATER]) * ([NL] | E"new line") * *[NL] * indIn
+  ele <- indSame * hyphen * spaced(>val | invalidVal) * endLn:
+    if not data.inList:
+      let pos = ($0).pos
+      raise newException(SyntaxError, &"List elements must be inside a list")
 
-  obj <- objOpen * ([NL] | E"new line") * *[NL] * (
+    data.inObj = false
+    discard data.tableData.pop()
+    data.table.top = newPSeq()
+    data.addToSeq $1
+
+  # Objects
+  objOpen <- indSame * >key * spaced(sep) * [GREATER] * ([NL] | E"new line"):
+    data.add(($1).lexeme, newPEmpty())
+
+  obj <- objOpen * *[NL] * (
       indIn | E"indentation in") * (+token | E"one or more pairs")
 
   indSame <- [INDEN] | &1:
     var ind = ($0).lexeme.len
-    if checkKey($0): # A KEY would mean zero indentation
+    if ($0).kind == HYPHEN or checkKey($0): # A KEY would mean zero indentation
       ind = 0
     elif ($0).kind != INDEN: # Otherwise is invalid
       fail
 
     if ind < data.indentStack.top: # Object close
-      data.indenOut(ind, ($0).pos)
+      data.indOut(ind, ($0).pos)
     
     elif ind != data.indentStack.top: # Error
       let pos = ($0).pos
@@ -238,7 +270,9 @@ let parser = peg(content, PToken, data: PParseData):
     data.indentStack.add ($0).lexeme.len
 
     data.inObj = true
-    data.objData.add newPObject()
+    data.inList = true
+    data.tableData.add newPObject()
+    data.seqData.add newPSeq()
 
   # Tables
   emptyTable <- [TABLEOPEN] * ?[COLON] * [TABLECLOSE]:
@@ -263,7 +297,7 @@ let parser = peg(content, PToken, data: PParseData):
     data.seqData.add newPSeq()
 
   seqClose <- [SEQCLOSE] | E"sequence close"
-  seqVal <- val | E"value":
+  seqVal <- val | invalidVal:
     data.addToSeq $0
 
   SEQ <- seqOpen * items(seqVal) * seqClose
@@ -285,6 +319,9 @@ proc parsePrefs*(tokens: seq[PToken]): PObjectType =
 
   while data.inObj: # Unterminated object
     data.closeObj()
+
+  while data.inList: # Unterminated seq
+    data.closeList()
 
   result = data.table
 
@@ -312,3 +349,6 @@ proc readPrefs*(path: string): PObjectType =
   ## Read a file and parse it.
   
   parsePrefs(path.scanPrefsFile().stack)
+
+echo scanPrefsFile("prefs.niprefs")
+echo readPrefs( "prefs.niprefs")
