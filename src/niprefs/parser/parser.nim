@@ -3,32 +3,19 @@ import npeg, npeg/codegen
 import lexer, escaper
 
 type
-  PObjData = ref object ## Data used to parse objects.
-    inside*: bool
-    child*: PrefsNode
-    parent*: Option[PObjData]
-
   PParseData = object ## Data used when parsing.
     table*: PObjectType
     indentStack*: seq[int]
-    objData*: PObjData
+    inObj*: bool
+    objData*: seq[PrefsNode]
     tableData*: seq[PrefsNode]
     seqData*: seq[PrefsNode]
 
-proc initPObjData(inside: bool = false, child: PrefsNode = newPEmpty(),
-    parent: Option[PObjData] = PObjData.none): PObjData =
-  PObjData(inside: inside, child: child, parent: parent)
-
 proc initPParseData(table: PObjectType = default PObjectType): PParseData =
-  PParseData(table: table, indentStack: @[0], objData: initPObjData())
+  PParseData(table: table, indentStack: @[0])
 
-#[
-proc `$`(data: PObjData): string =
-  &"inside={data.inside}\nchild={data.child}\nparent={data.parent.isSome}"
-
-proc `$`(data: PParseData): string =
-  &"table={data.table}\nindentStack={data.indentStack}\ntableData={data.tableData}\nseqData=>\n{data.seqData}\nobjData=>\n{indent($data.objData, 2)}"
-]#
+# proc `$`(data: PParseData): string =
+#   &"table={data.table}\nindentStack={data.indentStack}\ntableData={data.tableData}\nseqData={data.seqData}\nobjData=\n{data.objData}\ninObj={data.inObj}"
 
 template `top`(data: PParseData): tuple[key: string, val: PrefsNode] =
   ## Alias for `data.table.top`.
@@ -136,8 +123,8 @@ proc add(data: var PParseData, key: string, val: PrefsNode) =
   ## Add key an val to `data.table` or to `data.objData.child` depending on `data.objData.inside`.
   let key = key.strip()
 
-  if data.objData.inside:
-    data.objData.child[key] = val
+  if data.inObj:
+    data.objData.top[key] = val
   else:
     data.table[key] = val
 
@@ -181,15 +168,13 @@ proc addToSeq(data: var PParseData, val: PToken) =
   data.seqData.top.seqV.add toAdd
 
 proc closeObj(data: var PParseData) =
-  if data.objData.parent.isSome:
-    data.objData.parent.get().child.objectV.top = data.objData.child
-    data.objData = data.objData.parent.get()
-    data.objData.inside = true
+  if data.objData.len >= 2:
+    data.objData[^2].objectV.top = data.objData.pop()
   else:
-    data.objData.inside = false
-    data.add(data.top.key, data.objData.child)
+    data.inObj = false
+    data.add(data.top.key, data.objData.pop())
 
-proc indOut(data: var PParseData, ind: int, pos: PTokenPos) =
+proc indenOut(data: var PParseData, ind: int, pos: PTokenPos) =
   for i in countdown(data.indentStack.high, 0):
     if ind < data.indentStack[i]:
       data.closeObj()
@@ -234,9 +219,9 @@ let parser = peg(content, PToken, data: PParseData):
       fail
 
     if ind < data.indentStack.top: # Object close
-      data.indOut(ind, ($0).pos)
-
-    elif ind != data.indentStack.top:
+      data.indenOut(ind, ($0).pos)
+    
+    elif ind != data.indentStack.top: # Error
       let pos = ($0).pos
       raise newException(SyntaxError, &"Invalid indentation at {pos.line}:{pos.col} (#{pos.idx}), found {ind}, expected {data.indentStack.top}")
 
@@ -244,11 +229,8 @@ let parser = peg(content, PToken, data: PParseData):
     validate ($0).lexeme.len > data.indentStack.top
     data.indentStack.add ($0).lexeme.len
 
-    if data.objData.inside:
-      data.objData.parent = initPObjData(parent = data.objData.parent, child = data.objData.child).some
-
-    data.objData.inside = true
-    data.objData.child = newPObject()
+    data.inObj = true
+    data.objData.add newPObject()
 
   # Tables
   emptyTable <- [TABLEOPEN] * ?[COLON] * [TABLECLOSE]:
@@ -293,7 +275,7 @@ proc parsePrefs*(tokens: seq[PToken]): PObjectType =
     raise newException(SyntaxError, getCurrentExceptionMsg() &
         fmt" (line: {pos.line}, col: {pos.col})")
 
-  while data.objData.inside: # Unterminated object
+  while data.inObj: # Unterminated object
     data.closeObj()
 
   result = data.table
