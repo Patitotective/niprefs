@@ -13,18 +13,14 @@ type
     indentStack*: seq[int]
     objData*: PNestData
     tableData*: seq[PrefsNode]
-    seqData*: PNestData
+    seqData*: seq[PrefsNode]
 
 proc initPNestData(inside: bool = false, child: PrefsNode = newPEmpty(),
     parent: Option[PNestData] = PNestData.none): PNestData =
   PNestData(inside: inside, child: child, parent: parent)
 
-proc initPParseData(table: PObjectType = default PObjectType,
-    seqData: PNestData = initPNestData(),
-    objData: PNestData = initPNestData()
-  ): PParseData =
-  PParseData(table: table, indentStack: @[0], objData: objData,
-      seqData: seqData)
+proc initPParseData(table: PObjectType = default PObjectType, objData: PNestData = initPNestData()): PParseData =
+  PParseData(table: table, indentStack: @[0], objData: objData)
 
 #[
 proc `$`(data: PNestData): string =
@@ -151,7 +147,7 @@ proc add(data: var PParseData, key: string, val: PToken) =
   var value: PrefsNode
   case val.kind
   of SEQOPEN:
-    value = data.seqData.child
+    value = data.seqData.pop()
   of TABLEOPEN:
     value = data.tableData.pop()
   else:
@@ -167,7 +163,7 @@ proc addToTable(data: var PParseData, key: string, val: PToken) =
   var value: PrefsNode
   case val.kind
   of SEQOPEN:
-    value = data.seqData.child
+    value = data.seqData.pop()
   of TABLEOPEN:
     value = data.tableData.pop()
   else:
@@ -175,13 +171,20 @@ proc addToTable(data: var PParseData, key: string, val: PToken) =
 
   data.addToTable(key, value)
 
-proc closeSeq(data: var PParseData) =
-  if data.seqData.parent.isSome:
-    data.seqData.parent.get().child.seqV.add data.seqData.child
-    data.seqData = data.seqData.parent.get()
-    data.seqData.inside = true
+proc addToSeq(data: var PParseData, val: PrefsNode) = 
+  data.seqData.top.seqV.add val
+
+proc addToSeq(data: var PParseData, val: PToken) = 
+  var value: PrefsNode
+  case val.kind
+  of SEQOPEN:
+    value = data.seqData.pop()
+  of TABLEOPEN:
+    value = data.tableData.pop()
   else:
-    data.seqData.inside = false
+    value = parseVal(val)
+
+  data.addToSeq(value)
 
 proc closeObj(data: var PParseData) =
   if data.objData.parent.isSome:
@@ -222,6 +225,7 @@ let parser = peg(content, PToken, data: PParseData):
   pair <- indSame * >key * spaced(sep) * (>val | invalidVal) * endLn:
     data.add(($1).lexeme, $2)
 
+  # Objects
   objOpen <- indSame * >key * spaced(sep) * [GREATER]:
     data.add(($1).lexeme, newPObject())
 
@@ -252,13 +256,14 @@ let parser = peg(content, PToken, data: PParseData):
     data.objData.inside = true
     data.objData.child = newPObject()
 
+  # Tables
   emptyTable <- [TABLEOPEN] * ?[COLON] * [TABLECLOSE]:
     data.tableData.add newPObject()
 
   tableOpen <- [TABLEOPEN]:
     data.tableData.add newPObject()
 
-  tableClose <- [TABLECLOSE]  
+  tableClose <- [TABLECLOSE] | E"table close"
   tableVal <- val | invalidVal
   tablePair <- >[STRING] * ([COLON] | E"colon") * >tableVal:
     let key = ($1).lexeme[1..^2].parseEscaped()
@@ -269,27 +274,28 @@ let parser = peg(content, PToken, data: PParseData):
       data.addToTable(key, $2)
 
   table <- tableOpen * items(tablePair) * tableClose
+
+  # Sequences
+  emptySeq <- [SEQOPEN] * [SEQCLOSE]:
+    data.seqData.add newPSeq()
+
   seqOpen <- [SEQOPEN]:
-    if data.seqData.inside:
-      data.seqData.parent = initPNestData(parent = data.seqData.parent, child = data.seqData.child).some
+    data.seqData.add newPSeq()
 
-    data.seqData.child = newPSeq()
-    data.seqData.inside = true
-
-  seqClose <- [SEQCLOSE] | E"sequence close":
-    data.closeSeq()
-
+  seqClose <- [SEQCLOSE] | E"sequence close"
   seqVal <- val | E"value":
     if ($0).kind == TABLEOPEN:
-      data.seqData.child.seqV.add data.tableData.pop()
-    elif ($0).kind != SEQOPEN:
-      data.seqData.child.seqV.add parseVal($0)
-  
+      data.addToSeq data.tableData.pop()
+    elif ($0).kind == SEQOPEN:
+      data.addToSeq data.seqData.pop()
+    else:
+      data.addToSeq parseVal($0)
+
   SEQ <- seqOpen * items(seqVal) * seqClose
 
   val <- [NIL] | [BOOL] | [CHAR] | [OBJECT] | [STRING] | [
       RAWSTRING] | [DEC] | [HEX] | [BIN] | [OCT] | [FLOAT] | [FLOAT32] | [
-          FLOAT64] | SEQ | emptyTable | table
+          FLOAT64] | emptySeq | SEQ | emptyTable | table
 
 proc parsePrefs*(tokens: seq[PToken]): PObjectType =
   var data = initPParseData()

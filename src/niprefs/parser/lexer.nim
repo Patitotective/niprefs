@@ -164,7 +164,8 @@ let lexer = peg(tokens, data: PLexer):
   bool <- "true" | "false":
     data.addToken(BOOL, $0, @0)
 
-  table <- tableOpen * (colon | items(tablePair)) * tableClose
+  # Table
+  table <- tableOpen * spaced(colon | items(tablePair)) * tableClose
 
   tableOpen <- "{":
     data.addToken(TABLEOPEN, $0, @0)
@@ -174,8 +175,8 @@ let lexer = peg(tokens, data: PLexer):
 
   tablePair <- string * spaced(colon) * val
 
-  # Sequence
-  seq <- seqOpen * items(val) * seqClose
+  # Sequences
+  seq <- seqOpen * spaced(items(val)) * seqClose
 
   seqOpen <- ?"@" * "[":
     data.addToken(SEQOPEN, $0, @0)
