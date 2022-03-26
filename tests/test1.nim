@@ -68,6 +68,8 @@ test "can parse":
   let text = """
   lang="en"
   dark=true
+  float32=13f
+  float64=69d
   scheme=>
     background="#ffffff"
     font="#000000"
@@ -76,6 +78,8 @@ test "can parse":
   let content = toPrefs({
     "lang": "en", 
     "dark": true, 
+    "float32": 13f,
+    "float64": 69d,
     "scheme": {
       "background": "#ffffff", 
       "font": "#000000"

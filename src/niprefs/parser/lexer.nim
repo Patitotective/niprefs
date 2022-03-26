@@ -53,7 +53,6 @@ type
     source*: string
     indentLevel*: int
 
-
 proc `$`*(lexer: PLexer): string =
   result.add &"{lexer.ok} {lexer.matchLen}/{lexer.matchMax}\n"
   
@@ -66,7 +65,6 @@ proc `$`*(lexer: PLexer): string =
       result.add ' '
     else:
       result.add &"{token.kind} "
-
 
 proc getPos(str: string, idx: int): PTokenPos =
   ## Get the line:col position of `idx` in `str` adn returns a tuple with the line, col, idx.
@@ -91,7 +89,7 @@ grammar "number":
       "16" | "32" | "64")
   uSuffix <- i"u" * ?("8" |
       "16" | "32" | "64")
-  typeSuffix <- '\'' * (uSuffix | iSuffix)
+  typeSuffix <- ?'\'' * (uSuffix | iSuffix)
   f32Suffix <- i"f" * ?"32"
   f64Suffix <- i"f64" | i"d"
   # fSuffix <- f32Suffix | f64Suffix
@@ -103,11 +101,11 @@ grammar "number":
 
   Float <- ?minus * nums * (('.' * nums * ?exponent) | exponent)
 
-  Float32 <- Hex * '\'' * f32Suffix |
-    (Float | Oct | Bin | Dec) * '\'' * f32Suffix
+  Float32 <- Hex * ?'\'' * f32Suffix |
+    (Float | Oct | Bin | Dec) * ?'\'' * f32Suffix
 
-  Float64 <- Hex * '\'' * f64Suffix |
-    (Float | Oct | Bin | Dec) * '\'' * f64Suffix
+  Float64 <- Hex * ?'\'' * f64Suffix |
+    (Float | Oct | Bin | Dec) * ?'\'' * f64Suffix
 
 grammar "str":
   escapeSeq <- 'r' | 'c' | 'n' | 'l' | 'f' | 't' | 'v' | '\\' | '"' | '\'' | +Digit |
@@ -197,7 +195,7 @@ let lexer = peg(tokens, data: PLexer):
     data.addToken(CHAR, $0, @0)
 
   # Numbers
-  num <- (float64 | float32 | float) | int
+  num <- (float32 | float64 | float) | int
 
   int <- hex | oct | bin | dec
 

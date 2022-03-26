@@ -43,11 +43,14 @@ proc checkKey(token: PToken): bool =
 
 proc removeTypeSuf(num: string): string =
   ## Remove the type suffix from a string.
-  result = num
+  ## 13f -> 13
+  ## 69'd64 -> 69
 
-  let idx = num.find('\'')
-  if idx > -1:
-    result = num[0..<idx]
+  for i in num:
+    if i.isDigit():
+      result.add i
+    else:
+      break
 
 proc parseInt(lexeme: string, kind: PTokenKind): PrefsNode =
   ## Parse an string representation of an integer.
