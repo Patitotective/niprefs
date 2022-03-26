@@ -81,4 +81,4 @@ Contact me:
 - Email: **cristobalriaga@gmail.com**.
 
 _Tested in Linux and Windows._  
-***v0.1.0***
+***v0.1.1***
