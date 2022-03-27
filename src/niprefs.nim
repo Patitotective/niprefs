@@ -22,7 +22,7 @@
 ##     family="UbuntuMono" # scheme/font/family
 ##     size=15
 ##     color="#000000"
-## users={"ElegantBeef": 28, "Rika": 22} # Tables are also supported (and keys do require quotes inside tables)
+## users={"ElegantBeef": 28, "Rika": 22, "hmmm": 0x0} # Tables are also supported (and keys do require quotes inside tables)
 ## ```
 
 ## # Basic usage
