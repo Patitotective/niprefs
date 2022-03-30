@@ -47,7 +47,7 @@ proc removeTypeSuf(num: string): string =
   ## 69'd64 -> 69
 
   for i in num:
-    if i.isDigit():
+    if i.isDigit() or i == '-' or i == '.':
       result.add i
     else:
       break

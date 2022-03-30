@@ -16,7 +16,8 @@ let defaultPrefs = toPrefs {
   keybindings: [],
   users: {:},
   test: {
-    c: [1, 2, [3, {d: 4}], 5]
+    c: [-1, 2, [3, {d: 4}], 5.2, -45.9d],
+    b: ['d', 'e', 0x034]
   }, 
   scheme: {
     background: "#000000",
@@ -87,6 +88,23 @@ test "can parse":
   }).getObject()
 
   check text.parsePrefs() == content
+
+test "can do stuff with nodes":
+  var node = prefs["test"]
+
+  node["c"][1] = 3
+  node["c"][2] = newPInt(4)
+  node["c"].add 5
+  node["c"].add -6.newPInt()
+
+  for i in node["c"]:
+    discard
+
+  for k, v in node:
+    discard
+
+  check node["c"] == toPrefs([-1, 3, 4, 5.2, -45.9, 5, -6])
+  check "c" in node
 
 test "can overwrite":
   prefs.table["lang"] = "en".toPrefs

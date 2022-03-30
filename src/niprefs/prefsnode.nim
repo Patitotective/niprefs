@@ -75,6 +75,34 @@ proc getString*(node: PrefsNode): string =
   ## Get the `stringV` field from a `PrefsNode`.
   node.stringV
 
+proc getInt*(node: var PrefsNode): var int =
+  ## Get the `intV` field from a `PrefsNode`.
+  node.intV
+
+proc getSeq*(node: var PrefsNode): var PSeqType =
+  ## Get the `seqV` field from a `PrefsNode`.
+  node.seqV
+
+proc getBool*(node: var PrefsNode): var bool =
+  ## Get the `boolV` field from a `PrefsNode`.
+  node.boolV
+
+proc getChar*(node: var PrefsNode): var char =
+  ## Get the `charV` field from a `PrefsNode`.
+  node.charV
+
+proc getFloat*(node: var PrefsNode): var float =
+  ## Get the `floatV` field from a `PrefsNode`.
+  node.floatV
+
+proc getObject*(node: var PrefsNode): var PObjectType =
+  ## Get the `objectV` field from a `PrefsNode`.
+  node.objectV
+
+proc getString*(node: var PrefsNode): var string =
+  ## Get the `stringV` field from a `PrefsNode`.
+  node.stringV
+
 proc newPInt*(val: int = default int): PrefsNode =
   ## Create a new PrefsNode of `PInt` kind.
   PrefsNode(kind: PInt, intV: val)
@@ -270,15 +298,26 @@ proc `[]`*(node: PrefsNode, index: BackwardsIndex): PrefsNode =
   ## Access to `index` in `node.seqV`.
   node.seqV[index]
 
+proc `[]=`*[T: not PrefsNode](node: var PrefsNode, index: int, val: T) = 
+  ## Change the value at `index` in `node.seqV` for `val`.
+  ## The given value is converted to `PrefsNode` with `newPNode`
+
+  node.seqV[index] = val.newPNode()
+
+proc `[]=`*(node: var PrefsNode, index: int, val: PrefsNode) = 
+  ## Change the value at `index` in `node.seqV` for `val`.
+
+  node.seqV[index] = val
+
 proc `[]=`*[T: not PrefsNode](node: var PrefsNode, key: string, val: T) =
   ## Change the value of the key in node's table
-  ## The given value is converted to PrefsNode` with `newPNode`
+  ## The given value is converted to `PrefsNode` with `newPNode`
 
   runnableExamples:
     var table = toPrefs {"lang": "en"}
     table["lang"] = "es"
 
-  node.objectV[key] = newPNode(val)
+  node.objectV[key] = val.newPNode()
 
 proc `[]=`*(node: var PrefsNode, key: string, val: PrefsNode) =
   ## Change the value of the key in node's table
@@ -293,3 +332,22 @@ proc del*(node: var PrefsNode, key: string) =
   ## Delete `key` from `node.objectV`.
 
   node.objectV.del(key)
+
+proc add*[T: not PrefsNode](node: var PrefsNode, val: T) = 
+  ## Add `node` to `node.seqV`
+  node.seqV.add val.newPNode()
+
+proc add*(node: var PrefsNode, val: PrefsNode) = 
+  ## Add `node` to `node.seqV`
+  node.seqV.add val
+
+proc contains*(node: PrefsNode, key: string): bool =
+  node.objectV.contains(key)
+
+iterator items*(node: PrefsNode): PrefsNode = 
+  for i in node.getSeq():
+    yield i
+
+iterator pairs*(node: PrefsNode): (string, PrefsNode) = 
+  for k, v in node.getObject():
+    yield (k, v)

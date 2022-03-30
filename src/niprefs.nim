@@ -125,7 +125,7 @@ proc initPrefs*(table: PrefsNode = newPObject(), path: string = "prefs.niprefs")
   ## Creates a new Prefs object and checks if a file exists at `path` to create it if it doesn't.
   initPrefs(table = table.getObject(), path = path)
 
-template len*(prefs: Prefs): int =
+proc len*(prefs: Prefs): int =
   ## Same as `prefs.content.len`.
   runnableExamples:
     var prefs = toPrefs({"lang": "en", "theme": "dark"}).initPrefs
@@ -134,19 +134,7 @@ template len*(prefs: Prefs): int =
 
     assert prefs.len == 2
 
-  prefs.content.len
-
-template pairs*(prefs: Prefs) =
-  ## Same as `prefs.content.pairs`
-  prefs.content.pairs
-
-template keys*(prefs: Prefs) =
-  ## Same as `prefs.content.keys`
-  prefs.content.keys
-
-template values*(prefs: Prefs) =
-  ## Same as `prefs.content.values`
-  prefs.content.values
+  result = prefs.content.len
 
 proc `$`*(prefs: Prefs): string =
   ## Instead of printing the prefs object, print it's content
