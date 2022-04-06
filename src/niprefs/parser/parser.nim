@@ -36,7 +36,7 @@ proc `top=`[K, V](table: var OrderedTable[K, V], val: V) =
   table[table.top.key] = val
 
 proc checkKey(token: PToken): bool = 
-  if token.kind in {INDEN, EOF}:
+  if token.kind in {SPACE, EOF}:
     false
   else:
     true
@@ -192,15 +192,15 @@ proc indenOut(data: var PParseData, ind: int, pos: PTokenPos) =
     else:
       raise newException(SyntaxError, &"Invalid indentation at {pos.line}:{pos.col} (#{pos.idx}), found {ind}, expected {data.indentStack[i]} or {data.indentStack[i+1]}")
 
-let parser = peg(content, PToken, data: PParseData):
-  spaced(rule) <- *[INDEN] * rule * *[INDEN]
-  items(rule) <- ?(rule * *([COMMA] * rule) * ?[COMMA])
+const parser = peg(content, PToken, data: PParseData):
+  spaced(rule) <- *[SPACE] * rule * *[SPACE]
+  items(rule) <- ?spaced(rule * *(spaced([COMMA]) * spaced(rule)) * ?spaced([COMMA]))
   invalidVal <- &1:
     let token = $0
     raise newException(SyntaxError, &"Expected value at {token.pos.line}:{token.pos.col} found \"{token.lexeme}\"")
 
   content <- *token
-  token <- ?[INDEN] * [NL] | obj | pair
+  token <- ?[SPACE] * [NL] | obj | pair
   key <- 1:
     validate checkKey($0)
 
@@ -221,11 +221,11 @@ let parser = peg(content, PToken, data: PParseData):
   obj <- objOpen * ([NL] | E"new line") * *[NL] * (
       indIn | E"indentation in") * (+token | E"one or more pairs")
 
-  indSame <- [INDEN] | &1:
+  indSame <- [SPACE] | &1:
     var ind = ($0).lexeme.len
     if checkKey($0): # A KEY would mean zero indentation
       ind = 0
-    elif ($0).kind != INDEN: # Otherwise is invalid
+    elif ($0).kind != SPACE: # Otherwise is invalid
       fail
 
     if ind < data.indentStack.top: # Object close
@@ -235,7 +235,7 @@ let parser = peg(content, PToken, data: PParseData):
       let pos = ($0).pos
       raise newException(SyntaxError, &"Invalid indentation at {pos.line}:{pos.col} (#{pos.idx}), found {ind}, expected {data.indentStack.top}")
 
-  indIn <- &[INDEN]:
+  indIn <- &[SPACE]:
     validate ($0).lexeme.len > data.indentStack.top
     data.indentStack.add ($0).lexeme.len
 
@@ -251,7 +251,7 @@ let parser = peg(content, PToken, data: PParseData):
 
   tableClose <- [TABLECLOSE] | E"table close"
   tableVal <- val | invalidVal
-  tablePair <- >[STRING] * ([COLON] | E"colon") * >tableVal:
+  tablePair <- >[STRING] * spaced([COLON] | E"colon") * >tableVal:
     let key = ($1).lexeme[1..^2]
     data.addToTable(key, $2)
 
@@ -265,7 +265,7 @@ let parser = peg(content, PToken, data: PParseData):
     data.seqData.add newPSeq()
 
   seqClose <- [SEQCLOSE] | E"sequence close"
-  seqVal <- val | E"value":
+  seqVal <- val:
     data.addToSeq $0
 
   SEQ <- seqOpen * items(seqVal) * seqClose

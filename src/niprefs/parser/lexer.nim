@@ -16,8 +16,8 @@ type
     TABLEOPEN ## {
     TABLECLOSE ## }
 
-    KEY
-    INDEN ## One or more spaces/tabs
+    IDEN ## Identifier (key)
+    SPACE ## One or more spaces/tabs
 
     # Values
     NIL ## nil
@@ -51,7 +51,6 @@ type
     matchMax*: int
     stack*: seq[PToken]
     source*: string
-    indentLevel*: int
 
 proc `$`*(lexer: PLexer): string =
   result.add &"{lexer.ok} {lexer.matchLen}/{lexer.matchMax}\n"
@@ -60,7 +59,7 @@ proc `$`*(lexer: PLexer): string =
     case token.kind
     of NL:
       result.add "\n"
-    of INDEN:
+    of SPACE:
       result.add '-'.repeat(token.lexeme.len)
       result.add ' '
     else:
@@ -118,14 +117,12 @@ grammar "str":
   strBody <- ?escape * *(+strChars * *escape)
   rawStrBody <- *("\"\"" | rawStrChars)
 
-let lexer = peg(tokens, data: PLexer):
+const lexer = peg(tokens, data: PLexer):
   S <- Space - '\n'
-  indentChar <- {' ', '\t'}
-  spaced(rule) <- *S * rule * *S
-  items(rule) <- ?spaced(rule * *(spaced(comma) * rule) * ?comma)
+  spaceChar <- {' ', '\t'}
 
   tokens <- *token * EOF
-  token <- sep | greater | val | comment | inden | newLn | key | error
+  token <- sep | greater | colon | comma | structuredV | val | comment | space | newLn | iden | error
 
   EOF <- !1:
     data.addToken(EOF, $0, @0)
@@ -138,8 +135,9 @@ let lexer = peg(tokens, data: PLexer):
   newLn <- '\n':
     data.addToken(NL, $0, @0)
 
-  key <- +({'\x20'..'\xff'} - {'\n', '#', '/', '='}):
-    data.addToken(KEY, $0, @0)
+  letter <- Alpha | {'\x80'..'\xff'}
+  iden <- letter * *(?'_' * (letter | Digit)):
+    data.addToken(IDEN, $0, @0)
 
   sep <- '=':
     data.addToken(EQUAL, $0, @0)
@@ -153,10 +151,11 @@ let lexer = peg(tokens, data: PLexer):
   colon <- ':':
     data.addToken(COLON, $0, @0)
 
-  inden <- +indentChar:
-    data.addToken(INDEN, $0, @0)
+  space <- +spaceChar:
+    data.addToken(SPACE, $0, @0)
 
-  val <- seq | table | num | char | bool | null | string | rawString
+  structuredV <- tableOpen | seqOpen | seqClose | tableClose
+  val <- num | char | bool | null | string | rawString
 
   null <- "nil":
     data.addToken(NIL, $0, @0)
@@ -165,19 +164,13 @@ let lexer = peg(tokens, data: PLexer):
     data.addToken(BOOL, $0, @0)
 
   # Table
-  table <- tableOpen * spaced(colon | items(tablePair)) * tableClose
-
   tableOpen <- "{":
     data.addToken(TABLEOPEN, $0, @0)
 
   tableClose <- "}":
     data.addToken(TABLECLOSE, $0, @0)
 
-  tablePair <- string * spaced(colon) * val
-
   # Sequences
-  seq <- seqOpen * spaced(items(val)) * seqClose
-
   seqOpen <- ?"@" * "[":
     data.addToken(SEQOPEN, $0, @0)
 

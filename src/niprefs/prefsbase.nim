@@ -10,7 +10,6 @@ const
   keyPathSep* = '/'
   sepChar = '='
   continueChar = '>'
-  invalidKeyChars = [commentChar, keyPathSep]
 
 type
   InvalidKey* = object of ValueError
@@ -31,11 +30,10 @@ proc change(table: PObjectType, key: string, val: PrefsNode): PObjectType =
     result = table
     result[key] = val
 
-proc checkKey(key: string) = 
-  ## Checks if a key is valid and raises an error if it is not.
- 
-  if invalidKeyChars.anyIt(it in key):
-    raise newException(InvalidKey, &"{key} must not contain any of {invalidKeyChars}")
+proc validateKey(key: string) = 
+  ## Validates if a key is a valid (Nim) identifier.  
+  if not key.validIdentifier():
+    raise newException(InvalidKey, &"{key} must be a valid identifer")
 
 proc initPrefsBase*(table: PObjectType, path: string): PrefsBase =
   PrefsBase(table: table, path: path)
@@ -52,7 +50,7 @@ proc `content`*(prefs: PrefsBase): PObjectType =
   ## Calls `read` on `prefs`.
   prefs.read()
 
-proc toPTree*(table: PObjectType, depth: int = 0): string =
+proc toString*(table: PObjectType, depth: int = 0): string =
   ## Given a `table` convert it to Prefs format and return it.
   runnableExamples:
     import std/strutils
@@ -64,32 +62,31 @@ proc toPTree*(table: PObjectType, depth: int = 0): string =
     theme="dark"
     """
 
-    assert table.toPTree() == str.dedent()
+    assert table.toString() == str.dedent()
 
   if depth == 0: result.add &"{firstLine}{endChar}"
   let indent = indentChar.repeat depth
 
   for key, val in table.pairs:
-    checkKey(key)
+    validateKey(key)
     if val.kind == PObject and val.objectV.len > 0:
       result.add &"{indent}{key.strip}{sepChar}{continueChar}{endChar}"
-      result.add toPTree(val.objectV, depth = depth+1)
+      result.add toString(val.objectV, depth = depth+1)
     else:
       if val.kind == PEmpty:
         let val = newPNil()
 
       result.add &"{indent}{key.strip}{sepChar}{val}{endChar}"
 
-template toPTree*(node: PrefsNode, depth: int = 0): string =
-  ## Same as `toPTree(node.getObject(), depth)`.
-
-  toPTree(node.getObject(), depth)
+proc toString*(node: PrefsNode, depth: int = 0): string =
+  ## Same as `toString(node.getObject(), depth)`.
+  toString(node.getObject(), depth)
 
 proc create*(prefs: PrefsBase, table = prefs.table) =
-  ## Checks that all directories in `prefs.path` exists and writes `table.toPTree()` into it.
+  ## Checks that all directories in `prefs.path` exists and writes `table.toString()` into it.
 
-  checkPath(prefs.path)
-  writeFile(prefs.path, table.toPTree())
+  prefs.path.checkFile()
+  writeFile(prefs.path, table.toString())
 
 proc checkFile*(prefs: PrefsBase) =
   ## If `prefs.path` does not exist, call `prefs.create()`.

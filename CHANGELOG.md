@@ -1,5 +1,11 @@
 # CHANGELOG
 
+### v0.1.3
+- Added compile-time support.
+- Renamed `toPtree` -> `toString`.
+- Now keys must be valid (Nim) identifiers.
+- Renamed and improved `checkPath` -> `checkFile`
+
 ### v0.1.2
 - Fixed bug when parsing negative numbers.
 - Fixed bug when parsing float numbers.
