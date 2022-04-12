@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### v0.1.4
+- Added support for `set[char]` and `set[byte]`.
+
 ### v0.1.3
 - Added compile-time support.
 - Renamed `toPtree` -> `toString`.

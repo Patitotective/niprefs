@@ -7,14 +7,15 @@ type
   SyntaxError* = object of ValueError
   PTokenKind* = enum
     NL ## New line \n
-    GREATER ## >
+    DOT ## .
     EQUAL ## =
     COMMA ## ,
     COLON ## :
+    GREATER ## >
     SEQOPEN ## @[ or [
     SEQCLOSE ## ]
-    TABLEOPEN ## {
-    TABLECLOSE ## }
+    CURLYOPEN ## {
+    CURLYCLOSE ## }
 
     IDEN ## Identifier (key)
     SPACE ## One or more spaces/tabs
@@ -23,7 +24,6 @@ type
     NIL ## nil
     BOOL ## true or false
     CHAR ## 'a'
-    OBJECT
     STRING ## "hello"
     RAWSTRING ## r"hello"
 
@@ -42,7 +42,7 @@ type
   PTokenPos* = tuple[line: int, col: int, idx: int] ## Position of a token in the source string
   PToken* = object
     kind*: PTokenKind
-    lexeme*: string
+    lex*: string
     pos*: PTokenPos
 
   PLexer = object ## Data used when scanning
@@ -60,7 +60,7 @@ proc `$`*(lexer: PLexer): string =
     of NL:
       result.add "\n"
     of SPACE:
-      result.add '-'.repeat(token.lexeme.len)
+      result.add '-'.repeat(token.lex.len)
       result.add ' '
     else:
       result.add &"{token.kind} "
@@ -73,9 +73,9 @@ proc getPos(str: string, idx: int): PTokenPos =
 
   result = (lines.len, lines[^1].len+1, idx+1)
 
-proc addToken(lexer: var PLexer, kind: PTokenKind, lexeme: string, idx: int) =
+proc addToken(lexer: var PLexer, kind: PTokenKind, lex: string, idx: int) =
   let pos = lexer.source.getPos(idx)
-  lexer.stack.add PToken(kind: kind, lexeme: lexeme, pos: pos)
+  lexer.stack.add PToken(kind: kind, lex: lex, pos: pos)
 
 grammar "number":
   minus <- '-'
@@ -122,7 +122,7 @@ const lexer = peg(tokens, data: PLexer):
   spaceChar <- {' ', '\t'}
 
   tokens <- *token * EOF
-  token <- sep | greater | colon | comma | structuredV | val | comment | space | newLn | iden | error
+  token <- dot | equal | greater | colon | comma | structuredV | val | comment | space | newLn | iden | error
 
   EOF <- !1:
     data.addToken(EOF, $0, @0)
@@ -139,7 +139,10 @@ const lexer = peg(tokens, data: PLexer):
   iden <- letter * *(?'_' * (letter | Digit)):
     data.addToken(IDEN, $0, @0)
 
-  sep <- '=':
+  dot <- '.':
+    data.addToken(DOT, $0, @0)
+
+  equal <- '=':
     data.addToken(EQUAL, $0, @0)
 
   greater <- '>':
@@ -154,7 +157,7 @@ const lexer = peg(tokens, data: PLexer):
   space <- +spaceChar:
     data.addToken(SPACE, $0, @0)
 
-  structuredV <- tableOpen | seqOpen | seqClose | tableClose
+  structuredV <- CURLYOPEN | seqOpen | seqClose | CURLYCLOSE
   val <- num | char | bool | null | string | rawString
 
   null <- "nil":
@@ -164,11 +167,11 @@ const lexer = peg(tokens, data: PLexer):
     data.addToken(BOOL, $0, @0)
 
   # Table
-  tableOpen <- "{":
-    data.addToken(TABLEOPEN, $0, @0)
+  CURLYOPEN <- "{":
+    data.addToken(CURLYOPEN, $0, @0)
 
-  tableClose <- "}":
-    data.addToken(TABLECLOSE, $0, @0)
+  CURLYCLOSE <- "}":
+    data.addToken(CURLYCLOSE, $0, @0)
 
   # Sequences
   seqOpen <- ?"@" * "[":

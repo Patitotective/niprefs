@@ -17,8 +17,10 @@ let defaultPrefs = toPrefs {
   users: {:},
   test: {
     c: [-1, 2, [3, {d: 4}], 5.2, -45.9d],
-    b: ['d', 'e', 0x034]
+    b: ['d', 'e', 0x034, {3..7}]
   }, 
+  chars: {'a'..'g', 's'},
+  bytes: {0, 8..16},
   scheme: {
     background: "#000000",
     font: {

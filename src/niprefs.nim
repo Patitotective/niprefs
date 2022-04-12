@@ -7,6 +7,8 @@
 ## - `char`
 ## - `float`
 ## - `string` (and raw strings)
+## - `set[char]`
+## - `set[byte]`
 ## - `OrderedTable[string, PrefsNode]` (nested tables)
 
 ## # Syntax
@@ -56,6 +58,10 @@ runnableExamples:
 ##     family="UbuntuMono"
 ##     color="#73D216"
 ## ```
+## ### Why does the niprefs file doesn't change if I change the toPrefs macro?
+## Well, niprefs is meant to be used as a preferences system, what that means is that the file is created with the default values if it doesn't exist.  
+## If it does exist, it just reads it. If you want to reset the file with the default prefs manually, you may use [overwrite](prefsbase.html#overwrite%2CPrefsBase%2CPObjectType).  
+
 
 ## ## Reading
 ## To read a key from your preferences file you can access to it as it were a table:

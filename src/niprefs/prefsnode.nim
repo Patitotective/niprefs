@@ -5,7 +5,7 @@ type
   PSeqType* = seq[PrefsNode] ## Prefs sequence type
   PObjectType* = OrderedTable[string, PrefsNode] ## Prefs ordered table type
 
-  PrefsNKind* = enum ## Valid node kinds for PrefsNode
+  PrefsKind* = enum ## Valid node kinds for PrefsNode
     PEmpty,          # Default
     PInt,
     PNil,
@@ -15,10 +15,12 @@ type
     PFloat,
     PObject,
     PString,
+    PCharSet,
+    PByteSet,
 
   PrefsNode* = ref PrefsNodeObj ## Reference to PrefsNodeObj
   PrefsNodeObj* = object ## Object variant
-    case kind*: PrefsNKind
+    case kind*: PrefsKind
     of PInt:
       intV*: int
     of PNil:
@@ -37,43 +39,55 @@ type
       objectV*: PObjectType
     of PString:
       stringV*: string
+    of PCharSet:
+      charSetV*: set[char]
+    of PByteSet:
+      byteSetV*: set[byte]
+
+proc isEmpty*(node: PrefsNode): bool =
+  ## Check if a `PrefsNode` is `empty`.
+  node.kind == PEmpty
 
 proc isNil*(node: PrefsNode): bool =
   ## Check if a `PrefsNode` is `nil`.
 
   node.kind == PNil
 
-proc isEmpty*(node: PrefsNode): bool =
-  ## Check if a `PrefsNode` is `empty`.
-  node.kind == PEmpty
-
 proc getInt*(node: PrefsNode): int =
-  ## Get the `intV` field from a `PrefsNode`.
+  ## Get the `intV` field from `node`.
   node.intV
 
 proc getSeq*(node: PrefsNode): PSeqType =
-  ## Get the `seqV` field from a `PrefsNode`.
+  ## Get the `seqV` field from `node`.
   node.seqV
 
 proc getBool*(node: PrefsNode): bool =
-  ## Get the `boolV` field from a `PrefsNode`.
+  ## Get the `boolV` field from `node`.
   node.boolV
 
 proc getChar*(node: PrefsNode): char =
-  ## Get the `charV` field from a `PrefsNode`.
+  ## Get the `charV` field from `node`.
   node.charV
 
 proc getFloat*(node: PrefsNode): float =
-  ## Get the `floatV` field from a `PrefsNode`.
+  ## Get the `floatV` field from `node`.
   node.floatV
 
 proc getObject*(node: PrefsNode): PObjectType =
-  ## Get the `objectV` field from a `PrefsNode`.
+  ## Get the `objectV` field from `node`.
   node.objectV
 
 proc getString*(node: PrefsNode): string =
-  ## Get the `stringV` field from a `PrefsNode`.
+  ## Get the `stringV` field from `node`.
   node.stringV
+
+proc getCharSet*(node: PrefsNode): set[char] = 
+  ## Get the `charSetV` field from `node`.
+  node.charSetV
+
+proc getByteSet*(node: PrefsNode): set[byte] = 
+  ## Get the `byteSet` field from `node`.
+  node.byteSetV
 
 proc getInt*(node: var PrefsNode): var int =
   ## Get the `intV` field from a `PrefsNode`.
@@ -103,9 +117,21 @@ proc getString*(node: var PrefsNode): var string =
   ## Get the `stringV` field from a `PrefsNode`.
   node.stringV
 
+proc getCharSet*(node: var PrefsNode): var set[char] = 
+  ## Get the `charSetV` field from `node`.
+  node.charSetV
+
+proc getByteSet*(node: var PrefsNode): var set[byte] = 
+  ## Get the `byteSet` field from `node`.
+  node.byteSetV
+
 proc newPInt*(val: int = default int): PrefsNode =
   ## Create a new PrefsNode of `PInt` kind.
   PrefsNode(kind: PInt, intV: val)
+
+proc newPEmpty*(): PrefsNode =
+  ## Create a new PrefsNode of `PEmpty` kind.
+  PrefsNode(kind: PEmpty)
 
 proc newPNil*(): PrefsNode =
   ## Create a new PrefsNode of `PNil` kind.
@@ -127,10 +153,6 @@ proc newPChar*(val: string = default string, start: Natural = 0): PrefsNode =
   ## Create a new PrefsNode of `PChar` kind from the `start` index of `val`.
   PrefsNode(kind: PChar, charV: val[start])
 
-proc newPEmpty*(): PrefsNode =
-  ## Create a new PrefsNode of `PEmpty` kind.
-  PrefsNode(kind: PEmpty)
-
 proc newPFloat*(val: float = default float): PrefsNode =
   ## Create a new PrefsNode of `PFloat` kind.
   PrefsNode(kind: PFloat, floatV: val)
@@ -142,6 +164,17 @@ proc newPObject*(val: PObjectType = default PObjectType): PrefsNode =
 proc newPString*(val: string = default string): PrefsNode =
   ## Create a new PrefsNode of `PString` kind.
   PrefsNode(kind: PString, stringV: val)
+
+proc newPCharSet*(val: set[char] = default set[char]): PrefsNode = 
+  ## Create a new PrefsNode of `PCharSet` kind.
+  PrefsNode(kind: PCharSet, charSetV: val)
+
+proc newPByteSet*(val: set[byte] = default set[byte]): PrefsNode = 
+  ## Create a new PrefsNode of `PCharSet` kind.
+  PrefsNode(kind: PByteSet, byteSetV: val)
+
+proc newPByteSet*[T: not byte](val: set[T]): PrefsNode = 
+  newPByteSet(cast[ptr set[byte]](val.unsafeAddr)[])
 
 proc newPNode*(obj: int): PrefsNode =
   ## Create a new PrefsNode from `obj`.
@@ -171,24 +204,32 @@ proc newPNode*(obj: string): PrefsNode =
   ## Create a new PrefsNode from `obj`.
   newPString(obj)
 
+proc newPNode*(obj: set[char]): PrefsNode =
+  ## Create a new PrefsNode from `obj`.
+  newPCharSet(obj)
+
+proc newPNode*(obj: set[byte]): PrefsNode =
+  ## Create a new PrefsNode from `obj`.
+  newPByteSet(obj)
+
 macro toPrefs*(obj: untyped): PrefsNode =
   ## Converts the given object into a `PrefsNode` if possible
   ## - Arrays are converted into sequences
   ## - `{key: val, ..}` are converted to ordered tables.
-  ## **Example:**
-  ##
-  ## .. code-block:: Nim
-  ##   var table = toPrefs({
-  ##     "lang": "es",
-  ##     "dark": true,
-  ##     "users": @[],
-  ##     "names": [],
-  ##     "keybindings": {: },
-  ##     "scheme": {
-  ##       "background": "#000000",
-  ##       "font": "UbuntuMono"
-  ##     }
-  ##   }).getObject()
+  runnableExamples:
+    let config = toPrefs({
+      "lang": "es",
+      "dark": true,
+      range: {'a'..'z'},
+      numRange: {0..255},
+      users: @[],
+      names: [],
+      keybindings: {:},
+      scheme: {
+        background: "#000000",
+        font: "UbuntuMono"
+      }
+    })
 
   case obj.kind
   of nnkTableConstr: # Object {key: val, ...} or {:}
@@ -203,9 +244,22 @@ macro toPrefs*(obj: untyped): PrefsNode =
         result.add nnkExprColonExpr.newTree(i[0].toStrLit, newCall("toPrefs", i[1]))
 
     result = newCall("newPObject", newCall(bindSym"toOrderedTable", result))
-  of nnkCurly: # Empty object {}
-    obj.expectLen(0)
-    result = newCall("newPObject")
+  of nnkCurly: # Set {a, b..c} or {}
+    if obj.len == 0: raise newException(ValueError, "Ambiguous set, use newPCharSet() or newPByteSet()")
+   
+    case obj[0].kind
+    of nnkCharLit:
+      result = newCall("newPCharSet", obj)
+    of nnkIntLit, nnkUInt8Lit:
+      result = newCall("newPByteSet", obj)
+    of nnkInfix:
+      case obj[0][1].kind
+      of nnkCharLit:
+        result = newCall("newPCharSet", obj)
+      of nnkIntLit, nnkUInt8Lit:
+        result = newCall("newPByteSet", obj)      
+      else: raise newException(ValueError, "Expected char, int or byte, got " & $obj[0][1].kind)
+    else: raise newException(ValueError, "Expected char, range, int or byte, got " & $obj[0].kind)
   of nnkNilLit: # nil
     result = newCall("newPNil")
   of nnkBracket: # Array [ele, ...]
@@ -251,6 +305,10 @@ proc `==`*(node1: PrefsNode, node2: PrefsNode): bool =
     result = node1.getObject() == node2.getObject()
   of PString:
     result = node1.getString() == node2.getString()
+  of PCharSet:
+    result = node1.getCharSet() == node2.getCharSet()
+  of PByteSet:
+    result = node1.getByteSet() == node2.getByteSet()
 
 proc `==`*[T: not PrefsNode](node1: PrefsNode, node2: T): bool =
   ## Checks if two nodes of the same kind have the same value
@@ -281,6 +339,16 @@ proc `$`*(node: PrefsNode): string =
     result = $node.getObject()
   of PString:
     result.addQuoted(node.getString())
+  of PCharSet:
+    if node.getCharSet().len == 0:
+      result = "{c}"
+    else:
+      result = $node.getCharSet()
+  of PByteSet:
+    if node.getByteSet().len == 0:
+      result = "{b}"
+    else:
+      result = $node.getByteSet()
 
 proc `[]`*(node: var PrefsNode, key: string): var PrefsNode =
   ## Access to the value of `key` in `node.obj°ectV`. The value can be modified.
@@ -328,10 +396,37 @@ proc `[]=`*(node: var PrefsNode, key: string, val: PrefsNode) =
 
   node.objectV[key] = val
 
+proc len*(node: var PrefsNode): int = 
+  case node.kind
+  of PSeq:
+    node.getSeq().len
+  of PObject:
+    node.getObject().len
+  of PCharSet:
+    node.getCharSet().len
+  of PByteSet:
+    node.getByteSet().len
+  else:
+    raise newException(ValueError, "Invalid procedure len for PrefsNode of kind " & $node.kind)
+
 proc del*(node: var PrefsNode, key: string) = 
   ## Delete `key` from `node.objectV`.
 
   node.objectV.del(key)
+
+proc delete*(node: var PrefsNode, i: Natural) = 
+  ## Delete the element at `i` from `node.seqV`.
+
+  node.seqV.delete(i)
+
+proc deleted*(node: var PrefsNode, i: Natural): PrefsNode = 
+  ## Returns `node` with `i` index deleted from `node.seqV`. 
+  runnableExamples:
+    var node = [1, 2, 3].newPSeq()
+    assert node.deleted(0) == [2, 3].newPSeq()
+
+  result = node
+  result.seqV.delete(i)
 
 proc add*[T: not PrefsNode](node: var PrefsNode, val: T) = 
   ## Add `node` to `node.seqV`
@@ -341,8 +436,39 @@ proc add*(node: var PrefsNode, val: PrefsNode) =
   ## Add `node` to `node.seqV`
   node.seqV.add val
 
+proc added*[T: not PrefsNode](node: var PrefsNode, val: T): PrefsNode = 
+  ## Returns `node` with `val` added to `node.seqV`.
+  result = node
+  result.seqV.add val.newPNode()
+
+proc added*(node: var PrefsNode, val: PrefsNode): PrefsNode = 
+  ## Returns `node` with `val` added to `node.seqV`.
+  result = node
+  result.seqV.add val
+
 proc contains*(node: PrefsNode, key: string): bool =
-  node.objectV.contains(key)
+  node.getObject().contains(key)
+
+proc contains*(node: PrefsNode, ele: char): bool =
+  node.getCharSet().contains(ele)
+
+proc contains*(node: PrefsNode, ele: byte): bool =
+  node.getByteSet().contains(ele)
+
+proc card*(node: PrefsNode): int = 
+  case node.kind
+  of PCharSet:
+    node.getCharSet().card
+  of PByteSet:
+    node.getByteSet().card
+  else:
+    raise newException(ValueError, "Invalid procedure card for PrefsNode of kind " & $node.kind)
+
+proc incl*(node: var PrefsNode, ele: char) = 
+  node.getCharSet().incl ele
+
+proc excl*(node: var PrefsNode, ele: char) = 
+  node.getCharSet().excl ele
 
 iterator items*(node: PrefsNode): PrefsNode = 
   for i in node.getSeq():
