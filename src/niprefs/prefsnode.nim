@@ -422,8 +422,8 @@ proc delete*(node: var PrefsNode, i: Natural) =
 proc deleted*(node: var PrefsNode, i: Natural): PrefsNode = 
   ## Returns `node` with `i` index deleted from `node.seqV`. 
   runnableExamples:
-    var node = [1, 2, 3].newPSeq()
-    assert node.deleted(0) == [2, 3].newPSeq()
+    var node = toPrefs([1, 2, 3])
+    assert node.deleted(0) == toPrefs([2, 3])
 
   result = node
   result.seqV.delete(i)

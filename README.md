@@ -36,6 +36,8 @@ _NiPrefs_ store your preferences in an `OrderedTable[string, PrefsNode]`, where 
 - `char`
 - `float`
 - `string` (and raw strings)
+- `set[char]`
+- `set[byte]`
 - `OrderedTable[string, PrefsNode]` (nested tables)
 
 

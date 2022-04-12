@@ -17,7 +17,7 @@
 <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:400,500,600' rel='stylesheet' type='text/css'/>
 
 <!-- CSS -->
-<title>src/niprefs/prefsnode</title>
+<title>niprefs/prefsnode</title>
 <link rel="stylesheet" type="text/css" href="../nimdoc.out.css">
 
 <script type="text/javascript" src="../dochack.js"></script>
@@ -69,7 +69,7 @@ window.addEventListener('DOMContentLoaded', main);
 <body>
 <div class="document" id="documentId">
   <div class="container">
-    <h1 class="title">src/niprefs/prefsnode</h1>
+    <h1 class="title">niprefs/prefsnode</h1>
     <div class="row">
   <div class="three columns">
   <div class="theme-switch-wrapper">
@@ -103,14 +103,15 @@ window.addEventListener('DOMContentLoaded', main);
   <ul class="simple simple-toc-section">
       <li><a class="reference" href="#PObjectType"
     title="PObjectType = OrderedTable[string, PrefsNode]">PObjectType</a></li>
-  <li><a class="reference" href="#PrefsNKind"
-    title="PrefsNKind = enum
-  PEmpty, PInt, PNil, PSeq, PBool, PChar, PFloat, PObject, PString">PrefsNKind</a></li>
+  <li><a class="reference" href="#PrefsKind"
+    title="PrefsKind = enum
+  PEmpty, PInt, PNil, PSeq, PBool, PChar, PFloat, PObject, PString, PCharSet,
+  PByteSet">PrefsKind</a></li>
   <li><a class="reference" href="#PrefsNode"
     title="PrefsNode = ref PrefsNodeObj">PrefsNode</a></li>
   <li><a class="reference" href="#PrefsNodeObj"
     title="PrefsNodeObj = object
-  case kind*: PrefsNKind
+  case kind*: PrefsKind
   of PInt:
       intV*: int
 
@@ -136,7 +137,13 @@ window.addEventListener('DOMContentLoaded', main);
       objectV*: PObjectType
 
   of PString:
-      stringV*: string">PrefsNodeObj</a></li>
+      stringV*: string
+
+  of PCharSet:
+      charSetV*: set[char]
+
+  of PByteSet:
+      byteSetV*: set[byte]">PrefsNodeObj</a></li>
   <li><a class="reference" href="#PSeqParam"
     title="PSeqParam = openArray[PrefsNode]">PSeqParam</a></li>
   <li><a class="reference" href="#PSeqType"
@@ -171,10 +178,42 @@ window.addEventListener('DOMContentLoaded', main);
 
   </ul>
   <ul class="simple nested-toc-section">[]=
-      <li><a class="reference" href="#%5B%5D%3D%2CPrefsNode%2Cstring%2CPrefsNode"
+      <li><a class="reference" href="#%5B%5D%3D%2CPrefsNode%2Cint%2CPrefsNode"
+    title="`[]=`(node: var PrefsNode; index: int; val: PrefsNode)">`[]=`(node: var PrefsNode; index: int; val: PrefsNode)</a></li>
+  <li><a class="reference" href="#%5B%5D%3D%2CPrefsNode%2Cstring%2CPrefsNode"
     title="`[]=`(node: var PrefsNode; key: string; val: PrefsNode)">`[]=`(node: var PrefsNode; key: string; val: PrefsNode)</a></li>
+  <li><a class="reference" href="#%5B%5D%3D%2CPrefsNode%2Cint%2CT"
+    title="`[]=`[T: not PrefsNode](node: var PrefsNode; index: int; val: T)">`[]=`[T: not PrefsNode](node: var PrefsNode; index: int; val: T)</a></li>
   <li><a class="reference" href="#%5B%5D%3D%2CPrefsNode%2Cstring%2CT"
     title="`[]=`[T: not PrefsNode](node: var PrefsNode; key: string; val: T)">`[]=`[T: not PrefsNode](node: var PrefsNode; key: string; val: T)</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">add
+      <li><a class="reference" href="#add%2CPrefsNode%2CPrefsNode"
+    title="add(node: var PrefsNode; val: PrefsNode)">add(node: var PrefsNode; val: PrefsNode)</a></li>
+  <li><a class="reference" href="#add%2CPrefsNode%2CT"
+    title="add[T: not PrefsNode](node: var PrefsNode; val: T)">add[T: not PrefsNode](node: var PrefsNode; val: T)</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">added
+      <li><a class="reference" href="#added%2CPrefsNode%2CPrefsNode"
+    title="added(node: var PrefsNode; val: PrefsNode): PrefsNode">added(node: var PrefsNode; val: PrefsNode): PrefsNode</a></li>
+  <li><a class="reference" href="#added%2CPrefsNode%2CT"
+    title="added[T: not PrefsNode](node: var PrefsNode; val: T): PrefsNode">added[T: not PrefsNode](node: var PrefsNode; val: T): PrefsNode</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">card
+      <li><a class="reference" href="#card%2CPrefsNode"
+    title="card(node: PrefsNode): int">card(node: PrefsNode): int</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">contains
+      <li><a class="reference" href="#contains%2CPrefsNode%2Cbyte"
+    title="contains(node: PrefsNode; ele: byte): bool">contains(node: PrefsNode; ele: byte): bool</a></li>
+  <li><a class="reference" href="#contains%2CPrefsNode%2Cchar"
+    title="contains(node: PrefsNode; ele: char): bool">contains(node: PrefsNode; ele: char): bool</a></li>
+  <li><a class="reference" href="#contains%2CPrefsNode%2Cstring"
+    title="contains(node: PrefsNode; key: string): bool">contains(node: PrefsNode; key: string): bool</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">del
@@ -182,39 +221,87 @@ window.addEventListener('DOMContentLoaded', main);
     title="del(node: var PrefsNode; key: string)">del(node: var PrefsNode; key: string)</a></li>
 
   </ul>
+  <ul class="simple nested-toc-section">delete
+      <li><a class="reference" href="#delete%2CPrefsNode%2CNatural"
+    title="delete(node: var PrefsNode; i: Natural)">delete(node: var PrefsNode; i: Natural)</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">deleted
+      <li><a class="reference" href="#deleted%2CPrefsNode%2CNatural"
+    title="deleted(node: var PrefsNode; i: Natural): PrefsNode">deleted(node: var PrefsNode; i: Natural): PrefsNode</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">excl
+      <li><a class="reference" href="#excl%2CPrefsNode%2Cchar"
+    title="excl(node: var PrefsNode; ele: char)">excl(node: var PrefsNode; ele: char)</a></li>
+
+  </ul>
   <ul class="simple nested-toc-section">getBool
       <li><a class="reference" href="#getBool%2CPrefsNode"
     title="getBool(node: PrefsNode): bool">getBool(node: PrefsNode): bool</a></li>
+  <li><a class="reference" href="#getBool%2CPrefsNode_2"
+    title="getBool(node: var PrefsNode): var bool">getBool(node: var PrefsNode): var bool</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">getByteSet
+      <li><a class="reference" href="#getByteSet%2CPrefsNode"
+    title="getByteSet(node: PrefsNode): set[byte]">getByteSet(node: PrefsNode): set[byte]</a></li>
+  <li><a class="reference" href="#getByteSet%2CPrefsNode_2"
+    title="getByteSet(node: var PrefsNode): var set[byte]">getByteSet(node: var PrefsNode): var set[byte]</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">getChar
       <li><a class="reference" href="#getChar%2CPrefsNode"
     title="getChar(node: PrefsNode): char">getChar(node: PrefsNode): char</a></li>
+  <li><a class="reference" href="#getChar%2CPrefsNode_2"
+    title="getChar(node: var PrefsNode): var char">getChar(node: var PrefsNode): var char</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">getCharSet
+      <li><a class="reference" href="#getCharSet%2CPrefsNode"
+    title="getCharSet(node: PrefsNode): set[char]">getCharSet(node: PrefsNode): set[char]</a></li>
+  <li><a class="reference" href="#getCharSet%2CPrefsNode_2"
+    title="getCharSet(node: var PrefsNode): var set[char]">getCharSet(node: var PrefsNode): var set[char]</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">getFloat
       <li><a class="reference" href="#getFloat%2CPrefsNode"
     title="getFloat(node: PrefsNode): float">getFloat(node: PrefsNode): float</a></li>
+  <li><a class="reference" href="#getFloat%2CPrefsNode_2"
+    title="getFloat(node: var PrefsNode): var float">getFloat(node: var PrefsNode): var float</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">getInt
       <li><a class="reference" href="#getInt%2CPrefsNode"
     title="getInt(node: PrefsNode): int">getInt(node: PrefsNode): int</a></li>
+  <li><a class="reference" href="#getInt%2CPrefsNode_2"
+    title="getInt(node: var PrefsNode): var int">getInt(node: var PrefsNode): var int</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">getObject
       <li><a class="reference" href="#getObject%2CPrefsNode"
     title="getObject(node: PrefsNode): PObjectType">getObject(node: PrefsNode): PObjectType</a></li>
+  <li><a class="reference" href="#getObject%2CPrefsNode_2"
+    title="getObject(node: var PrefsNode): var PObjectType">getObject(node: var PrefsNode): var PObjectType</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">getSeq
       <li><a class="reference" href="#getSeq%2CPrefsNode"
     title="getSeq(node: PrefsNode): PSeqType">getSeq(node: PrefsNode): PSeqType</a></li>
+  <li><a class="reference" href="#getSeq%2CPrefsNode_2"
+    title="getSeq(node: var PrefsNode): var PSeqType">getSeq(node: var PrefsNode): var PSeqType</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">getString
       <li><a class="reference" href="#getString%2CPrefsNode"
     title="getString(node: PrefsNode): string">getString(node: PrefsNode): string</a></li>
+  <li><a class="reference" href="#getString%2CPrefsNode_2"
+    title="getString(node: var PrefsNode): var string">getString(node: var PrefsNode): var string</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">incl
+      <li><a class="reference" href="#incl%2CPrefsNode%2Cchar"
+    title="incl(node: var PrefsNode; ele: char)">incl(node: var PrefsNode; ele: char)</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">isEmpty
@@ -227,9 +314,21 @@ window.addEventListener('DOMContentLoaded', main);
     title="isNil(node: PrefsNode): bool">isNil(node: PrefsNode): bool</a></li>
 
   </ul>
+  <ul class="simple nested-toc-section">len
+      <li><a class="reference" href="#len%2CPrefsNode"
+    title="len(node: var PrefsNode): int">len(node: var PrefsNode): int</a></li>
+
+  </ul>
   <ul class="simple nested-toc-section">newPBool
       <li><a class="reference" href="#newPBool%2Cbool"
     title="newPBool(val: bool = default bool): PrefsNode">newPBool(val: bool = default bool): PrefsNode</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">newPByteSet
+      <li><a class="reference" href="#newPByteSet%2Cset%5Bbyte%5D"
+    title="newPByteSet(val: set[byte] = default set[byte]): PrefsNode">newPByteSet(val: set[byte] = default set[byte]): PrefsNode</a></li>
+  <li><a class="reference" href="#newPByteSet%2Cset%5BT%5D"
+    title="newPByteSet[T: not byte](val: set[T]): PrefsNode">newPByteSet[T: not byte](val: set[T]): PrefsNode</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">newPChar
@@ -237,6 +336,11 @@ window.addEventListener('DOMContentLoaded', main);
     title="newPChar(val: char = default char): PrefsNode">newPChar(val: char = default char): PrefsNode</a></li>
   <li><a class="reference" href="#newPChar%2Cstring%2CNatural"
     title="newPChar(val: string = default string; start: Natural = 0): PrefsNode">newPChar(val: string = default string; start: Natural = 0): PrefsNode</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">newPCharSet
+      <li><a class="reference" href="#newPCharSet%2Cset%5Bchar%5D"
+    title="newPCharSet(val: set[char] = default set[char]): PrefsNode">newPCharSet(val: set[char] = default set[char]): PrefsNode</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">newPEmpty
@@ -272,6 +376,10 @@ window.addEventListener('DOMContentLoaded', main);
     title="newPNode(obj: PObjectType): PrefsNode">newPNode(obj: PObjectType): PrefsNode</a></li>
   <li><a class="reference" href="#newPNode%2CPSeqParam"
     title="newPNode(obj: PSeqParam): PrefsNode">newPNode(obj: PSeqParam): PrefsNode</a></li>
+  <li><a class="reference" href="#newPNode%2Cset%5Bbyte%5D"
+    title="newPNode(obj: set[byte]): PrefsNode">newPNode(obj: set[byte]): PrefsNode</a></li>
+  <li><a class="reference" href="#newPNode%2Cset%5Bchar%5D"
+    title="newPNode(obj: set[char]): PrefsNode">newPNode(obj: set[char]): PrefsNode</a></li>
   <li><a class="reference" href="#newPNode%2Cstring"
     title="newPNode(obj: string): PrefsNode">newPNode(obj: string): PrefsNode</a></li>
 
@@ -289,6 +397,22 @@ window.addEventListener('DOMContentLoaded', main);
   <ul class="simple nested-toc-section">newPString
       <li><a class="reference" href="#newPString%2Cstring"
     title="newPString(val: string = default string): PrefsNode">newPString(val: string = default string): PrefsNode</a></li>
+
+  </ul>
+
+  </ul>
+</li>
+<li>
+  <a class="reference reference-toplevel" href="#15" id="65">Iterators</a>
+  <ul class="simple simple-toc-section">
+      <ul class="simple nested-toc-section">items
+      <li><a class="reference" href="#items.i%2CPrefsNode"
+    title="items(node: PrefsNode): PrefsNode">items(node: PrefsNode): PrefsNode</a></li>
+
+  </ul>
+  <ul class="simple nested-toc-section">pairs
+      <li><a class="reference" href="#pairs.i%2CPrefsNode"
+    title="pairs(node: PrefsNode): (string, PrefsNode)">pairs(node: PrefsNode): (string, PrefsNode)</a></li>
 
   </ul>
 
@@ -325,9 +449,10 @@ Prefs ordered table type
 
 </dd>
 </div>
-<div id="PrefsNKind">
-<dt><pre><a href="prefsnode.html#PrefsNKind"><span class="Identifier">PrefsNKind</span></a> <span class="Other">=</span> <span class="Keyword">enum</span>
-  <span class="Identifier">PEmpty</span><span class="Other">,</span> <span class="Identifier">PInt</span><span class="Other">,</span> <span class="Identifier">PNil</span><span class="Other">,</span> <span class="Identifier">PSeq</span><span class="Other">,</span> <span class="Identifier">PBool</span><span class="Other">,</span> <span class="Identifier">PChar</span><span class="Other">,</span> <span class="Identifier">PFloat</span><span class="Other">,</span> <span class="Identifier">PObject</span><span class="Other">,</span> <span class="Identifier">PString</span></pre></dt>
+<div id="PrefsKind">
+<dt><pre><a href="prefsnode.html#PrefsKind"><span class="Identifier">PrefsKind</span></a> <span class="Other">=</span> <span class="Keyword">enum</span>
+  <span class="Identifier">PEmpty</span><span class="Other">,</span> <span class="Identifier">PInt</span><span class="Other">,</span> <span class="Identifier">PNil</span><span class="Other">,</span> <span class="Identifier">PSeq</span><span class="Other">,</span> <span class="Identifier">PBool</span><span class="Other">,</span> <span class="Identifier">PChar</span><span class="Other">,</span> <span class="Identifier">PFloat</span><span class="Other">,</span> <span class="Identifier">PObject</span><span class="Other">,</span> <span class="Identifier">PString</span><span class="Other">,</span> <span class="Identifier">PCharSet</span><span class="Other">,</span>
+  <span class="Identifier">PByteSet</span></pre></dt>
 <dd>
 
 Valid node kinds for PrefsNode
@@ -344,7 +469,7 @@ Reference to PrefsNodeObj
 </div>
 <div id="PrefsNodeObj">
 <dt><pre><a href="prefsnode.html#PrefsNodeObj"><span class="Identifier">PrefsNodeObj</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
-  <span class="Keyword">case</span> <span class="Identifier">kind</span><span class="Operator">*</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNKind"><span class="Identifier">PrefsNKind</span></a>
+  <span class="Keyword">case</span> <span class="Identifier">kind</span><span class="Operator">*</span><span class="Other">:</span> <a href="prefsnode.html#PrefsKind"><span class="Identifier">PrefsKind</span></a>
   <span class="Keyword">of</span> <span class="Identifier">PInt</span><span class="Other">:</span>
       <span class="Identifier">intV</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">int</span>
 
@@ -371,6 +496,12 @@ Reference to PrefsNodeObj
 
   <span class="Keyword">of</span> <span class="Identifier">PString</span><span class="Other">:</span>
       <span class="Identifier">stringV</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
+
+  <span class="Keyword">of</span> <span class="Identifier">PCharSet</span><span class="Other">:</span>
+      <span class="Identifier">charSetV</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">char</span><span class="Other">]</span>
+
+  <span class="Keyword">of</span> <span class="Identifier">PByteSet</span><span class="Other">:</span>
+      <span class="Identifier">byteSetV</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">byte</span><span class="Other">]</span>
 
   </pre></dt>
 <dd>
@@ -426,6 +557,15 @@ Checks if two nodes of the same kind have the same value
 
 </dd>
 </div>
+<div id="[]=,PrefsNode,int,PrefsNode">
+<dt><pre><span class="Keyword">proc</span> <a href="#%5B%5D%3D%2CPrefsNode%2Cint%2CPrefsNode"><span class="Identifier">`[]=`</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Change the value at <tt class="docutils literal"><span class="pre"><span class="Identifier">index</span></span></tt> in <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span><span class="Operator">.</span><span class="Identifier">seqV</span></span></tt> for <tt class="docutils literal"><span class="pre"><span class="Identifier">val</span></span></tt>.
+
+</dd>
+</div>
 <div id="[]=,PrefsNode,string,PrefsNode">
 <dt><pre><span class="Keyword">proc</span> <a href="#%5B%5D%3D%2CPrefsNode%2Cstring%2CPrefsNode"><span class="Identifier">`[]=`</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
@@ -438,11 +578,19 @@ Change the value of the key in node's table
 
 </dd>
 </div>
+<div id="[]=,PrefsNode,int,T">
+<dt><pre><span class="Keyword">proc</span> <a href="#%5B%5D%3D%2CPrefsNode%2Cint%2CT"><span class="Identifier">`[]=`</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">:</span> <span class="Keyword">not</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">]</span><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">index</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span></pre></dt>
+<dd>
+
+Change the value at <tt class="docutils literal"><span class="pre"><span class="Identifier">index</span></span></tt> in <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span><span class="Operator">.</span><span class="Identifier">seqV</span></span></tt> for <tt class="docutils literal"><span class="pre"><span class="Identifier">val</span></span></tt>. The given value is converted to <tt class="docutils literal"><span class="pre"><span class="Identifier">PrefsNode</span></span></tt> with <tt class="docutils literal"><span class="pre"><span class="Identifier">newPNode</span></span></tt>
+
+</dd>
+</div>
 <div id="[]=,PrefsNode,string,T">
 <dt><pre><span class="Keyword">proc</span> <a href="#%5B%5D%3D%2CPrefsNode%2Cstring%2CT"><span class="Identifier">`[]=`</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">:</span> <span class="Keyword">not</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">]</span><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span></pre></dt>
 <dd>
 
-Change the value of the key in node's table The given value is converted to PrefsNode` with <tt class="docutils literal"><span class="pre"><span class="Identifier">newPNode</span></span></tt>
+Change the value of the key in node's table The given value is converted to <tt class="docutils literal"><span class="pre"><span class="Identifier">PrefsNode</span></span></tt> with <tt class="docutils literal"><span class="pre"><span class="Identifier">newPNode</span></span></tt>
 <p><strong class="examples_text">Example:</strong></p>
 <pre class="listing"><span class="Keyword">var</span> <span class="Identifier">table</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span> <span class="Punctuation">{</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;en&quot;</span><span class="Punctuation">}</span>
 <span class="Identifier">table</span><span class="Punctuation">[</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">]</span> <span class="Operator">=</span> <span class="StringLit">&quot;es&quot;</span></pre>
@@ -484,6 +632,71 @@ Access to <tt class="docutils literal"><span class="pre"><span class="Identifier
 
 </dd>
 </div>
+<div id="add,PrefsNode,PrefsNode">
+<dt><pre><span class="Keyword">proc</span> <a href="#add%2CPrefsNode%2CPrefsNode"><span class="Identifier">add</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Add <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span></span></tt> to <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span><span class="Operator">.</span><span class="Identifier">seqV</span></span></tt>
+
+</dd>
+</div>
+<div id="add,PrefsNode,T">
+<dt><pre><span class="Keyword">proc</span> <a href="#add%2CPrefsNode%2CT"><span class="Identifier">add</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">:</span> <span class="Keyword">not</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">]</span><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span></pre></dt>
+<dd>
+
+Add <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span></span></tt> to <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span><span class="Operator">.</span><span class="Identifier">seqV</span></span></tt>
+
+</dd>
+</div>
+<div id="added,PrefsNode,PrefsNode">
+<dt><pre><span class="Keyword">proc</span> <a href="#added%2CPrefsNode%2CPrefsNode"><span class="Identifier">added</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Returns <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span></span></tt> with <tt class="docutils literal"><span class="pre"><span class="Identifier">val</span></span></tt> added to <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span><span class="Operator">.</span><span class="Identifier">seqV</span></span></tt>.
+
+</dd>
+</div>
+<div id="added,PrefsNode,T">
+<dt><pre><span class="Keyword">proc</span> <a href="#added%2CPrefsNode%2CT"><span class="Identifier">added</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">:</span> <span class="Keyword">not</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">]</span><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a></pre></dt>
+<dd>
+
+Returns <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span></span></tt> with <tt class="docutils literal"><span class="pre"><span class="Identifier">val</span></span></tt> added to <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span><span class="Operator">.</span><span class="Identifier">seqV</span></span></tt>.
+
+</dd>
+</div>
+<div id="card,PrefsNode">
+<dt><pre><span class="Keyword">proc</span> <a href="#card%2CPrefsNode"><span class="Identifier">card</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+
+</dd>
+</div>
+<div id="contains,PrefsNode,byte">
+<dt><pre><span class="Keyword">proc</span> <a href="#contains%2CPrefsNode%2Cbyte"><span class="Identifier">contains</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">ele</span><span class="Other">:</span> <span class="Identifier">byte</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+
+</dd>
+</div>
+<div id="contains,PrefsNode,char">
+<dt><pre><span class="Keyword">proc</span> <a href="#contains%2CPrefsNode%2Cchar"><span class="Identifier">contains</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">ele</span><span class="Other">:</span> <span class="Identifier">char</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+
+</dd>
+</div>
+<div id="contains,PrefsNode,string">
+<dt><pre><span class="Keyword">proc</span> <a href="#contains%2CPrefsNode%2Cstring"><span class="Identifier">contains</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+
+</dd>
+</div>
 <div id="del,PrefsNode,string">
 <dt><pre><span class="Keyword">proc</span> <a href="#del%2CPrefsNode%2Cstring"><span class="Identifier">del</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
@@ -492,11 +705,62 @@ Delete <tt class="docutils literal"><span class="pre"><span class="Identifier">k
 
 </dd>
 </div>
+<div id="delete,PrefsNode,Natural">
+<dt><pre><span class="Keyword">proc</span> <a href="#delete%2CPrefsNode%2CNatural"><span class="Identifier">delete</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">i</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Delete the element at <tt class="docutils literal"><span class="pre"><span class="Identifier">i</span></span></tt> from <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span><span class="Operator">.</span><span class="Identifier">seqV</span></span></tt>.
+
+</dd>
+</div>
+<div id="deleted,PrefsNode,Natural">
+<dt><pre><span class="Keyword">proc</span> <a href="#deleted%2CPrefsNode%2CNatural"><span class="Identifier">deleted</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">i</span><span class="Other">:</span> <span class="Identifier">Natural</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Returns <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span></span></tt> with <tt class="docutils literal"><span class="pre"><span class="Identifier">i</span></span></tt> index deleted from <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span><span class="Operator">.</span><span class="Identifier">seqV</span></span></tt>. 
+<p><strong class="examples_text">Example:</strong></p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">node</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">[</span><span class="DecNumber">1</span><span class="Punctuation">,</span> <span class="DecNumber">2</span><span class="Punctuation">,</span> <span class="DecNumber">3</span><span class="Punctuation">]</span><span class="Punctuation">)</span>
+<span class="Identifier">assert</span> <span class="Identifier">node</span><span class="Operator">.</span><span class="Identifier">deleted</span><span class="Punctuation">(</span><span class="DecNumber">0</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">[</span><span class="DecNumber">2</span><span class="Punctuation">,</span> <span class="DecNumber">3</span><span class="Punctuation">]</span><span class="Punctuation">)</span></pre>
+
+</dd>
+</div>
+<div id="excl,PrefsNode,char">
+<dt><pre><span class="Keyword">proc</span> <a href="#excl%2CPrefsNode%2Cchar"><span class="Identifier">excl</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">ele</span><span class="Other">:</span> <span class="Identifier">char</span><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+
+</dd>
+</div>
 <div id="getBool,PrefsNode">
 <dt><pre><span class="Keyword">proc</span> <a href="#getBool%2CPrefsNode"><span class="Identifier">getBool</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
-Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">boolV</span></span></tt> field from a <tt class="docutils literal"><span class="pre"><span class="Identifier">PrefsNode</span></span></tt>.
+Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">boolV</span></span></tt> field from <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span></span></tt>.
+
+</dd>
+</div>
+<div id="getBool,PrefsNode_2">
+<dt><pre><span class="Keyword">proc</span> <a href="#getBool%2CPrefsNode_2"><span class="Identifier">getBool</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+
+</dd>
+</div>
+<div id="getByteSet,PrefsNode">
+<dt><pre><span class="Keyword">proc</span> <a href="#getByteSet%2CPrefsNode"><span class="Identifier">getByteSet</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">byte</span><span class="Other">]</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">byteSet</span></span></tt> field from <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span></span></tt>.
+
+</dd>
+</div>
+<div id="getByteSet,PrefsNode_2">
+<dt><pre><span class="Keyword">proc</span> <a href="#getByteSet%2CPrefsNode_2"><span class="Identifier">getByteSet</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">byte</span><span class="Other">]</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
 
 </dd>
 </div>
@@ -504,7 +768,31 @@ Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">
 <dt><pre><span class="Keyword">proc</span> <a href="#getChar%2CPrefsNode"><span class="Identifier">getChar</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">char</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
-Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">charV</span></span></tt> field from a <tt class="docutils literal"><span class="pre"><span class="Identifier">PrefsNode</span></span></tt>.
+Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">charV</span></span></tt> field from <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span></span></tt>.
+
+</dd>
+</div>
+<div id="getChar,PrefsNode_2">
+<dt><pre><span class="Keyword">proc</span> <a href="#getChar%2CPrefsNode_2"><span class="Identifier">getChar</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">char</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+
+</dd>
+</div>
+<div id="getCharSet,PrefsNode">
+<dt><pre><span class="Keyword">proc</span> <a href="#getCharSet%2CPrefsNode"><span class="Identifier">getCharSet</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">char</span><span class="Other">]</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">charSetV</span></span></tt> field from <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span></span></tt>.
+
+</dd>
+</div>
+<div id="getCharSet,PrefsNode_2">
+<dt><pre><span class="Keyword">proc</span> <a href="#getCharSet%2CPrefsNode_2"><span class="Identifier">getCharSet</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">char</span><span class="Other">]</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
 
 </dd>
 </div>
@@ -512,7 +800,15 @@ Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">
 <dt><pre><span class="Keyword">proc</span> <a href="#getFloat%2CPrefsNode"><span class="Identifier">getFloat</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
-Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">floatV</span></span></tt> field from a <tt class="docutils literal"><span class="pre"><span class="Identifier">PrefsNode</span></span></tt>.
+Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">floatV</span></span></tt> field from <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span></span></tt>.
+
+</dd>
+</div>
+<div id="getFloat,PrefsNode_2">
+<dt><pre><span class="Keyword">proc</span> <a href="#getFloat%2CPrefsNode_2"><span class="Identifier">getFloat</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">float</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
 
 </dd>
 </div>
@@ -520,7 +816,15 @@ Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">
 <dt><pre><span class="Keyword">proc</span> <a href="#getInt%2CPrefsNode"><span class="Identifier">getInt</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
-Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">intV</span></span></tt> field from a <tt class="docutils literal"><span class="pre"><span class="Identifier">PrefsNode</span></span></tt>.
+Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">intV</span></span></tt> field from <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span></span></tt>.
+
+</dd>
+</div>
+<div id="getInt,PrefsNode_2">
+<dt><pre><span class="Keyword">proc</span> <a href="#getInt%2CPrefsNode_2"><span class="Identifier">getInt</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">int</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
 
 </dd>
 </div>
@@ -528,7 +832,15 @@ Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">
 <dt><pre><span class="Keyword">proc</span> <a href="#getObject%2CPrefsNode"><span class="Identifier">getObject</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
-Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">objectV</span></span></tt> field from a <tt class="docutils literal"><span class="pre"><span class="Identifier">PrefsNode</span></span></tt>.
+Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">objectV</span></span></tt> field from <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span></span></tt>.
+
+</dd>
+</div>
+<div id="getObject,PrefsNode_2">
+<dt><pre><span class="Keyword">proc</span> <a href="#getObject%2CPrefsNode_2"><span class="Identifier">getObject</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
 
 </dd>
 </div>
@@ -536,7 +848,15 @@ Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">
 <dt><pre><span class="Keyword">proc</span> <a href="#getSeq%2CPrefsNode"><span class="Identifier">getSeq</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PSeqType"><span class="Identifier">PSeqType</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
-Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">seqV</span></span></tt> field from a <tt class="docutils literal"><span class="pre"><span class="Identifier">PrefsNode</span></span></tt>.
+Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">seqV</span></span></tt> field from <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span></span></tt>.
+
+</dd>
+</div>
+<div id="getSeq,PrefsNode_2">
+<dt><pre><span class="Keyword">proc</span> <a href="#getSeq%2CPrefsNode_2"><span class="Identifier">getSeq</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PSeqType"><span class="Identifier">PSeqType</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
 
 </dd>
 </div>
@@ -544,7 +864,23 @@ Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">
 <dt><pre><span class="Keyword">proc</span> <a href="#getString%2CPrefsNode"><span class="Identifier">getString</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
-Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">stringV</span></span></tt> field from a <tt class="docutils literal"><span class="pre"><span class="Identifier">PrefsNode</span></span></tt>.
+Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">stringV</span></span></tt> field from <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span></span></tt>.
+
+</dd>
+</div>
+<div id="getString,PrefsNode_2">
+<dt><pre><span class="Keyword">proc</span> <a href="#getString%2CPrefsNode_2"><span class="Identifier">getString</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">string</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+
+</dd>
+</div>
+<div id="incl,PrefsNode,char">
+<dt><pre><span class="Keyword">proc</span> <a href="#incl%2CPrefsNode%2Cchar"><span class="Identifier">incl</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">ele</span><span class="Other">:</span> <span class="Identifier">char</span><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
 
 </dd>
 </div>
@@ -564,11 +900,36 @@ Check if a <tt class="docutils literal"><span class="pre"><span class="Identifie
 
 </dd>
 </div>
+<div id="len,PrefsNode">
+<dt><pre><span class="Keyword">proc</span> <a href="#len%2CPrefsNode"><span class="Identifier">len</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+
+</dd>
+</div>
 <div id="newPBool,bool">
 <dt><pre><span class="Keyword">proc</span> <a href="#newPBool%2Cbool"><span class="Identifier">newPBool</span></a><span class="Other">(</span><span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">bool</span> <span class="Other">=</span> <span class="Identifier">default</span> <span class="Identifier">bool</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 Create a new PrefsNode of <tt class="docutils literal"><span class="pre"><span class="Identifier">PBool</span></span></tt> kind.
+
+</dd>
+</div>
+<div id="newPByteSet,set[byte]">
+<dt><pre><span class="Keyword">proc</span> <a href="#newPByteSet%2Cset%5Bbyte%5D"><span class="Identifier">newPByteSet</span></a><span class="Other">(</span><span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">byte</span><span class="Other">]</span> <span class="Other">=</span> <span class="Identifier">default</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">byte</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Create a new PrefsNode of <tt class="docutils literal"><span class="pre"><span class="Identifier">PCharSet</span></span></tt> kind.
+
+</dd>
+</div>
+<div id="newPByteSet,set[T]">
+<dt><pre><span class="Keyword">proc</span> <a href="#newPByteSet%2Cset%5BT%5D"><span class="Identifier">newPByteSet</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">:</span> <span class="Keyword">not</span> <span class="Identifier">byte</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a></pre></dt>
+<dd>
+
+
 
 </dd>
 </div>
@@ -586,6 +947,15 @@ Create a new PrefsNode of <tt class="docutils literal"><span class="pre"><span c
 <dd>
 
 Create a new PrefsNode of <tt class="docutils literal"><span class="pre"><span class="Identifier">PChar</span></span></tt> kind from the <tt class="docutils literal"><span class="pre"><span class="Identifier">start</span></span></tt> index of <tt class="docutils literal"><span class="pre"><span class="Identifier">val</span></span></tt>.
+
+</dd>
+</div>
+<div id="newPCharSet,set[char]">
+<dt><pre><span class="Keyword">proc</span> <a href="#newPCharSet%2Cset%5Bchar%5D"><span class="Identifier">newPCharSet</span></a><span class="Other">(</span><span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">char</span><span class="Other">]</span> <span class="Other">=</span> <span class="Identifier">default</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">char</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Create a new PrefsNode of <tt class="docutils literal"><span class="pre"><span class="Identifier">PCharSet</span></span></tt> kind.
 
 </dd>
 </div>
@@ -669,6 +1039,22 @@ Create a new PrefsNode from <tt class="docutils literal"><span class="pre"><span
 
 </dd>
 </div>
+<div id="newPNode,set[byte]">
+<dt><pre><span class="Keyword">proc</span> <a href="#newPNode%2Cset%5Bbyte%5D"><span class="Identifier">newPNode</span></a><span class="Other">(</span><span class="Identifier">obj</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">byte</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Create a new PrefsNode from <tt class="docutils literal"><span class="pre"><span class="Identifier">obj</span></span></tt>.
+
+</dd>
+</div>
+<div id="newPNode,set[char]">
+<dt><pre><span class="Keyword">proc</span> <a href="#newPNode%2Cset%5Bchar%5D"><span class="Identifier">newPNode</span></a><span class="Other">(</span><span class="Identifier">obj</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">char</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Create a new PrefsNode from <tt class="docutils literal"><span class="pre"><span class="Identifier">obj</span></span></tt>.
+
+</dd>
+</div>
 <div id="newPNode,string">
 <dt><pre><span class="Keyword">proc</span> <a href="#newPNode%2Cstring"><span class="Identifier">newPNode</span></a><span class="Other">(</span><span class="Identifier">obj</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
@@ -705,6 +1091,27 @@ Create a new PrefsNode of <tt class="docutils literal"><span class="pre"><span c
 </div>
 
 </dl></div>
+<div class="section" id="15">
+<h1><a class="toc-backref" href="#15">Iterators</a></h1>
+<dl class="item">
+<div id="items.i,PrefsNode">
+<dt><pre><span class="Keyword">iterator</span> <a href="#items.i%2CPrefsNode"><span class="Identifier">items</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+
+</dd>
+</div>
+<div id="pairs.i,PrefsNode">
+<dt><pre><span class="Keyword">iterator</span> <a href="#pairs.i%2CPrefsNode"><span class="Identifier">pairs</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Identifier">string</span><span class="Other">,</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+
+</dd>
+</div>
+
+</dl></div>
 <div class="section" id="17">
 <h1><a class="toc-backref" href="#17">Macros</a></h1>
 <dl class="item">
@@ -715,18 +1122,21 @@ Create a new PrefsNode of <tt class="docutils literal"><span class="pre"><span c
 Converts the given object into a <tt class="docutils literal"><span class="pre"><span class="Identifier">PrefsNode</span></span></tt> if possible<ul class="simple"><li>Arrays are converted into sequences</li>
 <li><tt class="docutils literal"><span class="pre"><span class="Punctuation">{</span><span class="Identifier">key</span><span class="Punctuation">:</span> <span class="Identifier">val</span><span class="Punctuation">,</span> <span class="Operator">..</span><span class="Punctuation">}</span></span></tt> are converted to ordered tables.</li>
 </ul>
-<p><strong>Example:</strong></p>
-<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">table</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
+
+<p><strong class="examples_text">Example:</strong></p>
+<pre class="listing"><span class="Keyword">let</span> <span class="Identifier">config</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
   <span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;es&quot;</span><span class="Punctuation">,</span>
   <span class="StringLit">&quot;dark&quot;</span><span class="Punctuation">:</span> <span class="Identifier">true</span><span class="Punctuation">,</span>
-  <span class="StringLit">&quot;users&quot;</span><span class="Punctuation">:</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="Punctuation">]</span><span class="Punctuation">,</span>
-  <span class="StringLit">&quot;names&quot;</span><span class="Punctuation">:</span> <span class="Punctuation">[</span><span class="Punctuation">]</span><span class="Punctuation">,</span>
-  <span class="StringLit">&quot;keybindings&quot;</span><span class="Punctuation">:</span> <span class="Punctuation">{</span><span class="Punctuation">:</span> <span class="Punctuation">}</span><span class="Punctuation">,</span>
-  <span class="StringLit">&quot;scheme&quot;</span><span class="Punctuation">:</span> <span class="Punctuation">{</span>
-    <span class="StringLit">&quot;background&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;#000000&quot;</span><span class="Punctuation">,</span>
-    <span class="StringLit">&quot;font&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;UbuntuMono&quot;</span>
+  <span class="Identifier">range</span><span class="Punctuation">:</span> <span class="Punctuation">{</span><span class="CharLit">'a'</span><span class="Operator">..</span><span class="CharLit">'z'</span><span class="Punctuation">}</span><span class="Punctuation">,</span>
+  <span class="Identifier">numRange</span><span class="Punctuation">:</span> <span class="Punctuation">{</span><span class="FloatNumber">0.</span><span class="Operator">.</span><span class="DecNumber">255</span><span class="Punctuation">}</span><span class="Punctuation">,</span>
+  <span class="Identifier">users</span><span class="Punctuation">:</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="Punctuation">]</span><span class="Punctuation">,</span>
+  <span class="Identifier">names</span><span class="Punctuation">:</span> <span class="Punctuation">[</span><span class="Punctuation">]</span><span class="Punctuation">,</span>
+  <span class="Identifier">keybindings</span><span class="Punctuation">:</span> <span class="Punctuation">{</span><span class="Punctuation">:</span><span class="Punctuation">}</span><span class="Punctuation">,</span>
+  <span class="Identifier">scheme</span><span class="Punctuation">:</span> <span class="Punctuation">{</span>
+    <span class="Identifier">background</span><span class="Punctuation">:</span> <span class="StringLit">&quot;#000000&quot;</span><span class="Punctuation">,</span>
+    <span class="Identifier">font</span><span class="Punctuation">:</span> <span class="StringLit">&quot;UbuntuMono&quot;</span>
   <span class="Punctuation">}</span>
-<span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Operator">.</span><span class="Identifier">getObject</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
+<span class="Punctuation">}</span><span class="Punctuation">)</span></pre>
 
 </dd>
 </div>
@@ -740,7 +1150,7 @@ Converts the given object into a <tt class="docutils literal"><span class="pre">
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-03-27 16:20:38 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-04-12 02:28:15 UTC</small>
       </div>
     </div>
   </div>
