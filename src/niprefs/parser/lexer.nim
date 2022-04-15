@@ -17,7 +17,7 @@ type
     CURLYOPEN ## {
     CURLYCLOSE ## }
 
-    IDEN ## Identifier (key)
+    IDEN ## Identifier
     SPACE ## One or more spaces/tabs
 
     # Values

@@ -2,7 +2,7 @@
 
 ## To Generate Documentation
 ```sh
-nim doc --project --outdir:docs src/niprefs.nim
+nim doc --git.url:https://github.com/Patitotective/niprefs --project --outdir:docs src/niprefs.nim
 ```
 
 ## Parser
