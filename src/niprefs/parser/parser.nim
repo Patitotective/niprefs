@@ -126,7 +126,7 @@ proc parseVal(token: PToken): PrefsNode =
 
 proc add(data: var PParseData, key: string, val: PrefsNode) =
   ## Add key an val to `data.table` or to `data.tableData.child` depending on `data.tableData.inside`.
-  let key = key.strip()
+  let key = key.strip().nimIdentNormalize()
 
   if data.inObj:
     data.tableData.top[key] = val

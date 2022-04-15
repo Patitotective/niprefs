@@ -11,7 +11,8 @@ import niprefs
 const path = "Prefs/Prefs/settings.niprefs"
 
 let defaultPrefs = toPrefs {
-  lang: "en",
+  lang: "es",
+  la_ng: "en", # Overwrites lang
   dark: true,
   keybindings: [],
   users: {:},
@@ -38,7 +39,7 @@ test "can read":
   check prefs.content == prefs.table
 
 test "can write":
-  prefs["lang"] = "es"
+  prefs["l_A_n_G"] = "es" # Keys are normalized as nim identifiers
   prefs.table["lang"] = "es".toPrefs
 
   prefs["scheme/font/size"] = 20

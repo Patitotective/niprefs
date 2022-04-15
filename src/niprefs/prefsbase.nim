@@ -21,14 +21,14 @@ proc get(table: PObjectType, key: string): PrefsNode =
   if keyPathSep in key:
     table.getNested(key.split(keyPathSep))
   else:
-    table[key]
+    table[key.nimIdentNormalize()]
 
 proc change(table: PObjectType, key: string, val: PrefsNode): PObjectType = 
   if keyPathSep in key:
     result = table.changeNested(key.split(keyPathSep), val)
   else:
     result = table
-    result[key] = val
+    result[key.nimIdentNormalize()] = val
 
 proc validateKey(key: string) = 
   ## Validates if a key is a valid (Nim) identifier.  
@@ -68,15 +68,16 @@ proc toString*(table: PObjectType, depth: int = 0): string =
   let indent = indentChar.repeat depth
 
   for key, val in table.pairs:
+    let key = key.strip().nimIdentNormalize()
     validateKey(key)
     if val.kind == PObject and val.objectV.len > 0:
-      result.add &"{indent}{key.strip}{sepChar}{continueChar}{endChar}"
+      result.add &"{indent}{key}{sepChar}{continueChar}{endChar}"
       result.add toString(val.objectV, depth = depth+1)
     else:
       if val.kind == PEmpty:
         let val = newPNil()
 
-      result.add &"{indent}{key.strip}{sepChar}{val}{endChar}"
+      result.add &"{indent}{key}{sepChar}{val}{endChar}"
 
 proc toString*(node: PrefsNode, depth: int = 0): string =
   ## Same as `toString(node.getObject(), depth)`.
@@ -84,7 +85,6 @@ proc toString*(node: PrefsNode, depth: int = 0): string =
 
 proc create*(prefs: PrefsBase, table = prefs.table) =
   ## Checks that all directories in `prefs.path` exists and writes `table.toString()` into it.
-
   prefs.path.checkFile()
   writeFile(prefs.path, table.toString())
 
@@ -93,7 +93,7 @@ proc checkFile*(prefs: PrefsBase) =
   if not fileExists(prefs.path):
     prefs.create()
 
-proc write*[T](prefs: PrefsBase, key: string, val: T) =
+proc write*[T: not PrefsNode](prefs: PrefsBase, key: string, val: T) =
   ## Changes `key` for `newPNode(val)` in the *prefs* file.
   ##
   ## Supports *key path*.
@@ -123,7 +123,7 @@ proc write*(prefs: PrefsBase, key: string, val: PrefsNode) =
 
   prefs.create(prefs.content.change(key, val))
 
-proc write*[T](prefs: PrefsBase, keys: varargs[string], val: T) =
+proc write*[T: not PrefsNode](prefs: PrefsBase, keys: varargs[string], val: T) =
   ## Changes the last key from `keys`, the other elements being it's path, for `newPNode(val)` in the *prefs* file.
   runnableExamples:
     var prefs = initPrefsBase(table = toPrefs({"lang": "es", "theme": "dark"}), 
@@ -173,7 +173,7 @@ proc writeMany*(prefs: PrefsBase, items: PObjectType) =
 
   prefs.create(table)
 
-template writeMany*(prefs: PrefsBase, items: PrefsNode) =
+proc writeMany*(prefs: PrefsBase, items: PrefsNode) =
   ## Same as `prefs.writeMany(prefs, items.getObject())`
   prefs.writeMany(items.getObject())
 
@@ -192,7 +192,7 @@ proc delPath*(prefs: PrefsBase, keys: varargs[string]) =
 
   var content = prefs.content
 
-  var keys = keys.toSeq()
+  var keys = keys.toSeq().mapIt(it.nimIdentNormalize())
   var table = content[keys[0]]
   keys.delete(0)
 
@@ -223,7 +223,7 @@ proc delKey*(prefs: PrefsBase, key: string) =
     prefs.delPath(key.split(keyPathSep))
   else:
     var content = prefs.content
-    content.del(key)
+    content.del(key.nimIdentNormalize())
     prefs.create(content)
 
 proc getPath*(prefs: PrefsBase, keys: varargs[string]): PrefsNode =
@@ -285,7 +285,7 @@ proc hasKey*(prefs: PrefsBase, key: string): bool =
   if keyPathSep in key:
     prefs.hasPath(key.split(keyPathSep))
   else:
-    prefs.content.hasKey(key)
+    prefs.content.hasKey(key.nimIdentNormalize())
 
 proc overwrite*(prefs: PrefsBase, key: string) =
   ## Overwrites `key` in the *prefs* file with it's default value (from `prefs.table`).

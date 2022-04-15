@@ -1,4 +1,4 @@
-import std/[macros, tables]
+import std/[strutils, macros, tables]
 
 type
   PSeqParam* = openArray[PrefsNode] ## Used for as the parameter for sequence type
@@ -21,18 +21,16 @@ type
   PrefsNode* = ref PrefsNodeObj ## Reference to PrefsNodeObj
   PrefsNodeObj* = object ## Object variant
     case kind*: PrefsKind
+    of PEmpty, PNil:
+      discard
     of PInt:
       intV*: int
-    of PNil:
-      discard
     of PSeq:
       seqV*: PSeqType
     of PBool:
       boolV*: bool
     of PChar:
       charV*: char
-    of PEmpty:
-      discard
     of PFloat:
       floatV*: float
     of PObject:
@@ -125,10 +123,6 @@ proc getByteSet*(node: var PrefsNode): var set[byte] =
   ## Get the `byteSet` field from `node`.
   node.byteSetV
 
-proc newPInt*(val: int = default int): PrefsNode =
-  ## Create a new PrefsNode of `PInt` kind.
-  PrefsNode(kind: PInt, intV: val)
-
 proc newPEmpty*(): PrefsNode =
   ## Create a new PrefsNode of `PEmpty` kind.
   PrefsNode(kind: PEmpty)
@@ -136,6 +130,10 @@ proc newPEmpty*(): PrefsNode =
 proc newPNil*(): PrefsNode =
   ## Create a new PrefsNode of `PNil` kind.
   PrefsNode(kind: PNil)
+
+proc newPInt*(val: int = default int): PrefsNode =
+  ## Create a new PrefsNode of `PInt` kind.
+  PrefsNode(kind: PInt, intV: val)
 
 proc newPSeq*(val: PSeqParam = default PSeqType): PrefsNode =
   ## Create a new PrefsNode of `PSeq` kind.
@@ -239,9 +237,9 @@ macro toPrefs*(obj: untyped): PrefsNode =
     for i in obj:
       i.expectKind(nnkExprColonExpr) # Expects key:val
       if i[0].kind == nnkStrLit:
-        result.add nnkExprColonExpr.newTree(i[0], newCall("toPrefs", i[1]))
+        result.add nnkExprColonExpr.newTree(i[0].strVal.nimIdentNormalize().newStrLitNode(), newCall("toPrefs", i[1]))
       elif i[0].kind == nnkIdent:
-        result.add nnkExprColonExpr.newTree(i[0].toStrLit, newCall("toPrefs", i[1]))
+        result.add nnkExprColonExpr.newTree(i[0].toStrLit.strVal.nimIdentNormalize().newStrLitNode(), newCall("toPrefs", i[1]))
 
     result = newCall("newPObject", newCall(bindSym"toOrderedTable", result))
   of nnkCurly: # Set {a, b..c} or {}
@@ -321,6 +319,8 @@ proc `$`*(node: PrefsNode): string =
   ## Return the value of the node as a string.
 
   case node.kind:
+  of PEmpty:
+    result = "PEmpty"
   of PInt:
     result = $node.getInt()
   of PNil:
@@ -331,8 +331,6 @@ proc `$`*(node: PrefsNode): string =
     result = $node.getBool()
   of PChar:
     result.addQuoted(node.getChar())
-  of PEmpty:
-    result = "PEmpty"
   of PFloat:
     result = $node.getFloat()
   of PObject:
