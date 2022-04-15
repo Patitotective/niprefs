@@ -1,10 +1,7 @@
 Prefs	niprefs.html#Prefs	niprefs: Prefs	
 initPrefs	niprefs.html#initPrefs,PObjectType,string	niprefs: initPrefs(table: PObjectType = default PObjectType;\n          path: string = &quot;prefs.niprefs&quot;): Prefs	
 initPrefs	niprefs.html#initPrefs,PrefsNode,string	niprefs: initPrefs(table: PrefsNode = newPObject(); path: string = &quot;prefs.niprefs&quot;): Prefs	
-len	niprefs.html#len.t,Prefs	niprefs: len(prefs: Prefs): int	
-pairs	niprefs.html#pairs.t,Prefs	niprefs: pairs(prefs: Prefs)	
-keys	niprefs.html#keys.t,Prefs	niprefs: keys(prefs: Prefs)	
-values	niprefs.html#values.t,Prefs	niprefs: values(prefs: Prefs)	
+len	niprefs.html#len,Prefs	niprefs: len(prefs: Prefs): int	
 `$`	niprefs.html#$,Prefs	niprefs: `$`(prefs: Prefs): string	
 `[]`	niprefs.html#[],Prefs,varargs[string]	niprefs: `[]`(prefs: Prefs; keys: varargs[string]): PrefsNode	
 `[]`	niprefs.html#[],Prefs,string	niprefs: `[]`(prefs: Prefs; key: string): PrefsNode	

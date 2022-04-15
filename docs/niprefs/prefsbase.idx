@@ -5,8 +5,8 @@ initPrefsBase	niprefs/prefsbase.html#initPrefsBase,PObjectType,string	prefsbase:
 initPrefsBase	niprefs/prefsbase.html#initPrefsBase.t,PrefsNode,string	prefsbase: initPrefsBase(table: PrefsNode; path: string): PrefsBase	
 read	niprefs/prefsbase.html#read,PrefsBase	prefsbase: read(prefs: PrefsBase): PObjectType	
 content	niprefs/prefsbase.html#content,PrefsBase	prefsbase: content(prefs: PrefsBase): PObjectType	
-toPTree	niprefs/prefsbase.html#toPTree,PObjectType,int	prefsbase: toPTree(table: PObjectType; depth: int = 0): string	
-toPTree	niprefs/prefsbase.html#toPTree.t,PrefsNode,int	prefsbase: toPTree(node: PrefsNode; depth: int = 0): string	
+toString	niprefs/prefsbase.html#toString,PObjectType,int	prefsbase: toString(table: PObjectType; depth: int = 0): string	
+toString	niprefs/prefsbase.html#toString,PrefsNode,int	prefsbase: toString(node: PrefsNode; depth: int = 0): string	
 create	niprefs/prefsbase.html#create,PrefsBase,OrderedTable[system.string, prefsnode.PrefsNode]	prefsbase: create(prefs: PrefsBase; table = prefs.table)	
 checkFile	niprefs/prefsbase.html#checkFile,PrefsBase	prefsbase: checkFile(prefs: PrefsBase)	
 write	niprefs/prefsbase.html#write,PrefsBase,string,T	prefsbase: write[T](prefs: PrefsBase; key: string; val: T)	

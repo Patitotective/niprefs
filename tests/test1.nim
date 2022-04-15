@@ -8,16 +8,20 @@
 import std/[unittest, strutils]
 import niprefs
 
-const path = "settings.niprefs"
+const path = "Prefs/Prefs/settings.niprefs"
 
 let defaultPrefs = toPrefs {
-  lang: "en",
+  lang: "es",
+  la_ng: "en", # Overwrites lang
   dark: true,
   keybindings: [],
   users: {:},
   test: {
-    c: [1, 2, [3, {d: 4}], 5]
+    c: [-1, 2, [3, {d: 4}], 5.2, -45.9d],
+    b: ['d', 'e', 0x034, {3..7}]
   }, 
+  chars: {'a'..'g', 's'},
+  bytes: {0, 8..16},
   scheme: {
     background: "#000000",
     font: {
@@ -35,7 +39,7 @@ test "can read":
   check prefs.content == prefs.table
 
 test "can write":
-  prefs["lang"] = "es"
+  prefs["l_A_n_G"] = "es" # Keys are normalized as nim identifiers
   prefs.table["lang"] = "es".toPrefs
 
   prefs["scheme/font/size"] = 20
@@ -68,6 +72,8 @@ test "can parse":
   let text = """
   lang="en"
   dark=true
+  float32=13f
+  float64=69d
   scheme=>
     background="#ffffff"
     font="#000000"
@@ -76,6 +82,8 @@ test "can parse":
   let content = toPrefs({
     "lang": "en", 
     "dark": true, 
+    "float32": 13f,
+    "float64": 69d,
     "scheme": {
       "background": "#ffffff", 
       "font": "#000000"
@@ -83,6 +91,23 @@ test "can parse":
   }).getObject()
 
   check text.parsePrefs() == content
+
+test "can do stuff with nodes":
+  var node = prefs["test"]
+
+  node["c"][1] = 3
+  node["c"][2] = newPInt(4)
+  node["c"].add 5
+  node["c"].add -6.newPInt()
+
+  for i in node["c"]:
+    discard
+
+  for k, v in node:
+    discard
+
+  check node["c"] == toPrefs([-1, 3, 4, 5.2, -45.9, 5, -6])
+  check "c" in node
 
 test "can overwrite":
   prefs.table["lang"] = "en".toPrefs

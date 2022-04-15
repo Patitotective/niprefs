@@ -7,6 +7,8 @@
 ## - `char`
 ## - `float`
 ## - `string` (and raw strings)
+## - `set[char]`
+## - `set[byte]`
 ## - `OrderedTable[string, PrefsNode]` (nested tables)
 
 ## # Syntax
@@ -22,7 +24,7 @@
 ##     family="UbuntuMono" # scheme/font/family
 ##     size=15
 ##     color="#000000"
-## users={"ElegantBeef": 28, "Rika": 22} # Tables are also supported (and keys do require quotes inside tables)
+## users={"ElegantBeef": 28, "Rika": 22, "hmmm": 0x0} # Tables are also supported (and keys do require quotes inside tables)
 ## ```
 
 ## # Basic usage
@@ -56,6 +58,10 @@ runnableExamples:
 ##     family="UbuntuMono"
 ##     color="#73D216"
 ## ```
+## ### Why does the niprefs file doesn't change if I change the toPrefs macro?
+## Well, niprefs is meant to be used as a preferences system, what that means is that the file is created with the default values if it doesn't exist.  
+## If it does exist, it just reads it. If you want to reset the file with the default prefs manually, you may use [overwrite](prefsbase.html#overwrite%2CPrefsBase%2CPObjectType).  
+
 
 ## ## Reading
 ## To read a key from your preferences file you can access to it as it were a table:
@@ -125,7 +131,7 @@ proc initPrefs*(table: PrefsNode = newPObject(), path: string = "prefs.niprefs")
   ## Creates a new Prefs object and checks if a file exists at `path` to create it if it doesn't.
   initPrefs(table = table.getObject(), path = path)
 
-template len*(prefs: Prefs): int =
+proc len*(prefs: Prefs): int =
   ## Same as `prefs.content.len`.
   runnableExamples:
     var prefs = toPrefs({"lang": "en", "theme": "dark"}).initPrefs
@@ -134,19 +140,7 @@ template len*(prefs: Prefs): int =
 
     assert prefs.len == 2
 
-  prefs.content.len
-
-template pairs*(prefs: Prefs) =
-  ## Same as `prefs.content.pairs`
-  prefs.content.pairs
-
-template keys*(prefs: Prefs) =
-  ## Same as `prefs.content.keys`
-  prefs.content.keys
-
-template values*(prefs: Prefs) =
-  ## Same as `prefs.content.values`
-  prefs.content.values
+  result = prefs.content.len
 
 proc `$`*(prefs: Prefs): string =
   ## Instead of printing the prefs object, print it's content

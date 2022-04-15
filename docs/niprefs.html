@@ -17,7 +17,7 @@
 <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:400,500,600' rel='stylesheet' type='text/css'/>
 
 <!-- CSS -->
-<title>niprefs</title>
+<title>src/niprefs</title>
 <link rel="stylesheet" type="text/css" href="nimdoc.out.css">
 
 <script type="text/javascript" src="dochack.js"></script>
@@ -69,7 +69,7 @@ window.addEventListener('DOMContentLoaded', main);
 <body>
 <div class="document" id="documentId">
   <div class="container">
-    <h1 class="title">niprefs</h1>
+    <h1 class="title">src/niprefs</h1>
     <div class="row">
   <div class="three columns">
   <div class="theme-switch-wrapper">
@@ -168,37 +168,16 @@ window.addEventListener('DOMContentLoaded', main);
     title="initPrefs(table: PrefsNode = newPObject(); path: string = &quot;prefs.niprefs&quot;): Prefs">initPrefs(table: PrefsNode = newPObject(); path: string = &quot;prefs.niprefs&quot;): Prefs</a></li>
 
   </ul>
+  <ul class="simple nested-toc-section">len
+      <li><a class="reference" href="#len%2CPrefs"
+    title="len(prefs: Prefs): int">len(prefs: Prefs): int</a></li>
+
+  </ul>
   <ul class="simple nested-toc-section">pop
       <li><a class="reference" href="#pop%2CPrefs%2Cstring%2CPrefsNode"
     title="pop(prefs: Prefs; key: string; val: var PrefsNode): bool">pop(prefs: Prefs; key: string; val: var PrefsNode): bool</a></li>
   <li><a class="reference" href="#pop%2CPrefs%2Cvarargs%5Bstring%5D%2CPrefsNode"
     title="pop(prefs: Prefs; keys: varargs[string]; val: var PrefsNode): bool">pop(prefs: Prefs; keys: varargs[string]; val: var PrefsNode): bool</a></li>
-
-  </ul>
-
-  </ul>
-</li>
-<li>
-  <a class="reference reference-toplevel" href="#18" id="68">Templates</a>
-  <ul class="simple simple-toc-section">
-      <ul class="simple nested-toc-section">keys
-      <li><a class="reference" href="#keys.t%2CPrefs"
-    title="keys(prefs: Prefs)">keys(prefs: Prefs)</a></li>
-
-  </ul>
-  <ul class="simple nested-toc-section">len
-      <li><a class="reference" href="#len.t%2CPrefs"
-    title="len(prefs: Prefs): int">len(prefs: Prefs): int</a></li>
-
-  </ul>
-  <ul class="simple nested-toc-section">pairs
-      <li><a class="reference" href="#pairs.t%2CPrefs"
-    title="pairs(prefs: Prefs)">pairs(prefs: Prefs)</a></li>
-
-  </ul>
-  <ul class="simple nested-toc-section">values
-      <li><a class="reference" href="#values.t%2CPrefs"
-    title="values(prefs: Prefs)">values(prefs: Prefs)</a></li>
 
   </ul>
 
@@ -214,7 +193,11 @@ window.addEventListener('DOMContentLoaded', main);
 </ul>
 
   </div>
-  
+  &nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs.nim#L1"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs.nim#L1" class="link-seesrc" target="_blank" >Edit</a>
+
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
@@ -225,6 +208,8 @@ window.addEventListener('DOMContentLoaded', main);
 <li><tt class="docutils literal"><span class="pre"><span class="Identifier">char</span></span></tt></li>
 <li><tt class="docutils literal"><span class="pre"><span class="Identifier">float</span></span></tt></li>
 <li><tt class="docutils literal"><span class="pre"><span class="Identifier">string</span></span></tt> (and raw strings)</li>
+<li><tt class="docutils literal"><span class="pre"><span class="Identifier">set</span><span class="Punctuation">[</span><span class="Identifier">char</span><span class="Punctuation">]</span></span></tt></li>
+<li><tt class="docutils literal"><span class="pre"><span class="Identifier">set</span><span class="Punctuation">[</span><span class="Identifier">byte</span><span class="Punctuation">]</span></span></tt></li>
 <li><tt class="docutils literal"><span class="pre"><span class="Identifier">OrderedTable</span><span class="Punctuation">[</span><span class="Identifier">string</span><span class="Punctuation">,</span> <span class="Identifier">PrefsNode</span><span class="Punctuation">]</span></span></tt> (nested tables)</li>
 </ul>
 
@@ -239,13 +224,13 @@ window.addEventListener('DOMContentLoaded', main);
     <span class="Identifier">family</span><span class="Operator">=</span><span class="StringLit">&quot;UbuntuMono&quot;</span> <span class="Comment"># scheme/font/family</span>
     <span class="Identifier">size</span><span class="Operator">=</span><span class="DecNumber">15</span>
     <span class="Identifier">color</span><span class="Operator">=</span><span class="StringLit">&quot;#000000&quot;</span>
-<span class="Identifier">users</span><span class="Operator">=</span><span class="Punctuation">{</span><span class="StringLit">&quot;ElegantBeef&quot;</span><span class="Punctuation">:</span> <span class="DecNumber">28</span><span class="Punctuation">,</span> <span class="StringLit">&quot;Rika&quot;</span><span class="Punctuation">:</span> <span class="DecNumber">22</span><span class="Punctuation">}</span> <span class="Comment"># Tables are also supported (and keys do require quotes inside tables)</span>
+<span class="Identifier">users</span><span class="Operator">=</span><span class="Punctuation">{</span><span class="StringLit">&quot;ElegantBeef&quot;</span><span class="Punctuation">:</span> <span class="DecNumber">28</span><span class="Punctuation">,</span> <span class="StringLit">&quot;Rika&quot;</span><span class="Punctuation">:</span> <span class="DecNumber">22</span><span class="Punctuation">,</span> <span class="StringLit">&quot;hmmm&quot;</span><span class="Punctuation">:</span> <span class="HexNumber">0x0</span><span class="Punctuation">}</span> <span class="Comment"># Tables are also supported (and keys do require quotes inside tables)</span>
 </pre></p>
 
 <h1><a class="toc-backref" id="basic-usage" href="#basic-usage">Basic usage</a></h1><p>To generate a <tt class="docutils literal"><span class="pre"><span class="Identifier">OrderedTable</span><span class="Punctuation">[</span><span class="Identifier">string</span><span class="Punctuation">,</span> <span class="Identifier">PrefsNode</span><span class="Punctuation">]</span></span></tt> or a <tt class="docutils literal"><span class="pre"><span class="Identifier">PrefsNode</span></span></tt> you may want to use the <a class="reference external" href="prefsnode.html#toPrefs.m%2Cuntyped">toPrefs</a> macro.</p>
 
 <p><strong class="examples_text">Example:</strong></p>
-<pre class="listing"><span class="Keyword">import</span> <span class="Identifier">niprefs</span>
+<pre class="listing"><span class="Keyword">import</span> <span class="Identifier">src</span><span class="Operator">/</span><span class="Identifier">niprefs</span>
 <span class="Keyword">var</span> <span class="Identifier">prefs</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span>
   <span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;en&quot;</span><span class="Punctuation">,</span> <span class="Comment"># Keys do not require quotes when using toPrefs macro.</span>
   <span class="Identifier">dark</span><span class="Punctuation">:</span> <span class="Identifier">true</span><span class="Punctuation">,</span>
@@ -269,7 +254,7 @@ window.addEventListener('DOMContentLoaded', main);
     <span class="Identifier">size</span><span class="Operator">=</span><span class="DecNumber">15</span>
     <span class="Identifier">family</span><span class="Operator">=</span><span class="StringLit">&quot;UbuntuMono&quot;</span>
     <span class="Identifier">color</span><span class="Operator">=</span><span class="StringLit">&quot;#73D216&quot;</span>
-</pre></p>
+</pre> ### Why does the niprefs file doesn't change if I change the toPrefs macro? Well, niprefs is meant to be used as a preferences system, what that means is that the file is created with the default values if it doesn't exist. If it does exist, it just reads it. If you want to reset the file with the default prefs manually, you may use <a class="reference external" href="prefsbase.html#overwrite%2CPrefsBase%2CPObjectType">overwrite</a>.  </p>
 
 <h2><a class="toc-backref" id="basic-usage-reading" href="#basic-usage-reading">Reading</a></h2><p>To read a key from your preferences file you can access to it as it were a table:</p>
 <p><pre class="listing"><span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Punctuation">[</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">]</span> <span class="Operator">==</span> <span class="StringLit">&quot;en&quot;</span>
@@ -324,6 +309,10 @@ window.addEventListener('DOMContentLoaded', main);
 <dd>
 
 Provides a table-like interface for the PrefsBase object
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs.nim#L123"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs.nim#L123" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -344,14 +333,18 @@ Instead of printing the prefs object, print it's content
 <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">overwrite</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Comment"># To avoid conflicts</span>
 
 <span class="Identifier">assert</span> <span class="Operator">$</span><span class="Identifier">prefs</span> <span class="Operator">==</span> <span class="StringLit">&quot;{</span><span class="EscapeSequence">\&quot;</span><span class="StringLit">lang</span><span class="EscapeSequence">\&quot;</span><span class="StringLit">: </span><span class="EscapeSequence">\&quot;</span><span class="StringLit">en</span><span class="EscapeSequence">\&quot;</span><span class="StringLit">, </span><span class="EscapeSequence">\&quot;</span><span class="StringLit">theme</span><span class="EscapeSequence">\&quot;</span><span class="StringLit">: </span><span class="EscapeSequence">\&quot;</span><span class="StringLit">dark</span><span class="EscapeSequence">\&quot;</span><span class="StringLit">}&quot;</span></pre>
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs.nim#L145"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs.nim#L145" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="[]=,Prefs,string,PrefsNode">
 <dt><pre><span class="Keyword">proc</span> <a href="#%5B%5D%3D%2CPrefs%2Cstring%2CPrefsNode"><span class="Identifier">`[]=`</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="niprefs.html#Prefs"><span class="Identifier">Prefs</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <a href="niprefs/prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">OSError</span><span class="Other">,</span>
     <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">InvalidKey</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">SyntaxError</span><span class="Other">,</span>
-    <span class="Identifier">NPegException</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span>
-                           <span class="Identifier">WriteDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">,</span> <span class="Identifier">RootEffect</span><span class="Other">]</span></span>.}</pre></dt>
+    <span class="Identifier">NPegException</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">,</span>
+                           <span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 <p>Write in the <em>prefs</em> file the given key-value pair.</p>
@@ -364,14 +357,18 @@ Instead of printing the prefs object, print it's content
 
 <span class="Identifier">prefs</span><span class="Punctuation">[</span><span class="StringLit">&quot;keybindings&quot;</span><span class="Punctuation">]</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="Punctuation">{</span><span class="StringLit">&quot;keys&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;Ctrl+C&quot;</span><span class="Punctuation">,</span>
     <span class="StringLit">&quot;command&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;copy&quot;</span><span class="Punctuation">}</span><span class="Punctuation">]</span></pre>
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs.nim#L218"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs.nim#L218" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="[]=,Prefs,varargs[string],PrefsNode">
 <dt><pre><span class="Keyword">proc</span> <a href="#%5B%5D%3D%2CPrefs%2Cvarargs%5Bstring%5D%2CPrefsNode"><span class="Identifier">`[]=`</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="niprefs.html#Prefs"><span class="Identifier">Prefs</span></a><span class="Other">;</span> <span class="Identifier">keys</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <a href="niprefs/prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span>
     <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">InvalidKey</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">SyntaxError</span><span class="Other">,</span>
-    <span class="Identifier">NPegException</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span>
-                           <span class="Identifier">WriteDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">,</span> <span class="Identifier">RootEffect</span><span class="Other">]</span></span>.}</pre></dt>
+    <span class="Identifier">NPegException</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">,</span>
+                           <span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 <p>Write the last key from <tt class="docutils literal"><span class="pre"><span class="Identifier">keys</span></span></tt>, the other elements being it's path, in the preferences file.</p>
@@ -383,6 +380,10 @@ Instead of printing the prefs object, print it's content
 
 <span class="Identifier">prefs</span><span class="Punctuation">[</span><span class="StringLit">&quot;keybindings&quot;</span><span class="Punctuation">]</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="Punctuation">{</span><span class="StringLit">&quot;keys&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;Ctrl+C&quot;</span><span class="Punctuation">,</span>
     <span class="StringLit">&quot;command&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;copy&quot;</span><span class="Punctuation">}</span><span class="Punctuation">]</span></pre>
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs.nim#L235"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs.nim#L235" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -402,6 +403,10 @@ Instead of printing the prefs object, print it's content
 <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">overwrite</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Comment"># To avoid conflicts</span>
 
 <span class="Identifier">prefs</span><span class="Punctuation">[</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">]</span> <span class="Operator">=</span> <span class="StringLit">&quot;es&quot;</span> <span class="Comment"># newPString(&quot;es&quot;) is not required, since `string` is not a structured type</span></pre>
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs.nim#L198"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs.nim#L198" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -418,6 +423,10 @@ Instead of printing the prefs object, print it's content
 <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">overwrite</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Comment"># To avoid conflicts</span>
 
 <span class="Identifier">prefs</span><span class="Punctuation">[</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">]</span> <span class="Operator">=</span> <span class="StringLit">&quot;es&quot;</span> <span class="Comment"># newPString(&quot;es&quot;) is not required, since `string` is not a structured type</span></pre>
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs.nim#L185"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs.nim#L185" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -438,6 +447,10 @@ Instead of printing the prefs object, print it's content
 
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Punctuation">[</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">]</span> <span class="Operator">==</span> <span class="StringLit">&quot;en&quot;</span> <span class="Comment"># newPNode(&quot;en&quot;) is not required</span>
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Punctuation">[</span><span class="StringLit">&quot;scheme/font&quot;</span><span class="Punctuation">]</span> <span class="Operator">==</span> <span class="StringLit">&quot;UbuntuMono&quot;</span></pre>
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs.nim#L169"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs.nim#L169" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -455,12 +468,16 @@ Get the last key from <tt class="docutils literal"><span class="pre"><span class
 <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">overwrite</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Comment"># To avoid conflicts</span>
 
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Punctuation">[</span><span class="StringLit">&quot;scheme&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;font&quot;</span><span class="Punctuation">]</span> <span class="Operator">==</span> <span class="StringLit">&quot;UbuntuMono&quot;</span></pre>
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs.nim#L156"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs.nim#L156" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="clear,Prefs">
-<dt><pre><span class="Keyword">proc</span> <a href="#clear%2CPrefs"><span class="Identifier">clear</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="niprefs.html#Prefs"><span class="Identifier">Prefs</span></a><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">InvalidKey</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span>
-    <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">WriteDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#clear%2CPrefs"><span class="Identifier">clear</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="niprefs.html#Prefs"><span class="Identifier">Prefs</span></a><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">InvalidKey</span><span class="Other">]</span><span class="Other">,</span>
+                           <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">WriteDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 Clears the content of the file.
@@ -468,6 +485,10 @@ Clears the content of the file.
 <pre class="listing"><span class="Keyword">var</span> <span class="Identifier">prefs</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;en&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;dark&quot;</span><span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Operator">.</span><span class="Identifier">initPrefs</span>
 <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">clear</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">content</span> <span class="Operator">==</span> <span class="Identifier">default</span> <span class="Identifier">PObjectType</span> <span class="Comment"># PObject stands for OrderedTable[string, PrefsNode]</span></pre>
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs.nim#L250"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs.nim#L250" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -483,46 +504,81 @@ Alias of <a class="reference external" href="prefsbase.html#hasKey%2CPrefsBase%2
 <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">overwrite</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Comment"># To avoid conflicts</span>
 
 <span class="Identifier">assert</span> <span class="StringLit">&quot;lang&quot;</span> <span class="Keyword">in</span> <span class="Identifier">prefs</span></pre>
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs.nim#L259"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs.nim#L259" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="del,Prefs,string">
 <dt><pre><span class="Keyword">proc</span> <a href="#del%2CPrefs%2Cstring"><span class="Identifier">del</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="niprefs.html#Prefs"><span class="Identifier">Prefs</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">SyntaxError</span><span class="Other">,</span>
     <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">NPegException</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">InvalidKey</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span>
-    <span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span> <span class="Identifier">WriteDirEffect</span><span class="Other">,</span>
-    <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
+    <span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">WriteDirEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 Deletes <tt class="docutils literal"><span class="pre"><span class="Identifier">key</span></span></tt> from the <em>prefs</em> file. Does nothing if the key does not exist.
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs.nim#L269"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs.nim#L269" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="initPrefs,PObjectType,string">
 <dt><pre><span class="Keyword">proc</span> <a href="#initPrefs%2CPObjectType%2Cstring"><span class="Identifier">initPrefs</span></a><span class="Other">(</span><span class="Identifier">table</span><span class="Other">:</span> <a href="niprefs/prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a> <span class="Other">=</span> <span class="Identifier">default</span> <a href="niprefs/prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a><span class="Other">;</span>
                <span class="Identifier">path</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="StringLit">&quot;prefs.niprefs&quot;</span><span class="Other">)</span><span class="Other">:</span> <a href="niprefs.html#Prefs"><span class="Identifier">Prefs</span></a> {.
-    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">InvalidKey</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadDirEffect</span><span class="Other">,</span>
-    <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">WriteDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">InvalidKey</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 Creates a new Prefs object and checks if a file exists at <tt class="docutils literal"><span class="pre"><span class="Identifier">path</span></span></tt> to create it if it doesn't.
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs.nim#L125"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs.nim#L125" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="initPrefs,PrefsNode,string">
 <dt><pre><span class="Keyword">proc</span> <a href="#initPrefs%2CPrefsNode%2Cstring"><span class="Identifier">initPrefs</span></a><span class="Other">(</span><span class="Identifier">table</span><span class="Other">:</span> <a href="niprefs/prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a> <span class="Other">=</span> <span class="Identifier">newPObject</span><span class="Other">(</span><span class="Other">)</span><span class="Other">;</span> <span class="Identifier">path</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="StringLit">&quot;prefs.niprefs&quot;</span><span class="Other">)</span><span class="Other">:</span> <a href="niprefs.html#Prefs"><span class="Identifier">Prefs</span></a> {.
-    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">InvalidKey</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadDirEffect</span><span class="Other">,</span>
-    <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">WriteDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">InvalidKey</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 Creates a new Prefs object and checks if a file exists at <tt class="docutils literal"><span class="pre"><span class="Identifier">path</span></span></tt> to create it if it doesn't.
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs.nim#L130"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs.nim#L130" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="len,Prefs">
+<dt><pre><span class="Keyword">proc</span> <a href="#len%2CPrefs"><span class="Identifier">len</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="niprefs.html#Prefs"><span class="Identifier">Prefs</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">SyntaxError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span>
+                                       <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">NPegException</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">]</span><span class="Other">,</span>
+                              <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Same as <tt class="docutils literal"><span class="pre"><span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">content</span><span class="Operator">.</span><span class="Identifier">len</span></span></tt>.
+<p><strong class="examples_text">Example:</strong></p>
+<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">prefs</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;en&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;dark&quot;</span><span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Operator">.</span><span class="Identifier">initPrefs</span>
+
+<span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">overwrite</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Comment"># To avoid conflicts</span>
+
+<span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">len</span> <span class="Operator">==</span> <span class="DecNumber">2</span></pre>
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs.nim#L134"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs.nim#L134" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="pop,Prefs,string,PrefsNode">
 <dt><pre><span class="Keyword">proc</span> <a href="#pop%2CPrefs%2Cstring%2CPrefsNode"><span class="Identifier">pop</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="niprefs.html#Prefs"><span class="Identifier">Prefs</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="niprefs/prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span>
     <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">SyntaxError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">NPegException</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span>
-    <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">InvalidKey</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span>
-                                 <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span> <span class="Identifier">WriteDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
+    <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">InvalidKey</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">WriteDirEffect</span><span class="Other">,</span>
+                                 <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 Deletes the <tt class="docutils literal"><span class="pre"><span class="Identifier">key</span></span></tt> from the <em>prefs</em> file. Returns <tt class="docutils literal"><span class="pre"><span class="Identifier">true</span></span></tt>, if the <tt class="docutils literal"><span class="pre"><span class="Identifier">key</span></span></tt> existed, and sets <tt class="docutils literal"><span class="pre"><span class="Identifier">val</span></span></tt> to the mapping of the key. Otherwise, returns <tt class="docutils literal"><span class="pre"><span class="Identifier">false</span></span></tt>, and the <tt class="docutils literal"><span class="pre"><span class="Identifier">val</span></span></tt> is unchanged.
@@ -536,14 +592,18 @@ Deletes the <tt class="docutils literal"><span class="pre"><span class="Identifi
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">pop</span><span class="Punctuation">(</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">,</span> <span class="Identifier">s</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">true</span>
 <span class="Identifier">assert</span> <span class="StringLit">&quot;lang&quot;</span> <span class="Keyword">notin</span> <span class="Identifier">prefs</span>
 <span class="Identifier">assert</span> <span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">getString</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">&quot;en&quot;</span></pre>
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs.nim#L274"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs.nim#L274" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="pop,Prefs,varargs[string],PrefsNode">
 <dt><pre><span class="Keyword">proc</span> <a href="#pop%2CPrefs%2Cvarargs%5Bstring%5D%2CPrefsNode"><span class="Identifier">pop</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="niprefs.html#Prefs"><span class="Identifier">Prefs</span></a><span class="Other">;</span> <span class="Identifier">keys</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="niprefs/prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span>
     <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">SyntaxError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">NPegException</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span>
-    <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">InvalidKey</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">,</span>
-                                 <span class="Identifier">ReadEnvEffect</span><span class="Other">,</span> <span class="Identifier">WriteDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
+    <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">InvalidKey</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">WriteDirEffect</span><span class="Other">,</span>
+                                 <span class="Identifier">ReadDirEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 Deletes the last key from <tt class="docutils literal"><span class="pre"><span class="Identifier">keys</span></span></tt>, the other elements being it's path, from the <em>prefs</em> file. Returns <tt class="docutils literal"><span class="pre"><span class="Identifier">true</span></span></tt>, if the key existed, and sets <tt class="docutils literal"><span class="pre"><span class="Identifier">val</span></span></tt> to the mapping of the key. Otherwise, returns <tt class="docutils literal"><span class="pre"><span class="Identifier">false</span></span></tt>, and <tt class="docutils literal"><span class="pre"><span class="Identifier">val</span></span></tt> is unchanged.
@@ -557,49 +617,10 @@ Deletes the last key from <tt class="docutils literal"><span class="pre"><span c
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">pop</span><span class="Punctuation">(</span><span class="StringLit">&quot;scheme&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">,</span> <span class="Identifier">s</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">true</span>
 <span class="Identifier">assert</span> <span class="StringLit">&quot;scheme/theme&quot;</span> <span class="Keyword">notin</span> <span class="Identifier">prefs</span>
 <span class="Identifier">assert</span> <span class="Identifier">s</span> <span class="Operator">==</span> <span class="StringLit">&quot;dark&quot;</span></pre>
-
-</dd>
-</div>
-
-</dl></div>
-<div class="section" id="18">
-<h1><a class="toc-backref" href="#18">Templates</a></h1>
-<dl class="item">
-<div id="keys.t,Prefs">
-<dt><pre><span class="Keyword">template</span> <a href="#keys.t%2CPrefs"><span class="Identifier">keys</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="niprefs.html#Prefs"><span class="Identifier">Prefs</span></a><span class="Other">)</span></pre></dt>
-<dd>
-
-Same as <tt class="docutils literal"><span class="pre"><span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">content</span><span class="Operator">.</span><span class="Identifier">keys</span></span></tt>
-
-</dd>
-</div>
-<div id="len.t,Prefs">
-<dt><pre><span class="Keyword">template</span> <a href="#len.t%2CPrefs"><span class="Identifier">len</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="niprefs.html#Prefs"><span class="Identifier">Prefs</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span></pre></dt>
-<dd>
-
-Same as <tt class="docutils literal"><span class="pre"><span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">content</span><span class="Operator">.</span><span class="Identifier">len</span></span></tt>.
-<p><strong class="examples_text">Example:</strong></p>
-<pre class="listing"><span class="Keyword">var</span> <span class="Identifier">prefs</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span><span class="Punctuation">(</span><span class="Punctuation">{</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;en&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;dark&quot;</span><span class="Punctuation">}</span><span class="Punctuation">)</span><span class="Operator">.</span><span class="Identifier">initPrefs</span>
-
-<span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">overwrite</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Comment"># To avoid conflicts</span>
-
-<span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">len</span> <span class="Operator">==</span> <span class="DecNumber">2</span></pre>
-
-</dd>
-</div>
-<div id="pairs.t,Prefs">
-<dt><pre><span class="Keyword">template</span> <a href="#pairs.t%2CPrefs"><span class="Identifier">pairs</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="niprefs.html#Prefs"><span class="Identifier">Prefs</span></a><span class="Other">)</span></pre></dt>
-<dd>
-
-Same as <tt class="docutils literal"><span class="pre"><span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">content</span><span class="Operator">.</span><span class="Identifier">pairs</span></span></tt>
-
-</dd>
-</div>
-<div id="values.t,Prefs">
-<dt><pre><span class="Keyword">template</span> <a href="#values.t%2CPrefs"><span class="Identifier">values</span></a><span class="Other">(</span><span class="Identifier">prefs</span><span class="Other">:</span> <a href="niprefs.html#Prefs"><span class="Identifier">Prefs</span></a><span class="Other">)</span></pre></dt>
-<dd>
-
-Same as <tt class="docutils literal"><span class="pre"><span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">content</span><span class="Operator">.</span><span class="Identifier">values</span></span></tt>
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs.nim#L298"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs.nim#L298" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -608,7 +629,7 @@ Same as <tt class="docutils literal"><span class="pre"><span class="Identifier">
 <div class="section" id="19">
 <h1><a class="toc-backref" href="#19">Exports</a></h1>
 <dl class="item">
-<a href="niprefs/prefsbase.html#writeMany.t,PrefsBase,PrefsNode"><span class="Identifier">writeMany</span></a>, <a href="niprefs/parser/parser.html#parsePrefs,seq[PToken]"><span class="Identifier">parsePrefs</span></a>, <a href="niprefs/prefsnode.html#newPChar,string,Natural"><span class="Identifier">newPChar</span></a>, <a href="niprefs/prefsnode.html#isNil,PrefsNode"><span class="Identifier">isNil</span></a>, <a href="niprefs/prefsnode.html#PSeqParam"><span class="Identifier">PSeqParam</span></a>, <a href="niprefs/prefsnode.html#newPNode,float"><span class="Identifier">newPNode</span></a>, <a href="niprefs/parser/parser.html#parsePrefs,string"><span class="Identifier">parsePrefs</span></a>, <a href="niprefs/prefsnode.html#==,PrefsNode,PrefsNode"><span class="Identifier">==</span></a>, <a href="niprefs/prefsnode.html#newPEmpty"><span class="Identifier">newPEmpty</span></a>, <a href="niprefs/prefsbase.html#write,PrefsBase,string,T"><span class="Identifier">write</span></a>, <a href="niprefs/prefsbase.html#content,PrefsBase"><span class="Identifier">content</span></a>, <a href="niprefs/prefsnode.html#newPChar,char"><span class="Identifier">newPChar</span></a>, <a href="niprefs/prefsbase.html#delete,PrefsBase"><span class="Identifier">delete</span></a>, <a href="niprefs/prefsnode.html#getChar,PrefsNode"><span class="Identifier">getChar</span></a>, <a href="niprefs/prefsnode.html#$,PrefsNode"><span class="Identifier">$</span></a>, <a href="niprefs/prefsnode.html#newPFloat,float"><span class="Identifier">newPFloat</span></a>, <a href="niprefs/prefsnode.html#[],PrefsNode,string"><span class="Identifier">[]</span></a>, <a href="niprefs/prefsnode.html#newPNode,string"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsbase.html#InvalidKey"><span class="Identifier">InvalidKey</span></a>, <a href="niprefs/prefsbase.html#initPrefsBase.t,PrefsNode,string"><span class="Identifier">initPrefsBase</span></a>, <a href="niprefs/prefsnode.html#newPNil"><span class="Identifier">newPNil</span></a>, <a href="niprefs/prefsnode.html#newPNode,int"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsbase.html#hasPath,PrefsBase,varargs[string]"><span class="Identifier">hasPath</span></a>, <a href="niprefs/prefsbase.html#write,PrefsBase,varargs[string],T"><span class="Identifier">write</span></a>, <a href="niprefs/prefsbase.html#hasKey,PrefsBase,string"><span class="Identifier">hasKey</span></a>, <a href="niprefs/prefsnode.html#newPNode,PSeqParam"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#PrefsNodeObj"><span class="Identifier">PrefsNodeObj</span></a>, <a href="niprefs/prefsnode.html#del,PrefsNode,string"><span class="Identifier">del</span></a>, <a href="niprefs/prefsbase.html#writeMany,PrefsBase,PObjectType"><span class="Identifier">writeMany</span></a>, <a href="niprefs/prefsnode.html#PrefsNKind"><span class="Identifier">PrefsNKind</span></a>, <a href="niprefs/prefsnode.html#newPNode,PObjectType"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsbase.html#checkFile,PrefsBase"><span class="Identifier">checkFile</span></a>, <a href="niprefs/prefsnode.html#newPNode,char"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#newPBool,bool"><span class="Identifier">newPBool</span></a>, <a href="niprefs/prefsnode.html#toPrefs.m,untyped"><span class="Identifier">toPrefs</span></a>, <a href="niprefs/prefsbase.html#overwrite,PrefsBase,PObjectType"><span class="Identifier">overwrite</span></a>, <a href="niprefs/prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a>, <a href="niprefs/prefsbase.html#delPath,PrefsBase,varargs[string]"><span class="Identifier">delPath</span></a>, <a href="niprefs/prefsbase.html#toPTree,PObjectType,int"><span class="Identifier">toPTree</span></a>, <a href="niprefs/prefsnode.html#getInt,PrefsNode"><span class="Identifier">getInt</span></a>, <a href="niprefs/prefsnode.html#[]=,PrefsNode,string,T"><span class="Identifier">[]=</span></a>, <a href="niprefs/prefsnode.html#isEmpty,PrefsNode"><span class="Identifier">isEmpty</span></a>, <a href="niprefs/prefsbase.html#read,PrefsBase"><span class="Identifier">read</span></a>, <a href="niprefs/prefsbase.html#create,PrefsBase,OrderedTable[system.string, prefsnode.PrefsNode]"><span class="Identifier">create</span></a>, <a href="niprefs/prefsbase.html#toPTree.t,PrefsNode,int"><span class="Identifier">toPTree</span></a>, <a href="niprefs/prefsnode.html#newPNode,bool"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a>, <a href="niprefs/prefsnode.html#newPSeq,PSeqParam"><span class="Identifier">newPSeq</span></a>, <a href="niprefs/prefsnode.html#newPInt,int"><span class="Identifier">newPInt</span></a>, <a href="niprefs/prefsbase.html#initPrefsBase,PObjectType,string"><span class="Identifier">initPrefsBase</span></a>, <a href="niprefs/prefsbase.html#getPath,PrefsBase,varargs[string]"><span class="Identifier">getPath</span></a>, <a href="niprefs/prefsnode.html#==,PrefsNode,T"><span class="Identifier">==</span></a>, <a href="niprefs/prefsnode.html#getFloat,PrefsNode"><span class="Identifier">getFloat</span></a>, <a href="niprefs/prefsbase.html#write,PrefsBase,varargs[string],PrefsNode"><span class="Identifier">write</span></a>, <a href="niprefs/prefsnode.html#[]=,PrefsNode,string,PrefsNode"><span class="Identifier">[]=</span></a>, <a href="niprefs/prefsnode.html#PSeqType"><span class="Identifier">PSeqType</span></a>, <a href="niprefs/prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a>, <a href="niprefs/prefsbase.html#get,PrefsBase,string"><span class="Identifier">get</span></a>, <a href="niprefs/prefsnode.html#[],PrefsNode,string_2"><span class="Identifier">[]</span></a>, <a href="niprefs/prefsbase.html#write,PrefsBase,string,PrefsNode"><span class="Identifier">write</span></a>, <a href="niprefs/prefsbase.html#overwrite,PrefsBase,string"><span class="Identifier">overwrite</span></a>, <a href="niprefs/prefsnode.html#getBool,PrefsNode"><span class="Identifier">getBool</span></a>, <a href="niprefs/prefsnode.html#getSeq,PrefsNode"><span class="Identifier">getSeq</span></a>, <a href="niprefs/prefsnode.html#getString,PrefsNode"><span class="Identifier">getString</span></a>, <a href="niprefs/prefsbase.html#delKey,PrefsBase,string"><span class="Identifier">delKey</span></a>, <a href="niprefs/prefsnode.html#getObject,PrefsNode"><span class="Identifier">getObject</span></a>, <a href="niprefs/parser/parser.html#readPrefs,string"><span class="Identifier">readPrefs</span></a>, <a href="niprefs/prefsnode.html#[],PrefsNode,BackwardsIndex"><span class="Identifier">[]</span></a>, <a href="niprefs/prefsnode.html#newPString,string"><span class="Identifier">newPString</span></a>, <a href="niprefs/prefsnode.html#newPObject,PObjectType"><span class="Identifier">newPObject</span></a>, <a href="niprefs/prefsnode.html#[],PrefsNode,int"><span class="Identifier">[]</span></a>
+<a href="niprefs/prefsbase.html#writeMany.t,PrefsBase,PrefsNode"><span class="Identifier">writeMany</span></a>, <a href="niprefs/prefsnode.html#getByteSet,PrefsNode"><span class="Identifier">getByteSet</span></a>, <a href="niprefs/prefsnode.html#newPChar,string,Natural"><span class="Identifier">newPChar</span></a>, <a href="niprefs/prefsnode.html#[]=,PrefsNode,string,T"><span class="Identifier">[]=</span></a>, <a href="niprefs/prefsnode.html#PSeqParam"><span class="Identifier">PSeqParam</span></a>, <a href="niprefs/prefsnode.html#getBool,PrefsNode"><span class="Identifier">getBool</span></a>, <a href="niprefs/prefsnode.html#PrefsKind"><span class="Identifier">PrefsKind</span></a>, <a href="niprefs/prefsnode.html#contains,PrefsNode,byte"><span class="Identifier">contains</span></a>, <a href="niprefs/prefsbase.html#write,PrefsBase,string,T"><span class="Identifier">write</span></a>, <a href="niprefs/prefsbase.html#content,PrefsBase"><span class="Identifier">content</span></a>, <a href="niprefs/prefsnode.html#newPChar,char"><span class="Identifier">newPChar</span></a>, <a href="niprefs/prefsnode.html#getChar,PrefsNode"><span class="Identifier">getChar</span></a>, <a href="niprefs/prefsbase.html#hasKey,PrefsBase,string"><span class="Identifier">hasKey</span></a>, <a href="niprefs/prefsnode.html#$,PrefsNode"><span class="Identifier">$</span></a>, <a href="niprefs/prefsnode.html#newPNode,bool"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsbase.html#InvalidKey"><span class="Identifier">InvalidKey</span></a>, <a href="niprefs/prefsnode.html#newPNode,PObjectType"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#newPCharSet,set[char]"><span class="Identifier">newPCharSet</span></a>, <a href="niprefs/prefsnode.html#getSeq,PrefsNode"><span class="Identifier">getSeq</span></a>, <a href="niprefs/prefsbase.html#writeMany,PrefsBase,PObjectType"><span class="Identifier">writeMany</span></a>, <a href="niprefs/prefsnode.html#getFloat,PrefsNode"><span class="Identifier">getFloat</span></a>, <a href="niprefs/prefsnode.html#newPNode,PSeqParam"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsbase.html#checkFile,PrefsBase"><span class="Identifier">checkFile</span></a>, <a href="niprefs/prefsnode.html#newPNode,set[byte]"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#newPBool,bool"><span class="Identifier">newPBool</span></a>, <a href="niprefs/prefsnode.html#toPrefs.m,untyped"><span class="Identifier">toPrefs</span></a>, <a href="niprefs/prefsnode.html#incl,PrefsNode,char"><span class="Identifier">incl</span></a>, <a href="niprefs/prefsnode.html#getInt,PrefsNode"><span class="Identifier">getInt</span></a>, <a href="niprefs/prefsbase.html#create,PrefsBase,OrderedTable[system.string, prefsnode.PrefsNode]"><span class="Identifier">create</span></a>, <a href="niprefs/prefsnode.html#isEmpty,PrefsNode"><span class="Identifier">isEmpty</span></a>, <a href="niprefs/prefsbase.html#getPath,PrefsBase,varargs[string]"><span class="Identifier">getPath</span></a>, <a href="niprefs/prefsnode.html#PSeqType"><span class="Identifier">PSeqType</span></a>, <a href="niprefs/prefsnode.html#newPNode,set[char]"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a>, <a href="niprefs/prefsnode.html#newPInt,int"><span class="Identifier">newPInt</span></a>, <a href="niprefs/prefsbase.html#toString,PrefsNode,int"><span class="Identifier">toString</span></a>, <a href="niprefs/prefsnode.html#getInt,PrefsNode_2"><span class="Identifier">getInt</span></a>, <a href="niprefs/prefsnode.html#==,PrefsNode,PrefsNode"><span class="Identifier">==</span></a>, <a href="niprefs/prefsnode.html#delete,PrefsNode,Natural"><span class="Identifier">delete</span></a>, <a href="niprefs/prefsnode.html#card,PrefsNode"><span class="Identifier">card</span></a>, <a href="niprefs/prefsnode.html#contains,PrefsNode,char"><span class="Identifier">contains</span></a>, <a href="niprefs/prefsnode.html#[]=,PrefsNode,string,PrefsNode"><span class="Identifier">[]=</span></a>, <a href="niprefs/prefsnode.html#newPByteSet,set[byte]"><span class="Identifier">newPByteSet</span></a>, <a href="niprefs/prefsnode.html#add,PrefsNode,PrefsNode"><span class="Identifier">add</span></a>, <a href="niprefs/prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a>, <a href="niprefs/prefsbase.html#get,PrefsBase,string"><span class="Identifier">get</span></a>, <a href="niprefs/prefsbase.html#write,PrefsBase,string,PrefsNode"><span class="Identifier">write</span></a>, <a href="niprefs/prefsnode.html#newPNode,int"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#getBool,PrefsNode_2"><span class="Identifier">getBool</span></a>, <a href="niprefs/prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a>, <a href="niprefs/prefsnode.html#added,PrefsNode,PrefsNode"><span class="Identifier">added</span></a>, <a href="niprefs/prefsbase.html#delKey,PrefsBase,string"><span class="Identifier">delKey</span></a>, <a href="niprefs/prefsnode.html#getObject,PrefsNode"><span class="Identifier">getObject</span></a>, <a href="niprefs/parser/parser.html#readPrefs,string"><span class="Identifier">readPrefs</span></a>, <a href="niprefs/prefsnode.html#newPNode,char"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#newPObject,PObjectType"><span class="Identifier">newPObject</span></a>, <a href="niprefs/parser/parser.html#parsePrefs,seq[PToken]"><span class="Identifier">parsePrefs</span></a>, <a href="niprefs/prefsnode.html#isNil,PrefsNode"><span class="Identifier">isNil</span></a>, <a href="niprefs/prefsbase.html#overwrite,PrefsBase,PObjectType"><span class="Identifier">overwrite</span></a>, <a href="niprefs/parser/parser.html#parsePrefs,string"><span class="Identifier">parsePrefs</span></a>, <a href="niprefs/prefsnode.html#newPEmpty"><span class="Identifier">newPEmpty</span></a>, <a href="niprefs/prefsbase.html#write,PrefsBase,varargs[string],PrefsNode"><span class="Identifier">write</span></a>, <a href="niprefs/prefsnode.html#contains,PrefsNode,string"><span class="Identifier">contains</span></a>, <a href="niprefs/prefsnode.html#getChar,PrefsNode_2"><span class="Identifier">getChar</span></a>, <a href="niprefs/prefsnode.html#newPFloat,float"><span class="Identifier">newPFloat</span></a>, <a href="niprefs/prefsnode.html#[],PrefsNode,BackwardsIndex"><span class="Identifier">[]</span></a>, <a href="niprefs/prefsnode.html#deleted,PrefsNode,Natural"><span class="Identifier">deleted</span></a>, <a href="niprefs/prefsbase.html#hasPath,PrefsBase,varargs[string]"><span class="Identifier">hasPath</span></a>, <a href="niprefs/prefsnode.html#newPNil"><span class="Identifier">newPNil</span></a>, <a href="niprefs/prefsnode.html#getCharSet,PrefsNode"><span class="Identifier">getCharSet</span></a>, <a href="niprefs/prefsnode.html#excl,PrefsNode,char"><span class="Identifier">excl</span></a>, <a href="niprefs/prefsbase.html#toString,PObjectType,int"><span class="Identifier">toString</span></a>, <a href="niprefs/prefsnode.html#==,PrefsNode,T"><span class="Identifier">==</span></a>, <a href="niprefs/prefsnode.html#newPNode,float"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#PrefsNodeObj"><span class="Identifier">PrefsNodeObj</span></a>, <a href="niprefs/prefsnode.html#del,PrefsNode,string"><span class="Identifier">del</span></a>, <a href="niprefs/prefsbase.html#delete,PrefsBase"><span class="Identifier">delete</span></a>, <a href="niprefs/prefsnode.html#getObject,PrefsNode_2"><span class="Identifier">getObject</span></a>, <a href="niprefs/prefsnode.html#getSeq,PrefsNode_2"><span class="Identifier">getSeq</span></a>, <a href="niprefs/prefsnode.html#getCharSet,PrefsNode_2"><span class="Identifier">getCharSet</span></a>, <a href="niprefs/prefsnode.html#pairs.i,PrefsNode"><span class="Identifier">pairs</span></a>, <a href="niprefs/prefsnode.html#[]=,PrefsNode,int,T"><span class="Identifier">[]=</span></a>, <a href="niprefs/prefsnode.html#newPString,string"><span class="Identifier">newPString</span></a>, <a href="niprefs/prefsnode.html#getString,PrefsNode"><span class="Identifier">getString</span></a>, <a href="niprefs/prefsbase.html#read,PrefsBase"><span class="Identifier">read</span></a>, <a href="niprefs/prefsnode.html#getByteSet,PrefsNode_2"><span class="Identifier">getByteSet</span></a>, <a href="niprefs/prefsnode.html#items.i,PrefsNode"><span class="Identifier">items</span></a>, <a href="niprefs/prefsnode.html#newPSeq,PSeqParam"><span class="Identifier">newPSeq</span></a>, <a href="niprefs/prefsnode.html#newPByteSet,set[T]"><span class="Identifier">newPByteSet</span></a>, <a href="niprefs/prefsnode.html#getFloat,PrefsNode_2"><span class="Identifier">getFloat</span></a>, <a href="niprefs/prefsbase.html#write,PrefsBase,varargs[string],T"><span class="Identifier">write</span></a>, <a href="niprefs/prefsnode.html#[]=,PrefsNode,int,PrefsNode"><span class="Identifier">[]=</span></a>, <a href="niprefs/prefsnode.html#len,PrefsNode"><span class="Identifier">len</span></a>, <a href="niprefs/prefsnode.html#added,PrefsNode,T"><span class="Identifier">added</span></a>, <a href="niprefs/prefsnode.html#add,PrefsNode,T"><span class="Identifier">add</span></a>, <a href="niprefs/prefsnode.html#[],PrefsNode,int"><span class="Identifier">[]</span></a>, <a href="niprefs/prefsnode.html#newPNode,string"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsbase.html#overwrite,PrefsBase,string"><span class="Identifier">overwrite</span></a>, <a href="niprefs/prefsbase.html#delPath,PrefsBase,varargs[string]"><span class="Identifier">delPath</span></a>, <a href="niprefs/prefsnode.html#getString,PrefsNode_2"><span class="Identifier">getString</span></a>, <a href="niprefs/prefsbase.html#initPrefsBase.t,PrefsNode,string"><span class="Identifier">initPrefsBase</span></a>, <a href="niprefs/prefsnode.html#[],PrefsNode,string"><span class="Identifier">[]</span></a>, <a href="niprefs/prefsbase.html#initPrefsBase,PObjectType,string"><span class="Identifier">initPrefsBase</span></a>, <a href="niprefs/prefsnode.html#[],PrefsNode,string_2"><span class="Identifier">[]</span></a>
 </dl></div>
 
   </div>
@@ -618,7 +639,7 @@ Same as <tt class="docutils literal"><span class="pre"><span class="Identifier">
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-03-13 17:19:20 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-04-15 17:55:40 UTC</small>
       </div>
     </div>
   </div>

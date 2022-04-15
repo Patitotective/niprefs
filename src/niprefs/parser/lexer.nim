@@ -7,24 +7,23 @@ type
   SyntaxError* = object of ValueError
   PTokenKind* = enum
     NL ## New line \n
-    GREATER ## >
-    HYPHEN ## -
+    DOT ## .
     EQUAL ## =
     COMMA ## ,
     COLON ## :
+    GREATER ## >
     SEQOPEN ## @[ or [
     SEQCLOSE ## ]
-    TABLEOPEN ## {
-    TABLECLOSE ## }
+    CURLYOPEN ## {
+    CURLYCLOSE ## }
 
-    KEY
-    INDEN ## One or more spaces/tabs
+    IDEN ## Identifier
+    SPACE ## One or more spaces/tabs
 
     # Values
     NIL ## nil
     BOOL ## true or false
     CHAR ## 'a'
-    OBJECT
     STRING ## "hello"
     RAWSTRING ## r"hello"
 
@@ -43,7 +42,7 @@ type
   PTokenPos* = tuple[line: int, col: int, idx: int] ## Position of a token in the source string
   PToken* = object
     kind*: PTokenKind
-    lexeme*: string
+    lex*: string
     pos*: PTokenPos
 
   PLexer = object ## Data used when scanning
@@ -52,8 +51,6 @@ type
     matchMax*: int
     stack*: seq[PToken]
     source*: string
-    indentLevel*: int
-
 
 proc `$`*(lexer: PLexer): string =
   result.add &"{lexer.ok} {lexer.matchLen}/{lexer.matchMax}\n"
@@ -62,12 +59,11 @@ proc `$`*(lexer: PLexer): string =
     case token.kind
     of NL:
       result.add "\n"
-    of INDEN:
-      result.add "—".repeat(token.lexeme.len)
+    of SPACE:
+      result.add '-'.repeat(token.lex.len)
       result.add ' '
     else:
       result.add &"{token.kind} "
-
 
 proc getPos(str: string, idx: int): PTokenPos =
   ## Get the line:col position of `idx` in `str` adn returns a tuple with the line, col, idx.
@@ -77,9 +73,9 @@ proc getPos(str: string, idx: int): PTokenPos =
 
   result = (lines.len, lines[^1].len+1, idx+1)
 
-proc addToken(lexer: var PLexer, kind: PTokenKind, lexeme: string, idx: int) =
+proc addToken(lexer: var PLexer, kind: PTokenKind, lex: string, idx: int) =
   let pos = lexer.source.getPos(idx)
-  lexer.stack.add PToken(kind: kind, lexeme: lexeme, pos: pos)
+  lexer.stack.add PToken(kind: kind, lex: lex, pos: pos)
 
 grammar "number":
   minus <- '-'
@@ -92,7 +88,7 @@ grammar "number":
       "16" | "32" | "64")
   uSuffix <- i"u" * ?("8" |
       "16" | "32" | "64")
-  typeSuffix <- '\'' * (uSuffix | iSuffix)
+  typeSuffix <- ?'\'' * (uSuffix | iSuffix)
   f32Suffix <- i"f" * ?"32"
   f64Suffix <- i"f64" | i"d"
   # fSuffix <- f32Suffix | f64Suffix
@@ -104,11 +100,11 @@ grammar "number":
 
   Float <- ?minus * nums * (('.' * nums * ?exponent) | exponent)
 
-  Float32 <- Hex * '\'' * f32Suffix |
-    (Float | Oct | Bin | Dec) * '\'' * f32Suffix
+  Float32 <- Hex * ?'\'' * f32Suffix |
+    (Float | Oct | Bin | Dec) * ?'\'' * f32Suffix
 
-  Float64 <- Hex * '\'' * f64Suffix |
-    (Float | Oct | Bin | Dec) * '\'' * f64Suffix
+  Float64 <- Hex * ?'\'' * f64Suffix |
+    (Float | Oct | Bin | Dec) * ?'\'' * f64Suffix
 
 grammar "str":
   escapeSeq <- 'r' | 'c' | 'n' | 'l' | 'f' | 't' | 'v' | '\\' | '"' | '\'' | +Digit |
@@ -121,14 +117,12 @@ grammar "str":
   strBody <- ?escape * *(+strChars * *escape)
   rawStrBody <- *("\"\"" | rawStrChars)
 
-let lexer = peg(tokens, data: PLexer):
+const lexer = peg(tokens, data: PLexer):
   S <- Space - '\n'
-  indentChar <- {' ', '\t'}
-  spaced(rule) <- *S * rule * *S
-  items(rule) <- ?spaced(rule * *(spaced(comma) * rule) * ?comma)
+  spaceChar <- {' ', '\t'}
 
   tokens <- *token * EOF
-  token <- sep | greater | val | hyphen | comment | inden | newLn | key | error
+  token <- dot | equal | greater | colon | comma | structuredV | val | comment | space | newLn | iden | error
 
   EOF <- !1:
     data.addToken(EOF, $0, @0)
@@ -141,13 +135,14 @@ let lexer = peg(tokens, data: PLexer):
   newLn <- '\n':
     data.addToken(NL, $0, @0)
 
-  key <- +({'\x20'..'\xff'} - {'\n', '#', '/', '='}):
-    data.addToken(KEY, $0, @0)
+  letter <- Alpha | {'\x80'..'\xff'}
+  iden <- letter * *(?'_' * (letter | Digit)):
+    data.addToken(IDEN, $0, @0)
 
-  hyphen <- '-':
-    data.addToken(HYPHEN, $0, @0)
+  dot <- '.':
+    data.addToken(DOT, $0, @0)
 
-  sep <- '=':
+  equal <- '=':
     data.addToken(EQUAL, $0, @0)
 
   greater <- '>':
@@ -159,10 +154,11 @@ let lexer = peg(tokens, data: PLexer):
   colon <- ':':
     data.addToken(COLON, $0, @0)
 
-  inden <- +indentChar:
-    data.addToken(INDEN, $0, @0)
+  space <- +spaceChar:
+    data.addToken(SPACE, $0, @0)
 
-  val <- seq | table | num | char | bool | null | string | rawString
+  structuredV <- CURLYOPEN | seqOpen | seqClose | CURLYCLOSE
+  val <- num | char | bool | null | string | rawString
 
   null <- "nil":
     data.addToken(NIL, $0, @0)
@@ -171,19 +167,13 @@ let lexer = peg(tokens, data: PLexer):
     data.addToken(BOOL, $0, @0)
 
   # Table
-  table <- tableOpen * spaced(colon | items(tablePair)) * tableClose
+  CURLYOPEN <- "{":
+    data.addToken(CURLYOPEN, $0, @0)
 
-  tableOpen <- "{":
-    data.addToken(TABLEOPEN, $0, @0)
-
-  tableClose <- "}":
-    data.addToken(TABLECLOSE, $0, @0)
-
-  tablePair <- string * spaced(colon) * val
+  CURLYCLOSE <- "}":
+    data.addToken(CURLYCLOSE, $0, @0)
 
   # Sequences
-  seq <- seqOpen * spaced(items(val)) * seqClose
-
   seqOpen <- ?"@" * "[":
     data.addToken(SEQOPEN, $0, @0)
 
@@ -201,7 +191,7 @@ let lexer = peg(tokens, data: PLexer):
     data.addToken(CHAR, $0, @0)
 
   # Numbers
-  num <- (float64 | float32 | float) | int
+  num <- (float32 | float64 | float) | int
 
   int <- hex | oct | bin | dec
 

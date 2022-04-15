@@ -2,7 +2,7 @@
 
 ## To Generate Documentation
 ```sh
-nim doc --project --outdir:docs src/niprefs.nim
+nim doc --git.url:https://github.com/Patitotective/niprefs --git.commit:main --project --outdir:docs src/niprefs.nim
 ```
 
 ## Parser
@@ -10,4 +10,3 @@ nim doc --project --outdir:docs src/niprefs.nim
 - Object end is detected by the difference between indentations.
 
 ## TODO
-- Nothing :D

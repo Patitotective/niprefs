@@ -1,19 +1,19 @@
 SyntaxError	niprefs/parser/lexer.html#SyntaxError	lexer: SyntaxError	
 NL	niprefs/parser/lexer.html#NL	PTokenKind.NL	
-GREATER	niprefs/parser/lexer.html#GREATER	PTokenKind.GREATER	
+DOT	niprefs/parser/lexer.html#DOT	PTokenKind.DOT	
 EQUAL	niprefs/parser/lexer.html#EQUAL	PTokenKind.EQUAL	
 COMMA	niprefs/parser/lexer.html#COMMA	PTokenKind.COMMA	
 COLON	niprefs/parser/lexer.html#COLON	PTokenKind.COLON	
+GREATER	niprefs/parser/lexer.html#GREATER	PTokenKind.GREATER	
 SEQOPEN	niprefs/parser/lexer.html#SEQOPEN	PTokenKind.SEQOPEN	
 SEQCLOSE	niprefs/parser/lexer.html#SEQCLOSE	PTokenKind.SEQCLOSE	
-TABLEOPEN	niprefs/parser/lexer.html#TABLEOPEN	PTokenKind.TABLEOPEN	
-TABLECLOSE	niprefs/parser/lexer.html#TABLECLOSE	PTokenKind.TABLECLOSE	
-KEY	niprefs/parser/lexer.html#KEY	PTokenKind.KEY	
-INDEN	niprefs/parser/lexer.html#INDEN	PTokenKind.INDEN	
+CURLYOPEN	niprefs/parser/lexer.html#CURLYOPEN	PTokenKind.CURLYOPEN	
+CURLYCLOSE	niprefs/parser/lexer.html#CURLYCLOSE	PTokenKind.CURLYCLOSE	
+IDEN	niprefs/parser/lexer.html#IDEN	PTokenKind.IDEN	
+SPACE	niprefs/parser/lexer.html#SPACE	PTokenKind.SPACE	
 NIL	niprefs/parser/lexer.html#NIL	PTokenKind.NIL	
 BOOL	niprefs/parser/lexer.html#BOOL	PTokenKind.BOOL	
 CHAR	niprefs/parser/lexer.html#CHAR	PTokenKind.CHAR	
-OBJECT	niprefs/parser/lexer.html#OBJECT	PTokenKind.OBJECT	
 STRING	niprefs/parser/lexer.html#STRING	PTokenKind.STRING	
 RAWSTRING	niprefs/parser/lexer.html#RAWSTRING	PTokenKind.RAWSTRING	
 DEC	niprefs/parser/lexer.html#DEC	PTokenKind.DEC	

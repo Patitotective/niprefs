@@ -8,14 +8,20 @@ type
     indentStack*: seq[int]
     inObj*: bool
     tableData*: seq[PrefsNode]
-    inList*: bool
     seqData*: seq[PrefsNode]
+    inSet*: PrefsKind # PEmpty meaning no
+    charSetData*: set[char]
+    byteSetData*: set[byte]
 
 proc initPParseData(table: PObjectType = default PObjectType): PParseData =
   PParseData(table: table, indentStack: @[0])
 
-proc `$`(data: PParseData): string =
- &"table={data.table}\nindentStack={data.indentStack}\nseqData={data.seqData}\ninList={data.inList}\nobjData={data.tableData}\ninObj={data.inObj}"
+# proc `$`(data: PParseData): string =
+#   &"table={data.table}\nindentStack={data.indentStack}\nseqData={data.seqData}\ntableData={data.tableData}\ninObj={data.inObj}"
+
+template `top`(data: PParseData): tuple[key: string, val: PrefsNode] =
+  ## Alias for `data.table.top`.
+  data.table.top
 
 template `top`[A](list: openArray[A]): A =
   ## Top (last element) of an openArray.
@@ -32,70 +38,67 @@ proc `top=`[K, V](table: var OrderedTable[K, V], val: V) =
   ## Change the last key of an ordered table.
   table[table.top.key] = val
 
-proc checkKey(token: PToken): bool = 
-  if token.kind in {INDEN, EOF}:
-    false
-  else:
-    true
-
 proc removeTypeSuf(num: string): string =
   ## Remove the type suffix from a string.
-  result = num
+  ## 13f -> 13
+  ## 69'd64 -> 69
 
-  let idx = num.find('\'')
-  if idx > -1:
-    result = num[0..<idx]
+  for i in num:
+    if i.isDigit() or i == '-' or i == '.':
+      result.add i
+    else:
+      break
 
-proc parseInt(lexeme: string, kind: PTokenKind): PrefsNode =
+proc parseInt(token: PToken): PrefsNode =
   ## Parse an string representation of an integer.
 
   var
-    lexeme = lexeme.removeTypeSuf()
+    lex = token.lex.removeTypeSuf()
     num: int
 
-  let negative = if lexeme.startsWith('-'): true else: false
-  lexeme.removePrefix('-')
+  let negative = if lex.startsWith('-'): true else: false
+  lex.removePrefix('-')
 
-  if lexeme.len <= 1:
-    num = lexeme.parseInt()
+  if lex.len <= 1:
+    num = lex.parseInt()
   else:
-    case lexeme[0..1]
+    case lex[0..1]
     of "0b": # Bin
-      num = lexeme.parseBinInt()
+      num = lex.parseBinInt()
     of "0x": # Hex
-      num = lexeme.parseHexInt()
+      num = lex.parseHexInt()
     of "0o": # Oct
-      num = lexeme.parseOctInt()
+      num = lex.parseOctInt()
     else:
-      num = lexeme.parseInt()
+      num = lex.parseInt()
 
   if negative:
     num = -num
 
   result = num.newPInt()
 
-proc parseFloat(lexeme: string, kind: PTokenKind): PrefsNode =
+proc parseFloat(token: PToken): PrefsNode =
   ## Parse an string representation of a float.
   
-  var lexeme = lexeme.removeTypeSuf()
+  var lex = token.lex.removeTypeSuf()
 
-  let negative = if lexeme.startsWith('-'): true else: false
-  lexeme.removePrefix('-')
+  let negative = if lex.startsWith('-'): true else: false
+  lex.removePrefix('-')
 
-  if lexeme.len <= 1:
-    result = lexeme.parseFloat().newPFloat()
+  if lex.len <= 1:
+    result = lex.parseFloat().newPFloat()
   else:
     var num: float
 
-    case lexeme[0..1]
+    case lex[0..1]
     of "0b": # Bin
-      num = cast[float](lexeme.parseBinInt)
+      num = cast[float](lex.parseBinInt)
     of "0x": # Hex
-      num = cast[float](lexeme.parseHexInt)
+      num = cast[float](lex.parseHexInt)
     of "0o": # Oct
-      num = cast[float](lexeme.parseOctInt)
+      num = cast[float](lex.parseOctInt)
     else:
-      num = lexeme.parseFloat()
+      num = lex.parseFloat()
 
     if negative:
       num = -num
@@ -107,23 +110,23 @@ proc parseVal(token: PToken): PrefsNode =
 
   case token.kind
   of DEC, BIN, OCT, HEX:
-    result = token.lexeme.parseInt(token.kind)
+    result = token.parseInt()
   of FLOAT, FLOAT32, FLOAT64:
-    result = token.lexeme.parseFloat(token.kind)
+    result = token.parseFloat()
   of BOOL:
-    result = token.lexeme.parseBool().newPBool()
+    result = token.lex.parseBool().newPBool()
   of CHAR:
-    result = token.lexeme[1..^2].parseEscapedChar().newPChar()
+    result = token.lex[1..^2].parseEscapedChar().newPChar()
   of STRING:
-    result = token.lexeme[1..^2].parseEscaped().newPString()
+    result = token.lex[1..^2].parseEscaped().newPString()
   of RAWSTRING:
-    result = token.lexeme[2..^2].newPString()
+    result = token.lex[2..^2].newPString()
   else:
-    raise newException(SyntaxError, &"Unkown token {token.lexeme} of {token.kind} at {token.pos}")
+    raise newException(SyntaxError, &"Unkown token {token.lex} of {token.kind} at {token.pos}")
 
 proc add(data: var PParseData, key: string, val: PrefsNode) =
   ## Add key an val to `data.table` or to `data.tableData.child` depending on `data.tableData.inside`.
-  let key = key.strip()
+  let key = key.strip().nimIdentNormalize()
 
   if data.inObj:
     data.tableData.top[key] = val
@@ -136,8 +139,16 @@ proc add(data: var PParseData, key: string, val: PToken) =
   case val.kind
   of SEQOPEN:
     value = data.seqData.pop()
-  of TABLEOPEN:
-    value = data.tableData.pop()
+  of CURLYOPEN:
+    if data.inSet == PCharSet:
+      value = data.charSetData.newPCharSet()
+      data.charSetData = {}
+    elif data.inSet == PByteSet:
+      value = data.byteSetData.newPByteSet()
+      data.byteSetData = {}
+    else:
+      value = data.tableData.pop()
+    data.inSet = PEmpty
   else:
     value = parseVal(val)
 
@@ -150,7 +161,7 @@ proc addToTable(data: var PParseData, key: string, val: PToken) =
   case val.kind
   of SEQOPEN:
     toAdd = data.seqData.pop()
-  of TABLEOPEN:
+  of CURLYOPEN:
     toAdd = data.tableData.pop()
   else:
     toAdd = parseVal(val)
@@ -162,8 +173,16 @@ proc addToSeq(data: var PParseData, val: PToken) =
   case val.kind
   of SEQOPEN:
     toAdd = data.seqData.pop()
-  of TABLEOPEN:
-    toAdd = data.tableData.pop()
+  of CURLYOPEN:
+    if data.inSet == PCharSet:
+      toAdd = data.charSetData.newPCharSet()
+      data.charSetData = {}
+    elif data.inSet == PByteSet:
+      toAdd = data.byteSetData.newPByteSet()
+      data.byteSetData = {}
+    else:
+      toAdd = data.tableData.pop()
+    data.inSet = PEmpty
   else:
     toAdd = parseVal(val)
 
@@ -172,122 +191,118 @@ proc addToSeq(data: var PParseData, val: PToken) =
 proc closeObj(data: var PParseData) =
   if data.tableData.len >= 2:
     data.tableData[^2].objectV.top = data.tableData.pop()
-  elif data.inList:
-    data.inObj = false
-    data.seqData.add data.tableData.pop()    
   else:
     data.inObj = false
-    data.table.top = data.tableData.pop()
+    data.add(data.top.key, data.tableData.pop())
 
-proc closeList(data: var PParseData) = 
-  if data.seqData.len >= 2:
-    data.seqData[^2].seqV.add data.seqData.pop()
-  else:
-    data.inList = false
-    data.table.top = data.seqData.pop()
-
-proc indOut(data: var PParseData, ind: int, pos: PTokenPos) =
+proc indenOut(data: var PParseData, ind: int, pos: PTokenPos) =
   for i in countdown(data.indentStack.high, 0):
     if ind < data.indentStack[i]:
-      if data.inObj:
-        data.closeObj()
-      elif data.inList:
-        data.closeList()
-    
+      data.closeObj()
       data.indentStack.pop()
-    
     elif ind == data.indentStack[i]:
       break
     else:
       raise newException(SyntaxError, &"Invalid indentation at {pos.line}:{pos.col} (#{pos.idx}), found {ind}, expected {data.indentStack[i]} or {data.indentStack[i+1]}")
 
-let parser = peg(content, PToken, data: PParseData):
-  spaced(rule) <- *[INDEN] * rule * *[INDEN]
-  items(rule) <- ?(rule * *([COMMA] * rule) * ?[COMMA])
+const parser = peg(content, PToken, data: PParseData):
+  spaced(rule) <- *[SPACE] * rule * *[SPACE]
+  items(rule) <- ?spaced(rule * *(spaced([COMMA]) * spaced(rule)) * ?spaced([COMMA]))
   invalidVal <- &1:
     let token = $0
-    raise newException(SyntaxError, &"Expected value at {token.pos.line}:{token.pos.col} found \"{token.lexeme}\"")
+    raise newException(SyntaxError, &"Expected value at {token.pos.line}:{token.pos.col} found \"{token.lex}\"")
 
   content <- *token
-  token <- ?[INDEN] * [NL] | objEle | ele | obj | pair
-  hyphen <- [HYPHEN] | &1:
-    validate ($0).lexeme[0] == '-'
-    if ($0).kind != HYPHEN:
-      let pos = ($0).pos
-      raise newException(SyntaxError, &"Expected space at {pos.line}:{pos.col}")
+  token <- ?[SPACE] * [NL] | obj | pair
 
-  key <- 1:
-    validate checkKey($0)
-
-  sep <- [EQUAL] | E"separator '='"
+  sep <- [EQUAL] | E"separator ="
   endLn <- [NL] | &1:
     if ($0).kind notin [NL, EOF]:
-      let lexeme = ($0).lexeme
-      let pos = ($0).pos
-      raise newException(SyntaxError, &"Expected new line or end of the file at {pos.line}:{pos.col} (#{pos.idx}), found \"{lexeme}\"")
+      let
+        lex = ($0).lex
+        pos = ($0).pos
+      raise newException(SyntaxError, &"Expected new line or end of the file at {pos.line}:{pos.col} (#{pos.idx}), found \"{lex}\"")
 
-  pair <- indSame * >key * spaced(sep) * (>val | invalidVal) * endLn:
-    if data.inList and not data.inObj:
-      let pos = ($0).pos
-      raise newException(SyntaxError, &"Pairs cannot be inside a list {pos}")
-
-    data.add(($1).lexeme, $2)
-
-  objEle <- indSame * hyphen * spaced([GREATER]) * ([NL] | E"new line") * *[NL] * indIn
-  ele <- indSame * hyphen * spaced(>val | invalidVal) * endLn:
-    if not data.inList:
-      let pos = ($0).pos
-      raise newException(SyntaxError, &"List elements must be inside a list")
-
-    data.inObj = false
-    discard data.tableData.pop()
-    data.table.top = newPSeq()
-    data.addToSeq $1
+  pair <- indSame * (>[IDEN] | E"key") * spaced(sep) * (>val | invalidVal) * endLn:
+    data.add(($1).lex, $2)
 
   # Objects
-  objOpen <- indSame * >key * spaced(sep) * [GREATER] * ([NL] | E"new line"):
-    data.add(($1).lexeme, newPEmpty())
+  objOpen <- indSame * >[IDEN] * spaced(sep) * [GREATER]:
+    data.add(($1).lex, newPObject())
 
-  obj <- objOpen * *[NL] * (
+  obj <- objOpen * ([NL] | E"new line") * *[NL] * (
       indIn | E"indentation in") * (+token | E"one or more pairs")
 
-  indSame <- [INDEN] | &1:
-    var ind = ($0).lexeme.len
-    if ($0).kind == HYPHEN or checkKey($0): # A KEY would mean zero indentation
+  indSame <- [SPACE] | &1:
+    var ind = ($0).lex.len
+    if ($0).kind == IDEN: # A KEY would mean zero indentation
       ind = 0
-    elif ($0).kind != INDEN: # Otherwise is invalid
+    elif ($0).kind != SPACE: # Otherwise is invalid
       fail
 
     if ind < data.indentStack.top: # Object close
-      data.indOut(ind, ($0).pos)
+      data.indenOut(ind, ($0).pos)
     
     elif ind != data.indentStack.top: # Error
       let pos = ($0).pos
       raise newException(SyntaxError, &"Invalid indentation at {pos.line}:{pos.col} (#{pos.idx}), found {ind}, expected {data.indentStack.top}")
 
-  indIn <- &[INDEN]:
-    validate ($0).lexeme.len > data.indentStack.top
-    data.indentStack.add ($0).lexeme.len
+  indIn <- &[SPACE]:
+    validate ($0).lex.len > data.indentStack.top
+    data.indentStack.add ($0).lex.len
 
     data.inObj = true
-    data.inList = true
     data.tableData.add newPObject()
-    data.seqData.add newPSeq()
+
+  # Sets
+  emtpySetErr <- [CURLYOPEN] * [CURLYCLOSE]:
+    raise newException(SyntaxError, "Ambiguous set, use {c} (PCharSet) or {b} (PByteSet)")
+
+  emtpySet <- [CURLYOPEN] * >spaced([IDEN]) * [CURLYCLOSE]:
+    if ($1).lex == "c":
+      data.inSet = PCharSet
+    elif ($1).lex == "b":
+      data.inSet = PByteSet
+    else:
+      let
+        lex = ($1).lex
+        pos = ($1).pos
+
+      raise newException(SyntaxError, &"Expected 'c' (PCharSet) or 'b' (PByteSet), got \"{lex}\" at {pos.line}:{pos.col}")
+
+  charRange <- >[CHAR] * [DOT] * [DOT] * >[CHAR]:
+    data.charSetData.incl {($1).lex[1..^2].parseEscapedChar()..($2).lex[1..^2].parseEscapedChar()}
+
+  charSetV <- [CHAR]:
+    data.charSetData.incl ($0).lex[1..^2].parseEscapedChar()
+
+  charSet <- [CURLYOPEN] * items(charRange | charSetV) * [CURLYCLOSE]:
+    data.inSet = PCharSet
+
+  byteV <- [DEC] | [HEX] | [BIN] | [OCT]
+
+  byteRange <- >byteV * [DOT] * [DOT] * >byteV:
+    data.byteSetData.incl {parseInt($1).getInt().byte .. parseInt($2).getInt().byte}
+
+  byteSetV <- byteV:
+    data.byteSetData.incl parseInt($0).getInt().byte
+
+  byteSet <- [CURLYOPEN] * items(byteRange | byteSetV) * [CURLYCLOSE]:
+    data.inSet = PByteSet
 
   # Tables
-  emptyTable <- [TABLEOPEN] * ?[COLON] * [TABLECLOSE]:
+  emptyTable <- [CURLYOPEN] * [COLON] * [CURLYCLOSE]:
     data.tableData.add newPObject()
 
-  tableOpen <- [TABLEOPEN]:
+  CURLYOPEN <- [CURLYOPEN]:
     data.tableData.add newPObject()
 
-  tableClose <- [TABLECLOSE] | E"table close"
   tableVal <- val | invalidVal
-  tablePair <- >[STRING] * ([COLON] | E"colon") * >tableVal:
-    let key = ($1).lexeme[1..^2]
+  tablePair <- >[STRING] * spaced([COLON] | E"colon") * >tableVal:
+    let key = ($1).lex[1..^2]
     data.addToTable(key, $2)
 
-  table <- tableOpen * items(tablePair) * tableClose
+  table <- CURLYOPEN * items(tablePair) * ([CURLYCLOSE] | E"table close")
 
   # Sequences
   emptySeq <- [SEQOPEN] * [SEQCLOSE]:
@@ -297,14 +312,14 @@ let parser = peg(content, PToken, data: PParseData):
     data.seqData.add newPSeq()
 
   seqClose <- [SEQCLOSE] | E"sequence close"
-  seqVal <- val | invalidVal:
+  seqVal <- val:
     data.addToSeq $0
 
   SEQ <- seqOpen * items(seqVal) * seqClose
 
-  val <- [NIL] | [BOOL] | [CHAR] | [OBJECT] | [STRING] | [
+  val <- [NIL] | [BOOL] | [CHAR] | [STRING] | [
       RAWSTRING] | [DEC] | [HEX] | [BIN] | [OCT] | [FLOAT] | [FLOAT32] | [
-          FLOAT64] | emptySeq | SEQ | emptyTable | table
+          FLOAT64] | emptySeq | SEQ | emtpySetErr | emtpySet | charSet | byteSet | emptyTable | table
 
 proc parsePrefs*(tokens: seq[PToken]): PObjectType =
   var data = initPParseData()
@@ -319,9 +334,6 @@ proc parsePrefs*(tokens: seq[PToken]): PObjectType =
 
   while data.inObj: # Unterminated object
     data.closeObj()
-
-  while data.inList: # Unterminated seq
-    data.closeList()
 
   result = data.table
 
@@ -349,6 +361,3 @@ proc readPrefs*(path: string): PObjectType =
   ## Read a file and parse it.
   
   parsePrefs(path.scanPrefsFile().stack)
-
-echo scanPrefsFile("prefs.niprefs")
-echo readPrefs( "prefs.niprefs")

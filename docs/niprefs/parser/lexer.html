@@ -17,7 +17,7 @@
 <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:400,500,600' rel='stylesheet' type='text/css'/>
 
 <!-- CSS -->
-<title>niprefs/parser/lexer</title>
+<title>src/niprefs/parser/lexer</title>
 <link rel="stylesheet" type="text/css" href="../../nimdoc.out.css">
 
 <script type="text/javascript" src="../../dochack.js"></script>
@@ -69,7 +69,7 @@ window.addEventListener('DOMContentLoaded', main);
 <body>
 <div class="document" id="documentId">
   <div class="container">
-    <h1 class="title">niprefs/parser/lexer</h1>
+    <h1 class="title">src/niprefs/parser/lexer</h1>
     <div class="row">
   <div class="three columns">
   <div class="theme-switch-wrapper">
@@ -110,24 +110,26 @@ window.addEventListener('DOMContentLoaded', main);
       <li><a class="reference" href="#PToken"
     title="PToken = object
   kind*: PTokenKind
-  lexeme*: string
+  lex*: string
   pos*: PTokenPos">PToken</a></li>
   <li><a class="reference" href="#PTokenKind"
     title="PTokenKind = enum
   NL,                       ## New line \n
-  GREATER,                  ## &gt;
+  DOT,                      ## .
   EQUAL,                    ## =
   COMMA,                    ## ,
   COLON,                    ## :
+  GREATER,                  ## &gt;
   SEQOPEN,                  ## @[ or [
   SEQCLOSE,                 ## ]
-  TABLEOPEN,                ## {
-  TABLECLOSE,               ## }
-  KEY, INDEN,               ## One or more spaces/tabs
+  CURLYOPEN,                ## {
+  CURLYCLOSE,               ## }
+  IDEN,                     ## Identifier
+  SPACE,                    ## One or more spaces/tabs
   NIL,                      ## nil
   BOOL,                     ## true or false
   CHAR,                     ## 'a'
-  OBJECT, STRING,           ## &quot;hello&quot;
+  STRING,                   ## &quot;hello&quot;
   RAWSTRING,                ## r&quot;hello&quot;
   DEC,                      ## Decimal int
   HEX,                      ## Hex int (0x)
@@ -172,7 +174,11 @@ window.addEventListener('DOMContentLoaded', main);
 </ul>
 
   </div>
-  
+  &nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/parser/lexer.nim#L1"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/parser/lexer.nim#L1" class="link-seesrc" target="_blank" >Edit</a>
+
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
@@ -188,31 +194,37 @@ window.addEventListener('DOMContentLoaded', main);
 <div id="PToken">
 <dt><pre><a href="lexer.html#PToken"><span class="Identifier">PToken</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
   <span class="Identifier">kind</span><span class="Operator">*</span><span class="Other">:</span> <a href="lexer.html#PTokenKind"><span class="Identifier">PTokenKind</span></a>
-  <span class="Identifier">lexeme</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">lex</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
   <span class="Identifier">pos</span><span class="Operator">*</span><span class="Other">:</span> <a href="lexer.html#PTokenPos"><span class="Identifier">PTokenPos</span></a>
 </pre></dt>
 <dd>
 
 
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/parser/lexer.nim#L43"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/parser/lexer.nim#L43" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
 <div id="PTokenKind">
 <dt><pre><a href="lexer.html#PTokenKind"><span class="Identifier">PTokenKind</span></a> <span class="Other">=</span> <span class="Keyword">enum</span>
   <span class="Identifier">NL</span><span class="Other">,</span>                       <span class="Comment">## New line \n</span>
-  <span class="Identifier">GREATER</span><span class="Other">,</span>                  <span class="Comment">## &gt;</span>
+  <span class="Identifier">DOT</span><span class="Other">,</span>                      <span class="Comment">## .</span>
   <span class="Identifier">EQUAL</span><span class="Other">,</span>                    <span class="Comment">## =</span>
   <span class="Identifier">COMMA</span><span class="Other">,</span>                    <span class="Comment">## ,</span>
   <span class="Identifier">COLON</span><span class="Other">,</span>                    <span class="Comment">## :</span>
+  <span class="Identifier">GREATER</span><span class="Other">,</span>                  <span class="Comment">## &gt;</span>
   <span class="Identifier">SEQOPEN</span><span class="Other">,</span>                  <span class="Comment">## @[ or [</span>
   <span class="Identifier">SEQCLOSE</span><span class="Other">,</span>                 <span class="Comment">## ]</span>
-  <span class="Identifier">TABLEOPEN</span><span class="Other">,</span>                <span class="Comment">## {</span>
-  <span class="Identifier">TABLECLOSE</span><span class="Other">,</span>               <span class="Comment">## }</span>
-  <span class="Identifier">KEY</span><span class="Other">,</span> <span class="Identifier">INDEN</span><span class="Other">,</span>               <span class="Comment">## One or more spaces/tabs</span>
+  <span class="Identifier">CURLYOPEN</span><span class="Other">,</span>                <span class="Comment">## {</span>
+  <span class="Identifier">CURLYCLOSE</span><span class="Other">,</span>               <span class="Comment">## }</span>
+  <span class="Identifier">IDEN</span><span class="Other">,</span>                     <span class="Comment">## Identifier</span>
+  <span class="Identifier">SPACE</span><span class="Other">,</span>                    <span class="Comment">## One or more spaces/tabs</span>
   <span class="Identifier">NIL</span><span class="Other">,</span>                      <span class="Comment">## nil</span>
   <span class="Identifier">BOOL</span><span class="Other">,</span>                     <span class="Comment">## true or false</span>
   <span class="Identifier">CHAR</span><span class="Other">,</span>                     <span class="Comment">## 'a'</span>
-  <span class="Identifier">OBJECT</span><span class="Other">,</span> <span class="Identifier">STRING</span><span class="Other">,</span>           <span class="Comment">## &quot;hello&quot;</span>
+  <span class="Identifier">STRING</span><span class="Other">,</span>                   <span class="Comment">## &quot;hello&quot;</span>
   <span class="Identifier">RAWSTRING</span><span class="Other">,</span>                <span class="Comment">## r&quot;hello&quot;</span>
   <span class="Identifier">DEC</span><span class="Other">,</span>                      <span class="Comment">## Decimal int</span>
   <span class="Identifier">HEX</span><span class="Other">,</span>                      <span class="Comment">## Hex int (0x)</span>
@@ -222,6 +234,10 @@ window.addEventListener('DOMContentLoaded', main);
 <dd>
 
 
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/parser/lexer.nim#L8"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/parser/lexer.nim#L8" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -230,6 +246,10 @@ window.addEventListener('DOMContentLoaded', main);
 <dd>
 
 Position of a token in the source string
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/parser/lexer.nim#L42"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/parser/lexer.nim#L42" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -238,6 +258,10 @@ Position of a token in the source string
 <dd>
 
 
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/parser/lexer.nim#L7"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/parser/lexer.nim#L7" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -251,6 +275,10 @@ Position of a token in the source string
 <dd>
 
 
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/parser/lexer.nim#L55"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/parser/lexer.nim#L55" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -260,6 +288,10 @@ Position of a token in the source string
 <dd>
 
 Lexical analysis for a string representing a NiPrefs file. 
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/parser/lexer.nim#L219"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/parser/lexer.nim#L219" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -270,6 +302,10 @@ Lexical analysis for a string representing a NiPrefs file.
 <dd>
 
 Lexical analysis for a NiPrefs file.
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/parser/lexer.nim#L229"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/parser/lexer.nim#L229" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -278,7 +314,7 @@ Lexical analysis for a NiPrefs file.
 <div class="section" id="19">
 <h1><a class="toc-backref" href="#19">Exports</a></h1>
 <dl class="item">
-<a href="../prefsnode.html#newPChar,string,Natural"><span class="Identifier">newPChar</span></a>, <a href="../prefsnode.html#isNil,PrefsNode"><span class="Identifier">isNil</span></a>, <a href="../prefsnode.html#PSeqParam"><span class="Identifier">PSeqParam</span></a>, <a href="../prefsnode.html#getBool,PrefsNode"><span class="Identifier">getBool</span></a>, <a href="../prefsnode.html#==,PrefsNode,PrefsNode"><span class="Identifier">==</span></a>, <a href="../prefsnode.html#newPEmpty"><span class="Identifier">newPEmpty</span></a>, <a href="../prefsnode.html#newPChar,char"><span class="Identifier">newPChar</span></a>, <a href="../prefsnode.html#getChar,PrefsNode"><span class="Identifier">getChar</span></a>, <a href="../prefsnode.html#$,PrefsNode"><span class="Identifier">$</span></a>, <a href="../prefsnode.html#newPFloat,float"><span class="Identifier">newPFloat</span></a>, <a href="../prefsnode.html#[],PrefsNode,BackwardsIndex"><span class="Identifier">[]</span></a>, <a href="../prefsnode.html#newPNode,float"><span class="Identifier">newPNode</span></a>, <a href="../prefsnode.html#newPNil"><span class="Identifier">newPNil</span></a>, <a href="../prefsnode.html#newPString,string"><span class="Identifier">newPString</span></a>, <a href="../prefsnode.html#newPNode,string"><span class="Identifier">newPNode</span></a>, <a href="../prefsnode.html#PrefsNodeObj"><span class="Identifier">PrefsNodeObj</span></a>, <a href="../prefsnode.html#del,PrefsNode,string"><span class="Identifier">del</span></a>, <a href="../prefsnode.html#PrefsNKind"><span class="Identifier">PrefsNKind</span></a>, <a href="../prefsnode.html#newPNode,PObjectType"><span class="Identifier">newPNode</span></a>, <a href="../prefsnode.html#newPNode,char"><span class="Identifier">newPNode</span></a>, <a href="../prefsnode.html#newPBool,bool"><span class="Identifier">newPBool</span></a>, <a href="../prefsnode.html#toPrefs.m,untyped"><span class="Identifier">toPrefs</span></a>, <a href="../prefsnode.html#getInt,PrefsNode"><span class="Identifier">getInt</span></a>, <a href="../prefsnode.html#[]=,PrefsNode,string,T"><span class="Identifier">[]=</span></a>, <a href="../prefsnode.html#isEmpty,PrefsNode"><span class="Identifier">isEmpty</span></a>, <a href="../prefsnode.html#newPNode,PSeqParam"><span class="Identifier">newPNode</span></a>, <a href="../prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a>, <a href="../prefsnode.html#newPSeq,PSeqParam"><span class="Identifier">newPSeq</span></a>, <a href="../prefsnode.html#newPInt,int"><span class="Identifier">newPInt</span></a>, <a href="../prefsnode.html#==,PrefsNode,T"><span class="Identifier">==</span></a>, <a href="../prefsnode.html#getFloat,PrefsNode"><span class="Identifier">getFloat</span></a>, <a href="../prefsnode.html#[]=,PrefsNode,string,PrefsNode"><span class="Identifier">[]=</span></a>, <a href="../prefsnode.html#PSeqType"><span class="Identifier">PSeqType</span></a>, <a href="../prefsnode.html#[],PrefsNode,int"><span class="Identifier">[]</span></a>, <a href="../prefsnode.html#newPNode,bool"><span class="Identifier">newPNode</span></a>, <a href="../prefsnode.html#getSeq,PrefsNode"><span class="Identifier">getSeq</span></a>, <a href="../prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a>, <a href="../prefsnode.html#getString,PrefsNode"><span class="Identifier">getString</span></a>, <a href="../prefsnode.html#getObject,PrefsNode"><span class="Identifier">getObject</span></a>, <a href="../prefsnode.html#[],PrefsNode,string"><span class="Identifier">[]</span></a>, <a href="../prefsnode.html#newPNode,int"><span class="Identifier">newPNode</span></a>, <a href="../prefsnode.html#newPObject,PObjectType"><span class="Identifier">newPObject</span></a>, <a href="../prefsnode.html#[],PrefsNode,string_2"><span class="Identifier">[]</span></a>
+<a href="../prefsnode.html#getByteSet,PrefsNode"><span class="Identifier">getByteSet</span></a>, <a href="../prefsnode.html#newPChar,char"><span class="Identifier">newPChar</span></a>, <a href="../prefsnode.html#[]=,PrefsNode,int,PrefsNode"><span class="Identifier">[]=</span></a>, <a href="../prefsnode.html#PSeqParam"><span class="Identifier">PSeqParam</span></a>, <a href="../prefsnode.html#newPNode,int"><span class="Identifier">newPNode</span></a>, <a href="../prefsnode.html#PrefsKind"><span class="Identifier">PrefsKind</span></a>, <a href="../prefsnode.html#contains,PrefsNode,string"><span class="Identifier">contains</span></a>, <a href="../prefsnode.html#newPChar,string,Natural"><span class="Identifier">newPChar</span></a>, <a href="../prefsnode.html#getChar,PrefsNode"><span class="Identifier">getChar</span></a>, <a href="../prefsnode.html#$,PrefsNode"><span class="Identifier">$</span></a>, <a href="../prefsnode.html#newPNode,string"><span class="Identifier">newPNode</span></a>, <a href="../prefsnode.html#getBool,PrefsNode"><span class="Identifier">getBool</span></a>, <a href="../prefsnode.html#newPCharSet,set[char]"><span class="Identifier">newPCharSet</span></a>, <a href="../prefsnode.html#deleted,PrefsNode,Natural"><span class="Identifier">deleted</span></a>, <a href="../prefsnode.html#getFloat,PrefsNode"><span class="Identifier">getFloat</span></a>, <a href="../prefsnode.html#getBool,PrefsNode_2"><span class="Identifier">getBool</span></a>, <a href="../prefsnode.html#newPNode,PSeqParam"><span class="Identifier">newPNode</span></a>, <a href="../prefsnode.html#newPBool,bool"><span class="Identifier">newPBool</span></a>, <a href="../prefsnode.html#toPrefs.m,untyped"><span class="Identifier">toPrefs</span></a>, <a href="../prefsnode.html#items.i,PrefsNode"><span class="Identifier">items</span></a>, <a href="../prefsnode.html#getInt,PrefsNode"><span class="Identifier">getInt</span></a>, <a href="../prefsnode.html#isEmpty,PrefsNode"><span class="Identifier">isEmpty</span></a>, <a href="../prefsnode.html#newPNode,set[byte]"><span class="Identifier">newPNode</span></a>, <a href="../prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a>, <a href="../prefsnode.html#newPInt,int"><span class="Identifier">newPInt</span></a>, <a href="../prefsnode.html#getInt,PrefsNode_2"><span class="Identifier">getInt</span></a>, <a href="../prefsnode.html#==,PrefsNode,T"><span class="Identifier">==</span></a>, <a href="../prefsnode.html#delete,PrefsNode,Natural"><span class="Identifier">delete</span></a>, <a href="../prefsnode.html#card,PrefsNode"><span class="Identifier">card</span></a>, <a href="../prefsnode.html#contains,PrefsNode,byte"><span class="Identifier">contains</span></a>, <a href="../prefsnode.html#[]=,PrefsNode,string,T"><span class="Identifier">[]=</span></a>, <a href="../prefsnode.html#newPByteSet,set[T]"><span class="Identifier">newPByteSet</span></a>, <a href="../prefsnode.html#add,PrefsNode,T"><span class="Identifier">add</span></a>, <a href="../prefsnode.html#newPNode,float"><span class="Identifier">newPNode</span></a>, <a href="../prefsnode.html#newPNode,PObjectType"><span class="Identifier">newPNode</span></a>, <a href="../prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a>, <a href="../prefsnode.html#added,PrefsNode,PrefsNode"><span class="Identifier">added</span></a>, <a href="../prefsnode.html#getObject,PrefsNode"><span class="Identifier">getObject</span></a>, <a href="../prefsnode.html#newPNode,bool"><span class="Identifier">newPNode</span></a>, <a href="../prefsnode.html#newPObject,PObjectType"><span class="Identifier">newPObject</span></a>, <a href="../prefsnode.html#isNil,PrefsNode"><span class="Identifier">isNil</span></a>, <a href="../prefsnode.html#newPEmpty"><span class="Identifier">newPEmpty</span></a>, <a href="../prefsnode.html#contains,PrefsNode,char"><span class="Identifier">contains</span></a>, <a href="../prefsnode.html#getChar,PrefsNode_2"><span class="Identifier">getChar</span></a>, <a href="../prefsnode.html#newPFloat,float"><span class="Identifier">newPFloat</span></a>, <a href="../prefsnode.html#[],PrefsNode,string"><span class="Identifier">[]</span></a>, <a href="../prefsnode.html#getSeq,PrefsNode"><span class="Identifier">getSeq</span></a>, <a href="../prefsnode.html#newPNil"><span class="Identifier">newPNil</span></a>, <a href="../prefsnode.html#getCharSet,PrefsNode"><span class="Identifier">getCharSet</span></a>, <a href="../prefsnode.html#excl,PrefsNode,char"><span class="Identifier">excl</span></a>, <a href="../prefsnode.html#==,PrefsNode,PrefsNode"><span class="Identifier">==</span></a>, <a href="../prefsnode.html#newPNode,set[char]"><span class="Identifier">newPNode</span></a>, <a href="../prefsnode.html#PrefsNodeObj"><span class="Identifier">PrefsNodeObj</span></a>, <a href="../prefsnode.html#del,PrefsNode,string"><span class="Identifier">del</span></a>, <a href="../prefsnode.html#pairs.i,PrefsNode"><span class="Identifier">pairs</span></a>, <a href="../prefsnode.html#getSeq,PrefsNode_2"><span class="Identifier">getSeq</span></a>, <a href="../prefsnode.html#getCharSet,PrefsNode_2"><span class="Identifier">getCharSet</span></a>, <a href="../prefsnode.html#getObject,PrefsNode_2"><span class="Identifier">getObject</span></a>, <a href="../prefsnode.html#[]=,PrefsNode,string,PrefsNode"><span class="Identifier">[]=</span></a>, <a href="../prefsnode.html#PSeqType"><span class="Identifier">PSeqType</span></a>, <a href="../prefsnode.html#newPNode,char"><span class="Identifier">newPNode</span></a>, <a href="../prefsnode.html#getString,PrefsNode"><span class="Identifier">getString</span></a>, <a href="../prefsnode.html#getByteSet,PrefsNode_2"><span class="Identifier">getByteSet</span></a>, <a href="../prefsnode.html#incl,PrefsNode,char"><span class="Identifier">incl</span></a>, <a href="../prefsnode.html#newPSeq,PSeqParam"><span class="Identifier">newPSeq</span></a>, <a href="../prefsnode.html#newPByteSet,set[byte]"><span class="Identifier">newPByteSet</span></a>, <a href="../prefsnode.html#getFloat,PrefsNode_2"><span class="Identifier">getFloat</span></a>, <a href="../prefsnode.html#[]=,PrefsNode,int,T"><span class="Identifier">[]=</span></a>, <a href="../prefsnode.html#len,PrefsNode"><span class="Identifier">len</span></a>, <a href="../prefsnode.html#added,PrefsNode,T"><span class="Identifier">added</span></a>, <a href="../prefsnode.html#add,PrefsNode,PrefsNode"><span class="Identifier">add</span></a>, <a href="../prefsnode.html#[],PrefsNode,string_2"><span class="Identifier">[]</span></a>, <a href="../prefsnode.html#newPString,string"><span class="Identifier">newPString</span></a>, <a href="../prefsnode.html#getString,PrefsNode_2"><span class="Identifier">getString</span></a>, <a href="../prefsnode.html#[],PrefsNode,int"><span class="Identifier">[]</span></a>, <a href="../prefsnode.html#[],PrefsNode,BackwardsIndex"><span class="Identifier">[]</span></a>
 </dl></div>
 
   </div>
@@ -288,7 +324,7 @@ Lexical analysis for a NiPrefs file.
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-03-13 17:18:47 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-04-15 17:55:37 UTC</small>
       </div>
     </div>
   </div>

@@ -36,6 +36,8 @@ _NiPrefs_ store your preferences in an `OrderedTable[string, PrefsNode]`, where 
 - `char`
 - `float`
 - `string` (and raw strings)
+- `set[char]`
+- `set[byte]`
 - `OrderedTable[string, PrefsNode]` (nested tables)
 
 
@@ -80,4 +82,4 @@ Contact me:
 - Twitter: [**@patitotective**](https://twitter.com/patitotective).
 - Email: **cristobalriaga@gmail.com**.
 
-***v0.1.0***
+_Tested in Linux and Windows._  
