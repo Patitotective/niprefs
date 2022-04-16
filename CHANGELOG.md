@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### v0.1.5
+- Now keys are treated as Nim identifiers.
+	- Only first letter is case-sensitive.
+	- Case and underscore-insensitive.
+
 ### v0.1.4
 - Added support for `set[char]` and `set[byte]`.
 
