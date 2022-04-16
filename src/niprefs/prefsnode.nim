@@ -395,16 +395,16 @@ proc `[]=`*(node: var PrefsNode, key: string, val: PrefsNode) =
   node.objectV[key] = val
 
 proc `[]`*(table: PObjectType, key: string): PrefsNode = 
-  tables.`[]`(table, key)
+  tables.`[]`(table, key.nimIdentNormalize())
 
 proc `[]`*(table: var PObjectType, key: string): var PrefsNode = 
-  tables.`[]`(table, key)
+  tables.`[]`(table, key.nimIdentNormalize())
 
 proc `[]=`*(table: var PObjectType, key: string, val: PrefsNode) = 
-  tables.`[]=`(table, key, val)
+  tables.`[]=`(table, key.nimIdentNormalize(), val)
 
 proc `[]=`*[T: not PrefsNode](table: var PObjectType, key: string, val: T) = 
-  tables.`[]=`(table, key, val.newPNode())
+  tables.`[]=`(table, key.nimIdentNormalize(), val.newPNode())
 
 proc len*(node: var PrefsNode): int = 
   case node.kind

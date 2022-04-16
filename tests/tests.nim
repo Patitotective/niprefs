@@ -40,7 +40,7 @@ test "can read":
 
 test "can write":
   prefs["l_A_n_G"] = "es" # Keys are normalized as nim identifiers
-  prefs.table["lang"] = "es".toPrefs
+  prefs.table["la_ng"] = "es".toPrefs
 
   prefs["scheme/font/size"] = 20
   prefs.table["scheme"]["font"]["size"] = 20.toPrefs
@@ -60,7 +60,7 @@ test "can remove":
   prefs.table.del("lang")
 
   prefs.del("scheme/font/size")
-  prefs.table["scheme"]["font"].del("size")
+  prefs.table["schemE"]["font"].del("size")
 
   check prefs.content == prefs.table
 
