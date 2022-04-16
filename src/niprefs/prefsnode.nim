@@ -397,6 +397,9 @@ proc `[]=`*(node: var PrefsNode, key: string, val: PrefsNode) =
 proc `[]`*(table: PObjectType, key: string): PrefsNode = 
   tables.`[]`(table, key)
 
+proc `[]`*(table: var PObjectType, key: string): var PrefsNode = 
+  tables.`[]`(table, key)
+
 proc `[]=`*(table: var PObjectType, key: string, val: PrefsNode) = 
   tables.`[]=`(table, key, val)
 
