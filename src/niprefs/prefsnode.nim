@@ -349,7 +349,7 @@ proc `$`*(node: PrefsNode): string =
       result = $node.getByteSet()
 
 proc `[]`*(node: var PrefsNode, key: string): var PrefsNode =
-  ## Access to the value of `key` in `node.obj°ectV`. The value can be modified.
+  ## Access to the value of `key` in `node.objectV`. The value can be modified.
   node.objectV[key]
 
 proc `[]`*(node: PrefsNode, key: string): PrefsNode =
@@ -393,6 +393,15 @@ proc `[]=`*(node: var PrefsNode, key: string, val: PrefsNode) =
     table["users"] = toPrefs @["ElegantBeef", "Patitotective"]
 
   node.objectV[key] = val
+
+proc `[]`*(table: PObjectType, key: string): PrefsNode = 
+  tables.`[]`(table, key)
+
+proc `[]=`*(table: var PObjectType, key: string, val: PrefsNode) = 
+  tables.`[]=`(table, key, val)
+
+proc `[]=`*[T: not PrefsNode](table: var PObjectType, key: string, val: T) = 
+  tables.`[]=`(table, key, val.newPNode())
 
 proc len*(node: var PrefsNode): int = 
   case node.kind
