@@ -95,6 +95,10 @@ window.addEventListener('DOMContentLoaded', main);
           <li><a class="reference external"
           data-doc-search-tag="niprefs: `[]=`[T: not PrefsNode](prefs: Prefs; keys: varargs[string]; val: T)" href="niprefs.html#%5B%5D%3D%2CPrefs%2Cvarargs%5Bstring%5D%2CT">niprefs: `[]=`[T: not PrefsNode](prefs: Prefs; keys: varargs[string]; val: T)</a></li>
           <li><a class="reference external"
+          data-doc-search-tag="prefsnode: `[]=`(table: var PObjectType; key: string; val: PrefsNode)" href="niprefs/prefsnode.html#%5B%5D%3D%2CPObjectType%2Cstring%2CPrefsNode">prefsnode: `[]=`(table: var PObjectType; key: string; val: PrefsNode)</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="prefsnode: `[]=`[T: not PrefsNode](table: var PObjectType; key: string; val: T)" href="niprefs/prefsnode.html#%5B%5D%3D%2CPObjectType%2Cstring%2CT">prefsnode: `[]=`[T: not PrefsNode](table: var PObjectType; key: string; val: T)</a></li>
+          <li><a class="reference external"
           data-doc-search-tag="prefsnode: `[]=`(node: var PrefsNode; index: int; val: PrefsNode)" href="niprefs/prefsnode.html#%5B%5D%3D%2CPrefsNode%2Cint%2CPrefsNode">prefsnode: `[]=`(node: var PrefsNode; index: int; val: PrefsNode)</a></li>
           <li><a class="reference external"
           data-doc-search-tag="prefsnode: `[]=`[T: not PrefsNode](node: var PrefsNode; index: int; val: T)" href="niprefs/prefsnode.html#%5B%5D%3D%2CPrefsNode%2Cint%2CT">prefsnode: `[]=`[T: not PrefsNode](node: var PrefsNode; index: int; val: T)</a></li>
@@ -108,6 +112,10 @@ window.addEventListener('DOMContentLoaded', main);
           data-doc-search-tag="niprefs: `[]`(prefs: Prefs; key: string): PrefsNode" href="niprefs.html#%5B%5D%2CPrefs%2Cstring">niprefs: `[]`(prefs: Prefs; key: string): PrefsNode</a></li>
           <li><a class="reference external"
           data-doc-search-tag="niprefs: `[]`(prefs: Prefs; keys: varargs[string]): PrefsNode" href="niprefs.html#%5B%5D%2CPrefs%2Cvarargs%5Bstring%5D">niprefs: `[]`(prefs: Prefs; keys: varargs[string]): PrefsNode</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="prefsnode: `[]`(table: PObjectType; key: string): PrefsNode" href="niprefs/prefsnode.html#%5B%5D%2CPObjectType%2Cstring">prefsnode: `[]`(table: PObjectType; key: string): PrefsNode</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="prefsnode: `[]`(table: var PObjectType; key: string): var PrefsNode" href="niprefs/prefsnode.html#%5B%5D%2CPObjectType%2Cstring_2">prefsnode: `[]`(table: var PObjectType; key: string): var PrefsNode</a></li>
           <li><a class="reference external"
           data-doc-search-tag="prefsnode: `[]`(node: PrefsNode; index: BackwardsIndex): PrefsNode" href="niprefs/prefsnode.html#%5B%5D%2CPrefsNode%2CBackwardsIndex">prefsnode: `[]`(node: PrefsNode; index: BackwardsIndex): PrefsNode</a></li>
           <li><a class="reference external"
@@ -377,7 +385,7 @@ window.addEventListener('DOMContentLoaded', main);
 <li><a class="reference external"
           data-doc-search-tag="niprefs: len(prefs: Prefs): int" href="niprefs.html#len%2CPrefs">niprefs: len(prefs: Prefs): int</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsnode: len(node: var PrefsNode): int" href="niprefs/prefsnode.html#len%2CPrefsNode">prefsnode: len(node: var PrefsNode): int</a></li>
+          data-doc-search-tag="prefsnode: len(node: PrefsNode): int" href="niprefs/prefsnode.html#len%2CPrefsNode">prefsnode: len(node: PrefsNode): int</a></li>
           </ul></dd>
 <dt><a name="newPBool" href="#newPBool"><span>newPBool:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -433,7 +441,7 @@ window.addEventListener('DOMContentLoaded', main);
           <li><a class="reference external"
           data-doc-search-tag="prefsnode: newPNode(obj: set[char]): PrefsNode" href="niprefs/prefsnode.html#newPNode%2Cset%5Bchar%5D">prefsnode: newPNode(obj: set[char]): PrefsNode</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPNode(obj: string): PrefsNode" href="niprefs/prefsnode.html#newPNode%2Cstring">prefsnode: newPNode(obj: string): PrefsNode</a></li>
+          data-doc-search-tag="prefsnode: newPNode(obj: string; raw: bool = false): PrefsNode" href="niprefs/prefsnode.html#newPNode%2Cstring%2Cbool">prefsnode: newPNode(obj: string; raw: bool = false): PrefsNode</a></li>
           </ul></dd>
 <dt><a name="newPObject" href="#newPObject"><span>newPObject:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -445,7 +453,7 @@ window.addEventListener('DOMContentLoaded', main);
           </ul></dd>
 <dt><a name="newPString" href="#newPString"><span>newPString:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPString(val: string = default string): PrefsNode" href="niprefs/prefsnode.html#newPString%2Cstring">prefsnode: newPString(val: string = default string): PrefsNode</a></li>
+          data-doc-search-tag="prefsnode: newPString(val: string = default string; raw: bool = false): PrefsNode" href="niprefs/prefsnode.html#newPString%2Cstring%2Cbool">prefsnode: newPString(val: string = default string; raw: bool = false): PrefsNode</a></li>
           </ul></dd>
 <dt><a name="NIL" href="#NIL"><span>NIL:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -631,24 +639,24 @@ window.addEventListener('DOMContentLoaded', main);
 <li><a class="reference external"
           data-doc-search-tag="prefsbase: write(prefs: PrefsBase; key: string; val: PrefsNode)" href="niprefs/prefsbase.html#write%2CPrefsBase%2Cstring%2CPrefsNode">prefsbase: write(prefs: PrefsBase; key: string; val: PrefsNode)</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsbase: write[T](prefs: PrefsBase; key: string; val: T)" href="niprefs/prefsbase.html#write%2CPrefsBase%2Cstring%2CT">prefsbase: write[T](prefs: PrefsBase; key: string; val: T)</a></li>
+          data-doc-search-tag="prefsbase: write[T: not PrefsNode](prefs: PrefsBase; key: string; val: T)" href="niprefs/prefsbase.html#write%2CPrefsBase%2Cstring%2CT">prefsbase: write[T: not PrefsNode](prefs: PrefsBase; key: string; val: T)</a></li>
           <li><a class="reference external"
           data-doc-search-tag="prefsbase: write(prefs: PrefsBase; keys: varargs[string]; val: PrefsNode)" href="niprefs/prefsbase.html#write%2CPrefsBase%2Cvarargs%5Bstring%5D%2CPrefsNode">prefsbase: write(prefs: PrefsBase; keys: varargs[string]; val: PrefsNode)</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsbase: write[T](prefs: PrefsBase; keys: varargs[string]; val: T)" href="niprefs/prefsbase.html#write%2CPrefsBase%2Cvarargs%5Bstring%5D%2CT">prefsbase: write[T](prefs: PrefsBase; keys: varargs[string]; val: T)</a></li>
+          data-doc-search-tag="prefsbase: write[T: not PrefsNode](prefs: PrefsBase; keys: varargs[string]; val: T)" href="niprefs/prefsbase.html#write%2CPrefsBase%2Cvarargs%5Bstring%5D%2CT">prefsbase: write[T: not PrefsNode](prefs: PrefsBase; keys: varargs[string]; val: T)</a></li>
           </ul></dd>
 <dt><a name="writeMany" href="#writeMany"><span>writeMany:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="prefsbase: writeMany(prefs: PrefsBase; items: PObjectType)" href="niprefs/prefsbase.html#writeMany%2CPrefsBase%2CPObjectType">prefsbase: writeMany(prefs: PrefsBase; items: PObjectType)</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsbase: writeMany(prefs: PrefsBase; items: PrefsNode)" href="niprefs/prefsbase.html#writeMany.t%2CPrefsBase%2CPrefsNode">prefsbase: writeMany(prefs: PrefsBase; items: PrefsNode)</a></li>
+          data-doc-search-tag="prefsbase: writeMany(prefs: PrefsBase; items: PrefsNode)" href="niprefs/prefsbase.html#writeMany%2CPrefsBase%2CPrefsNode">prefsbase: writeMany(prefs: PrefsBase; items: PrefsNode)</a></li>
           </ul></dd>
 </dl>
     <div class="row">
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-04-15 17:55:40 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-04-17 18:15:19 UTC</small>
       </div>
     </div>
   </div>

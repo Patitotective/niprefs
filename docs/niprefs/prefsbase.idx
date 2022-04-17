@@ -9,12 +9,12 @@ toString	niprefs/prefsbase.html#toString,PObjectType,int	prefsbase: toString(tab
 toString	niprefs/prefsbase.html#toString,PrefsNode,int	prefsbase: toString(node: PrefsNode; depth: int = 0): string	
 create	niprefs/prefsbase.html#create,PrefsBase,OrderedTable[system.string, prefsnode.PrefsNode]	prefsbase: create(prefs: PrefsBase; table = prefs.table)	
 checkFile	niprefs/prefsbase.html#checkFile,PrefsBase	prefsbase: checkFile(prefs: PrefsBase)	
-write	niprefs/prefsbase.html#write,PrefsBase,string,T	prefsbase: write[T](prefs: PrefsBase; key: string; val: T)	
+write	niprefs/prefsbase.html#write,PrefsBase,string,T	prefsbase: write[T: not PrefsNode](prefs: PrefsBase; key: string; val: T)	
 write	niprefs/prefsbase.html#write,PrefsBase,string,PrefsNode	prefsbase: write(prefs: PrefsBase; key: string; val: PrefsNode)	
-write	niprefs/prefsbase.html#write,PrefsBase,varargs[string],T	prefsbase: write[T](prefs: PrefsBase; keys: varargs[string]; val: T)	
+write	niprefs/prefsbase.html#write,PrefsBase,varargs[string],T	prefsbase: write[T: not PrefsNode](prefs: PrefsBase; keys: varargs[string]; val: T)	
 write	niprefs/prefsbase.html#write,PrefsBase,varargs[string],PrefsNode	prefsbase: write(prefs: PrefsBase; keys: varargs[string]; val: PrefsNode)	
 writeMany	niprefs/prefsbase.html#writeMany,PrefsBase,PObjectType	prefsbase: writeMany(prefs: PrefsBase; items: PObjectType)	
-writeMany	niprefs/prefsbase.html#writeMany.t,PrefsBase,PrefsNode	prefsbase: writeMany(prefs: PrefsBase; items: PrefsNode)	
+writeMany	niprefs/prefsbase.html#writeMany,PrefsBase,PrefsNode	prefsbase: writeMany(prefs: PrefsBase; items: PrefsNode)	
 delPath	niprefs/prefsbase.html#delPath,PrefsBase,varargs[string]	prefsbase: delPath(prefs: PrefsBase; keys: varargs[string])	
 delKey	niprefs/prefsbase.html#delKey,PrefsBase,string	prefsbase: delKey(prefs: PrefsBase; key: string)	
 getPath	niprefs/prefsbase.html#getPath,PrefsBase,varargs[string]	prefsbase: getPath(prefs: PrefsBase; keys: varargs[string]): PrefsNode	

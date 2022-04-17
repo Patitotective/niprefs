@@ -37,6 +37,7 @@ type
       objectV*: PObjectType
     of PString:
       stringV*: string
+      raw*: bool
     of PCharSet:
       charSetV*: set[char]
     of PByteSet:
@@ -159,9 +160,9 @@ proc newPObject*(val: PObjectType = default PObjectType): PrefsNode =
   ## Create a new PrefsNode of `PObject` kind.
   PrefsNode(kind: PObject, objectV: val)
 
-proc newPString*(val: string = default string): PrefsNode =
-  ## Create a new PrefsNode of `PString` kind.
-  PrefsNode(kind: PString, stringV: val)
+proc newPString*(val: string = default string, raw: bool = false): PrefsNode =
+  ## Create a new PrefsNode of `PString` kind (rawstring if `raw`).
+  PrefsNode(kind: PString, stringV: val, raw: raw)
 
 proc newPCharSet*(val: set[char] = default set[char]): PrefsNode = 
   ## Create a new PrefsNode of `PCharSet` kind.
@@ -198,9 +199,9 @@ proc newPNode*(obj: PObjectType): PrefsNode =
   ## Create a new PrefsNode from `obj`.
   newPObject(obj)
 
-proc newPNode*(obj: string): PrefsNode =
+proc newPNode*(obj: string, raw: bool = false): PrefsNode =
   ## Create a new PrefsNode from `obj`.
-  newPString(obj)
+  newPString(obj, raw)
 
 proc newPNode*(obj: set[char]): PrefsNode =
   ## Create a new PrefsNode from `obj`.
@@ -234,12 +235,15 @@ macro toPrefs*(obj: untyped): PrefsNode =
     if obj.len == 0: return newCall("newPObject")
     result = newNimNode(nnkTableConstr)
 
-    for i in obj:
-      i.expectKind(nnkExprColonExpr) # Expects key:val
-      if i[0].kind == nnkStrLit:
-        result.add nnkExprColonExpr.newTree(i[0].strVal.nimIdentNormalize().newStrLitNode(), newCall("toPrefs", i[1]))
-      elif i[0].kind == nnkIdent:
-        result.add nnkExprColonExpr.newTree(i[0].toStrLit.strVal.nimIdentNormalize().newStrLitNode(), newCall("toPrefs", i[1]))
+    for pair in obj:
+      pair.expectKind(nnkExprColonExpr) # Expects key:val
+      case pair[0].kind
+      of nnkStrLit:
+        result.add nnkExprColonExpr.newTree(pair[0].strVal.nimIdentNormalize().newStrLitNode(), newCall("toPrefs", pair[1]))
+      of nnkIdent:
+        result.add nnkExprColonExpr.newTree(pair[0].toStrLit.strVal.nimIdentNormalize().newStrLitNode(), newCall("toPrefs", pair[1]))
+      else:
+        raise newException(ValueError, "Invalid key " & pair[0].repr & " must be a valid identifier")
 
     result = newCall("newPObject", newCall(bindSym"toOrderedTable", result))
   of nnkCurly: # Set {a, b..c} or {}
@@ -268,6 +272,8 @@ macro toPrefs*(obj: untyped): PrefsNode =
       result.add newCall("toPrefs", i)
 
     result = newCall("newPSeq", result)
+  of nnkRStrLit:
+    result = newCall("newPString", obj, ident"true")
   elif obj.kind == nnkPrefix and obj[0].repr == "@": # Sequence @[ele, ...]
     if obj[1].len == 0: return newCall("newPSeq")
     result = newNimNode(nnkBracket)
@@ -336,7 +342,10 @@ proc `$`*(node: PrefsNode): string =
   of PObject:
     result = $node.getObject()
   of PString:
-    result.addQuoted(node.getString())
+    if node.raw: # Raw string
+      result = "r" & "\"" & node.getString() & "\""
+    else:
+      result.addQuoted(node.getString())
   of PCharSet:
     if node.getCharSet().len == 0:
       result = "{c}"
@@ -406,7 +415,7 @@ proc `[]=`*(table: var PObjectType, key: string, val: PrefsNode) =
 proc `[]=`*[T: not PrefsNode](table: var PObjectType, key: string, val: T) = 
   tables.`[]=`(table, key.nimIdentNormalize(), val.newPNode())
 
-proc len*(node: var PrefsNode): int = 
+proc len*(node: PrefsNode): int = 
   case node.kind
   of PSeq:
     node.getSeq().len

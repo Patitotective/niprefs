@@ -8,11 +8,12 @@
 import std/[unittest, strutils]
 import niprefs
 
-const path = "Prefs/Prefs/settings.niprefs"
+const path = "Prefs/subdir/settings.niprefs"
 
 let defaultPrefs = toPrefs {
   lang: "es",
-  la_ng: "en", # Overwrites lang
+  la_NG: "en", # Overwrites lang
+  raw: r"\x3858923589sjdfjksdjkglsdg",
   dark: true,
   keybindings: [],
   users: {:},

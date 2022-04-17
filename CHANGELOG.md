@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### v0.1.6
+- Better support for raw strings.
+	- `newPString` and `newPNode` (string) now accept a `raw` parameter.
+
 ### v0.1.5
 - Now keys are treated as Nim identifiers.
 	- Only first letter is case-sensitive.
