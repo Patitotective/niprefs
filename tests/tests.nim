@@ -13,7 +13,7 @@ const path = "Prefs/subdir/settings.niprefs"
 let defaultPrefs = toPrefs {
   lang: "es",
   la_NG: "en", # Overwrites lang
-  raw: r"\x3858923589sjdfjksdjkglsdg",
+  raw: r"\x3858923589sjdfjksdjkglsdg""l",
   dark: true,
   keybindings: [],
   users: {:},

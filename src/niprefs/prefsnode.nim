@@ -78,7 +78,10 @@ proc getObject*(node: PrefsNode): PObjectType =
 
 proc getString*(node: PrefsNode): string =
   ## Get the `stringV` field from `node`.
-  node.stringV
+  if node.raw:
+    node.stringV.replace("\"\"", "\"")
+  else:
+    node.stringV
 
 proc getCharSet*(node: PrefsNode): set[char] = 
   ## Get the `charSetV` field from `node`.
@@ -114,6 +117,9 @@ proc getObject*(node: var PrefsNode): var PObjectType =
 
 proc getString*(node: var PrefsNode): var string =
   ## Get the `stringV` field from a `PrefsNode`.
+  if node.raw:
+    node.stringV = node.stringV.replace("\"\"", "\"")
+
   node.stringV
 
 proc getCharSet*(node: var PrefsNode): var set[char] = 
@@ -343,7 +349,7 @@ proc `$`*(node: PrefsNode): string =
     result = $node.getObject()
   of PString:
     if node.raw: # Raw string
-      result = "r" & "\"" & node.getString() & "\""
+      result = "r" & "\"" & node.getString().replace("\"", "\"\"") & "\""
     else:
       result.addQuoted(node.getString())
   of PCharSet:
