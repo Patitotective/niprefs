@@ -5,7 +5,7 @@
 #
 # To run these tests, simply execute `nimble test`.
 
-import std/[unittest, strutils]
+import std/[unittest, strutils, os]
 import niprefs
 
 const path = "Prefs/subdir/settings.niprefs"
@@ -55,6 +55,10 @@ test "can write many":
   prefs.table["scheme"]["background"] = "#CF3030".toPrefs
   
   check prefs.content == prefs.table
+
+test "can recreate":
+  if fileExists(prefs.path): prefs.path.removeFile()
+  assert prefs["lang"] == prefs.table["lang"]
 
 test "can remove":
   prefs.del("lang")

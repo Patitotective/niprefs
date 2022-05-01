@@ -180,6 +180,8 @@ window.addEventListener('DOMContentLoaded', main);
   <ul class="simple nested-toc-section">initPrefsBase
       <li><a class="reference" href="#initPrefsBase%2CPObjectType%2Cstring"
     title="initPrefsBase(table: PObjectType; path: string): PrefsBase">initPrefsBase(table: PObjectType; path: string): PrefsBase</a></li>
+  <li><a class="reference" href="#initPrefsBase%2CPrefsNode%2Cstring"
+    title="initPrefsBase(table: PrefsNode; path: string): PrefsBase">initPrefsBase(table: PrefsNode; path: string): PrefsBase</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">overwrite
@@ -217,17 +219,6 @@ window.addEventListener('DOMContentLoaded', main);
     title="writeMany(prefs: PrefsBase; items: PObjectType)">writeMany(prefs: PrefsBase; items: PObjectType)</a></li>
   <li><a class="reference" href="#writeMany%2CPrefsBase%2CPrefsNode"
     title="writeMany(prefs: PrefsBase; items: PrefsNode)">writeMany(prefs: PrefsBase; items: PrefsNode)</a></li>
-
-  </ul>
-
-  </ul>
-</li>
-<li>
-  <a class="reference reference-toplevel" href="#18" id="68">Templates</a>
-  <ul class="simple simple-toc-section">
-      <ul class="simple nested-toc-section">initPrefsBase
-      <li><a class="reference" href="#initPrefsBase.t%2CPrefsNode%2Cstring"
-    title="initPrefsBase(table: PrefsNode; path: string): PrefsBase">initPrefsBase(table: PrefsNode; path: string): PrefsBase</a></li>
 
   </ul>
 
@@ -316,9 +307,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 If <tt class="docutils literal"><span class="pre"><span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">path</span></span></tt> does not exist, call <tt class="docutils literal"><span class="pre"><span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">create</span><span class="Punctuation">(</span><span class="Punctuation">)</span></span></tt>.
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L91"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L94"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L91" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L94" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -330,9 +321,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Calls <tt class="docutils literal"><span class="pre"><span class="Identifier">read</span></span></tt> on <tt class="docutils literal"><span class="pre"><span class="Identifier">prefs</span></span></tt>.
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L49"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L51"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L49" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L51" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -344,9 +335,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Checks that all directories in <tt class="docutils literal"><span class="pre"><span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">path</span></span></tt> exists and writes <tt class="docutils literal"><span class="pre"><span class="Identifier">table</span><span class="Operator">.</span><span class="Identifier">toString</span><span class="Punctuation">(</span><span class="Punctuation">)</span></span></tt> into it.
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L86"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L89"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L86" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L89" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -356,9 +347,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Deletes the <em>prefs</em> file.
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L331"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L334"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L331" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L334" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -381,9 +372,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 <span class="Identifier">assert</span> <span class="Keyword">not</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">hasKey</span><span class="Punctuation">(</span><span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">)</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L207"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L210"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L207" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L210" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -405,9 +396,9 @@ Deletes the last key from <tt class="docutils literal"><span class="pre"><span c
 
 <span class="Identifier">assert</span> <span class="Keyword">not</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">hasPath</span><span class="Punctuation">(</span><span class="StringLit">&quot;scheme&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">)</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L180"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L183"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L180" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L183" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -428,9 +419,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">&quot;es&quot;</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L242"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L245"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L242" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L245" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -449,9 +440,9 @@ Access to the last key from <tt class="docutils literal"><span class="pre"><span
 
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">getPath</span><span class="Punctuation">(</span><span class="StringLit">&quot;scheme&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">&quot;dark&quot;</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L229"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L232"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L229" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L232" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -472,9 +463,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">hasKey</span><span class="Punctuation">(</span><span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">)</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L273"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L276"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L273" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L276" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -493,9 +484,9 @@ Checks if the last key from <tt class="docutils literal"><span class="pre"><span
 
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">hasPath</span><span class="Punctuation">(</span><span class="StringLit">&quot;scheme&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">)</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L257"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L260"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L257" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L260" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -509,6 +500,19 @@ class="link-seesrc" target="_blank">Source</a>
 href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L38"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L38" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="initPrefsBase,PrefsNode,string">
+<dt><pre><span class="Keyword">proc</span> <a href="#initPrefsBase%2CPrefsNode%2Cstring"><span class="Identifier">initPrefsBase</span></a><span class="Other">(</span><span class="Identifier">table</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">path</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+Same as <tt class="docutils literal"><span class="pre"><span class="Identifier">initPrefsBase</span><span class="Punctuation">(</span><span class="Identifier">table</span><span class="Operator">.</span><span class="Identifier">getObject</span><span class="Punctuation">(</span><span class="Punctuation">)</span><span class="Punctuation">,</span> <span class="Identifier">path</span><span class="Punctuation">)</span></span></tt>.
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L41"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L41" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -537,9 +541,9 @@ class="link-seesrc" target="_blank">Source</a>
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">&quot;es&quot;</span> <span class="Comment"># &quot;es&quot; is the default value</span>
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">&quot;light&quot;</span> <span class="Comment"># &quot;theme&quot; was not overwritten</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L290"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L293"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L290" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L293" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -564,9 +568,9 @@ Overwrites the whole <em>prefs</em> file with <tt class="docutils literal"><span
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">&quot;es&quot;</span> <span class="Comment"># &quot;es&quot; is the default value</span>
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">&quot;dark&quot;</span> <span class="Comment"># &quot;dark&quot; is the default value</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L313"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L316"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L313" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L316" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -576,11 +580,11 @@ class="link-seesrc" target="_blank">Source</a>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
-Parses the file at <tt class="docutils literal"><span class="pre"><span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">path</span></span></tt> with <a class="reference external" href="parser.html#readPrefs%2Cstring">`readPrefs`</a>.
+Parses the file at <tt class="docutils literal"><span class="pre"><span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">path</span></span></tt> with <a class="reference external" href="parser.html#readPrefs,string">`readPrefs`</a>.
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L45"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L47"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L45" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L47" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -591,9 +595,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Same as <tt class="docutils literal"><span class="pre"><span class="Identifier">toString</span><span class="Punctuation">(</span><span class="Identifier">node</span><span class="Operator">.</span><span class="Identifier">getObject</span><span class="Punctuation">(</span><span class="Punctuation">)</span><span class="Punctuation">,</span> <span class="Identifier">depth</span><span class="Punctuation">)</span></span></tt>.
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L82"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L85"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L82" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L85" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -615,9 +619,9 @@ Given a <tt class="docutils literal"><span class="pre"><span class="Identifier">
 
 <span class="Identifier">assert</span> <span class="Identifier">table</span><span class="Operator">.</span><span class="Identifier">toString</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="Identifier">str</span><span class="Operator">.</span><span class="Identifier">dedent</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L53"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L56"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L53" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L56" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -639,9 +643,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">write</span><span class="Punctuation">(</span><span class="StringLit">&quot;keybindings&quot;</span><span class="Punctuation">,</span> <span class="Identifier">toPrefs</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="Punctuation">{</span><span class="StringLit">&quot;keys&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;Ctrl+C&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;command&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;copy&quot;</span><span class="Punctuation">}</span><span class="Punctuation">]</span><span class="Punctuation">)</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L112"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L115"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L112" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L115" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -661,9 +665,9 @@ Changes the last key from <tt class="docutils literal"><span class="pre"><span c
 
 <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">write</span><span class="Punctuation">(</span><span class="StringLit">&quot;keybindings&quot;</span><span class="Punctuation">,</span> <span class="Identifier">toPrefs</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="Punctuation">{</span><span class="StringLit">&quot;keys&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;Ctrl+C&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;command&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;copy&quot;</span><span class="Punctuation">}</span><span class="Punctuation">]</span><span class="Punctuation">)</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L140"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L143"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L140" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L143" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -684,9 +688,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">&quot;light&quot;</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L96"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L99"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L96" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L99" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -705,9 +709,9 @@ Changes the last key from <tt class="docutils literal"><span class="pre"><span c
 
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">&quot;light&quot;</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L126"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L129"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L126" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L129" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -733,9 +737,9 @@ class="link-seesrc" target="_blank">Source</a>
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">&quot;en&quot;</span>
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="StringLit">&quot;theme&quot;</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">&quot;light&quot;</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L152"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L155"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L152" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L155" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -748,26 +752,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Same as <tt class="docutils literal"><span class="pre"><span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">writeMany</span><span class="Punctuation">(</span><span class="Identifier">prefs</span><span class="Punctuation">,</span> <span class="Identifier">items</span><span class="Operator">.</span><span class="Identifier">getObject</span><span class="Punctuation">(</span><span class="Punctuation">)</span><span class="Punctuation">)</span></span></tt>
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L176"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L179"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L176" class="link-seesrc" target="_blank" >Edit</a>
-
-</dd>
-</div>
-
-</dl></div>
-<div class="section" id="18">
-<h1><a class="toc-backref" href="#18">Templates</a></h1>
-<dl class="item">
-<div id="initPrefsBase.t,PrefsNode,string">
-<dt><pre><span class="Keyword">template</span> <a href="#initPrefsBase.t%2CPrefsNode%2Cstring"><span class="Identifier">initPrefsBase</span></a><span class="Other">(</span><span class="Identifier">table</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">path</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a></pre></dt>
-<dd>
-
-Same as <tt class="docutils literal"><span class="pre"><span class="Identifier">initPrefsBase</span><span class="Punctuation">(</span><span class="Identifier">table</span><span class="Operator">.</span><span class="Identifier">getObject</span><span class="Punctuation">(</span><span class="Punctuation">)</span><span class="Punctuation">,</span> <span class="Identifier">path</span><span class="Punctuation">)</span></span></tt>.
-&nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsbase.nim#L41"
-class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L41" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsbase.nim#L179" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -786,7 +773,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-04-17 18:15:10 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-05-01 16:49:41 UTC</small>
       </div>
     </div>
   </div>

@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### v0.1.61
+- Checks `PrefsBase` file path everytime it reads it.
+
 ### v0.1.6
 - Better support for raw strings.
 	- `newPString` and `newPNode` (string) now accept a `raw` parameter.

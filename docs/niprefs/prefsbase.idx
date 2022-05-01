@@ -2,7 +2,7 @@ keyPathSep	niprefs/prefsbase.html#keyPathSep	prefsbase: keyPathSep
 InvalidKey	niprefs/prefsbase.html#InvalidKey	prefsbase: InvalidKey	
 PrefsBase	niprefs/prefsbase.html#PrefsBase	prefsbase: PrefsBase	
 initPrefsBase	niprefs/prefsbase.html#initPrefsBase,PObjectType,string	prefsbase: initPrefsBase(table: PObjectType; path: string): PrefsBase	
-initPrefsBase	niprefs/prefsbase.html#initPrefsBase.t,PrefsNode,string	prefsbase: initPrefsBase(table: PrefsNode; path: string): PrefsBase	
+initPrefsBase	niprefs/prefsbase.html#initPrefsBase,PrefsNode,string	prefsbase: initPrefsBase(table: PrefsNode; path: string): PrefsBase	
 read	niprefs/prefsbase.html#read,PrefsBase	prefsbase: read(prefs: PrefsBase): PObjectType	
 content	niprefs/prefsbase.html#content,PrefsBase	prefsbase: content(prefs: PrefsBase): PObjectType	
 toString	niprefs/prefsbase.html#toString,PObjectType,int	prefsbase: toString(table: PObjectType; depth: int = 0): string	
