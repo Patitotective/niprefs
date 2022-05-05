@@ -1,4 +1,4 @@
-import std/[strutils, sequtils, tables, os]
+import std/[strutils, sequtils, os]
 import prefsnode
 
 proc checkFile*(path: string) = 

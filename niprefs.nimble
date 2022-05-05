@@ -1,6 +1,6 @@
 # Package
 
-version = "0.1.61"
+version = "0.1.62"
 author = "Patitotective"
 description = "Store and manage preferences dynamically in a text file within table-like structure."
 license = "MIT"

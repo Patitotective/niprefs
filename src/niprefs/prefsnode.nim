@@ -471,6 +471,9 @@ proc added*(node: var PrefsNode, val: PrefsNode): PrefsNode =
   result = node
   result.seqV.add val
 
+proc contains*(table: PObjectType, key: string): bool = 
+  tables.contains(table, key.nimIdentNormalize())
+
 proc contains*(node: PrefsNode, key: string): bool =
   node.getObject().contains(key)
 

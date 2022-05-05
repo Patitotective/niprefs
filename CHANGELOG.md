@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### v0.1.62
+- Now normalizing keys on `contains` proc for `PObjectType` and `PrefsNode` (`kind=PObject`).
+
 ### v0.1.61
 - Checks `PrefsBase` file path everytime it reads it.
 

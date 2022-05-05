@@ -81,6 +81,7 @@ add	niprefs/prefsnode.html#add,PrefsNode,T	prefsnode: add[T: not PrefsNode](node
 add	niprefs/prefsnode.html#add,PrefsNode,PrefsNode	prefsnode: add(node: var PrefsNode; val: PrefsNode)	
 added	niprefs/prefsnode.html#added,PrefsNode,T	prefsnode: added[T: not PrefsNode](node: var PrefsNode; val: T): PrefsNode	
 added	niprefs/prefsnode.html#added,PrefsNode,PrefsNode	prefsnode: added(node: var PrefsNode; val: PrefsNode): PrefsNode	
+contains	niprefs/prefsnode.html#contains,PObjectType,string	prefsnode: contains(table: PObjectType; key: string): bool	
 contains	niprefs/prefsnode.html#contains,PrefsNode,string	prefsnode: contains(node: PrefsNode; key: string): bool	
 contains	niprefs/prefsnode.html#contains,PrefsNode,char	prefsnode: contains(node: PrefsNode; ele: char): bool	
 contains	niprefs/prefsnode.html#contains,PrefsNode,byte	prefsnode: contains(node: PrefsNode; ele: byte): bool	

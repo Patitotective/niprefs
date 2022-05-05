@@ -37,6 +37,8 @@ var prefs = initPrefs(defaultPrefs, path)
 prefs.overwrite()
 
 test "can read":
+  check "bAcKgRoUnD" in prefs["scheme"]
+  check "bAcKgRoUnD" in prefs["scheme"].getObject()
   check prefs.content == prefs.table
 
 test "can write":

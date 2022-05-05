@@ -220,6 +220,8 @@ window.addEventListener('DOMContentLoaded', main);
     title="contains(node: PrefsNode; ele: char): bool">contains(node: PrefsNode; ele: char): bool</a></li>
   <li><a class="reference" href="#contains%2CPrefsNode%2Cstring"
     title="contains(node: PrefsNode; key: string): bool">contains(node: PrefsNode; key: string): bool</a></li>
+  <li><a class="reference" href="#contains%2CPObjectType%2Cstring"
+    title="contains(table: PObjectType; key: string): bool">contains(table: PObjectType; key: string): bool</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">del
@@ -814,14 +816,26 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsnode.nim#L486"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsnode.nim#L486" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="contains,PrefsNode,byte">
+<dt><pre><span class="Keyword">proc</span> <a href="#contains%2CPrefsNode%2Cbyte"><span class="Identifier">contains</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">ele</span><span class="Other">:</span> <span class="Identifier">byte</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
 href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsnode.nim#L483"
 class="link-seesrc" target="_blank">Source</a>
 &nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsnode.nim#L483" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
-<div id="contains,PrefsNode,byte">
-<dt><pre><span class="Keyword">proc</span> <a href="#contains%2CPrefsNode%2Cbyte"><span class="Identifier">contains</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">ele</span><span class="Other">:</span> <span class="Identifier">byte</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<div id="contains,PrefsNode,char">
+<dt><pre><span class="Keyword">proc</span> <a href="#contains%2CPrefsNode%2Cchar"><span class="Identifier">contains</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">ele</span><span class="Other">:</span> <span class="Identifier">char</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 
@@ -832,8 +846,8 @@ class="link-seesrc" target="_blank">Source</a>
 
 </dd>
 </div>
-<div id="contains,PrefsNode,char">
-<dt><pre><span class="Keyword">proc</span> <a href="#contains%2CPrefsNode%2Cchar"><span class="Identifier">contains</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">ele</span><span class="Other">:</span> <span class="Identifier">char</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<div id="contains,PrefsNode,string">
+<dt><pre><span class="Keyword">proc</span> <a href="#contains%2CPrefsNode%2Cstring"><span class="Identifier">contains</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 
@@ -844,8 +858,8 @@ class="link-seesrc" target="_blank">Source</a>
 
 </dd>
 </div>
-<div id="contains,PrefsNode,string">
-<dt><pre><span class="Keyword">proc</span> <a href="#contains%2CPrefsNode%2Cstring"><span class="Identifier">contains</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<div id="contains,PObjectType,string">
+<dt><pre><span class="Keyword">proc</span> <a href="#contains%2CPObjectType%2Cstring"><span class="Identifier">contains</span></a><span class="Other">(</span><span class="Identifier">table</span><span class="Other">:</span> <a href="prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 
@@ -901,9 +915,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsnode.nim#L495"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsnode.nim#L498"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsnode.nim#L495" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsnode.nim#L498" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1129,9 +1143,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsnode.nim#L492"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsnode.nim#L495"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsnode.nim#L492" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsnode.nim#L495" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1452,9 +1466,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsnode.nim#L498"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsnode.nim#L501"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsnode.nim#L498" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsnode.nim#L501" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1464,9 +1478,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsnode.nim#L502"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/prefsnode.nim#L505"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsnode.nim#L502" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/prefsnode.nim#L505" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1514,7 +1528,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-05-01 16:49:15 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-05-05 23:47:10 UTC</small>
       </div>
     </div>
   </div>
