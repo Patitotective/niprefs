@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### v0.1.7
+- Fixed error when parsing escaped sequences.
+
 ### v0.1.62
 - Now normalizing keys on `contains` proc for `PObjectType` and `PrefsNode` (`kind=PObject`).
 

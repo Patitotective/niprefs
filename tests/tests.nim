@@ -7,6 +7,7 @@
 
 import std/[unittest, strutils, os]
 import niprefs
+import niprefs/parser/escaper
 
 const path = "Prefs/subdir/settings.niprefs"
 
@@ -35,6 +36,11 @@ let defaultPrefs = toPrefs {
 
 var prefs = initPrefs(defaultPrefs, path)
 prefs.overwrite()
+
+test "can parse escaped sequences":
+  assert '\x23' == r"\x23".parseEscapedChar()
+  assert "\p\r\c\n\l\f\t\v\\\"\'\a\b\e" == r"\p\r\c\n\l\f\t\v\\\""\'\a\b\e".parseEscaped()
+  assert "\x00\x0aa\u1235a\u{10ffff}a" == r"\x00\x0aa\u1235a\u{10ffff}a".parseEscaped()
 
 test "can read":
   check "bAcKgRoUnD" in prefs["scheme"]

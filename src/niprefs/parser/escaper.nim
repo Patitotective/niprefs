@@ -1,4 +1,4 @@
-import std/[tables, strutils, parseutils, unicode]
+import std/[strutils, parseutils, unicode, tables]
 import lexer
 
 # https://nim-lang.org/docs/manual.html#lexical-analysis-string-literals
@@ -39,8 +39,7 @@ proc parseEscapedChar*(str: string, start: Natural = 0): char =
   ##
   ## Check the [manual](https://nim-lang.org/docs/manual.html#lexical-analysis-character-literals) for valid character literals.
   runnableExamples:
-    let text = r"\x23"
-    assert text.parseEscapedChar() == '\x23'
+    assert '\x23' == r"\x23".parseEscapedChar()
 
   if str.len == 0:
     return
@@ -73,8 +72,8 @@ proc parseEscaped*(str: string): string =
   ##
   ## Check the [manual](https://nim-lang.org/docs/manual.html#lexical-analysis-string-literals) for valid string literals.
   runnableExamples:
-    let text = r"\u1235"
-    assert text.parseEscaped() == "\u1235"
+    assert "\u1235" == r"\u1235".parseEscaped()
+    assert "\x00fd\x0asdsd" == r"\x00fd\x0asdsd".parseEscaped()
 
   var pos = 0
 
@@ -94,7 +93,7 @@ proc parseEscaped*(str: string): string =
       elif nextIs('x'):
         var hex: int
 
-        if str.parseHex(hex, pos+2) != 2:
+        if str.parseHex(hex, pos+2, maxLen = 2) != 2:
           raise newException(SyntaxError, r"Exactly 2 hex decimals are allowed after \x")
 
         pos += 3 # 2 + 1
@@ -106,12 +105,14 @@ proc parseEscaped*(str: string): string =
         if pos > str.high or str[pos] != '}':
           raise newException(SyntaxError, r"Missing closing } for \u{H+}")
 
+        if hex > 0x10FFFF:
+          raise newException(SyntaxError, "Unicode codepoint must be lower than 0x10FFFF, but was: " & $hex)
         result &= Rune(hex)
 
       elif nextIs('u'):
         var hex: int
 
-        if str.parseHex(hex, pos+2) != 4:
+        if str.parseHex(hex, pos+2, maxLen = 4) != 4:
           raise newException(SyntaxError, r"Exactly 4 hex decimals are allowed after \u")
 
         pos += 5 # 4 + 1
