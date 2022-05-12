@@ -118,7 +118,7 @@ grammar "str":
   rawStrBody <- *("\"\"" | rawStrChars)
 
 const lexer = peg(tokens, data: PLexer):
-  S <- Space - '\n'
+  S <- Space - ('\n' | "\c\n")
   spaceChar <- {' ', '\t'}
 
   tokens <- *token * EOF
@@ -132,7 +132,7 @@ const lexer = peg(tokens, data: PLexer):
     raise newException(SyntaxError, &"Unexpected character at {pos.line}:{pos.col} (#{pos.idx})")
 
   comment <- *S * '#' * *(1 - '\n')
-  newLn <- '\n':
+  newLn <- '\n' | "\c\n":
     data.addToken(NL, $0, @0)
 
   letter <- Alpha | {'\x80'..'\xff'}

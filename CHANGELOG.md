@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### v0.2.1
+- Fixed bug with windows new lines.
+
 ### v0.2.0 (v0.1.7)
 - Fixed error when parsing escaped sequences.
 

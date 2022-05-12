@@ -38,6 +38,8 @@ var prefs = initPrefs(defaultPrefs, path)
 prefs.overwrite()
 
 test "can parse escaped sequences":
+  assert "a=1\nb=2".parsePrefs() == "a=1\c\nb=2".parsePrefs()
+
   assert '\x23' == r"\x23".parseEscapedChar()
   assert "\p\r\c\n\l\f\t\v\\\"\'\a\b\e" == r"\p\r\c\n\l\f\t\v\\\""\'\a\b\e".parseEscaped()
   assert "\x00\x0aa\u1235a\u{10ffff}a" == r"\x00\x0aa\u1235a\u{10ffff}a".parseEscaped()
