@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### v0.2.2
+- Using `createDir` instead of `checkFile` to create the directories to the prefs path avoiding permission errors.
+
 ### v0.2.1
 - Fixed bug with windows new lines.
 

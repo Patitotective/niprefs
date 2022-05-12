@@ -1,15 +1,5 @@
-import std/[strutils, sequtils, os]
+import std/[strutils, sequtils]
 import prefsnode
-
-proc checkFile*(path: string) = 
-  ## Iterate through `path.parentDir.parentDirs` from the root creating all the directories that do not exist.
-  ## **Example:**
-  ## ```nim
-  ## checkFile("a/b/c") # Takes c as a file, not as a directory
-  ## checkFile("a/b/c/d.png") # Only creates a/b/c directories
-  ## ```
-  for dir in path.parentDir.parentDirs(fromRoot=true):
-    discard existsOrCreateDir(dir)
 
 proc changeNested*(table: PObjectType, keys: varargs[string], val: PrefsNode): PObjectType =
   ## Changes nested `keys` for `val` in `table`.

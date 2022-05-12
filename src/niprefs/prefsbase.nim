@@ -88,7 +88,7 @@ proc toString*(node: PrefsNode, depth: int = 0): string =
 
 proc create*(prefs: PrefsBase, table = prefs.table) =
   ## Checks that all directories in `prefs.path` exists and writes `table.toString()` into it.
-  prefs.path.checkFile()
+  prefs.path.splitPath.head.createDir()
   writeFile(prefs.path, table.toString())
 
 proc checkFile*(prefs: PrefsBase) =
