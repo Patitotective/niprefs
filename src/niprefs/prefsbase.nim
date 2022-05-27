@@ -38,16 +38,19 @@ proc validateKey(key: string) =
 proc initPrefsBase*(table: PObjectType, path: string): PrefsBase =
   PrefsBase(table: table, path: path)
 
-template initPrefsBase*(table: PrefsNode, path: string): PrefsBase =
+proc initPrefsBase*(table: PrefsNode, path: string): PrefsBase =
   ## Same as `initPrefsBase(table.getObject(), path)`.
   initPrefsBase(table.getObject(), path)
 
+proc checkFile*(prefs: PrefsBase)
+
 proc read*(prefs: PrefsBase): PObjectType =
-  ## Parses the file at `prefs.path` with [`readPrefs`](parser.html#readPrefs%2Cstring).
+  ## Parses the file at `prefs.path` with [`readPrefs`](parser.html#readPrefs,string).
   readPrefs(prefs.path)
 
 proc `content`*(prefs: PrefsBase): PObjectType =
   ## Calls `read` on `prefs`.
+  prefs.checkFile()
   prefs.read()
 
 proc toString*(table: PObjectType, depth: int = 0): string =
@@ -85,7 +88,7 @@ proc toString*(node: PrefsNode, depth: int = 0): string =
 
 proc create*(prefs: PrefsBase, table = prefs.table) =
   ## Checks that all directories in `prefs.path` exists and writes `table.toString()` into it.
-  prefs.path.checkFile()
+  prefs.path.splitPath.head.createDir()
   writeFile(prefs.path, table.toString())
 
 proc checkFile*(prefs: PrefsBase) =

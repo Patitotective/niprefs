@@ -1,5 +1,29 @@
 # CHANGELOG
 
+### v0.2.2
+- Using `createDir` instead of `checkFile` to create the directories to the prefs path avoiding permission errors.
+
+### v0.2.1
+- Fixed bug with windows new lines.
+
+### v0.2.0 (v0.1.7)
+- Fixed error when parsing escaped sequences.
+
+### v0.1.62
+- Now normalizing keys on `contains` proc for `PObjectType` and `PrefsNode` (`kind=PObject`).
+
+### v0.1.61
+- Checks `PrefsBase` file path everytime it reads it.
+
+### v0.1.6
+- Better support for raw strings.
+	- `newPString` and `newPNode` (string) now accept a `raw` parameter.
+
+### v0.1.5
+- Now keys are treated as Nim identifiers.
+	- Only first letter is case-sensitive.
+	- Case and underscore-insensitive.
+
 ### v0.1.4
 - Added support for `set[char]` and `set[byte]`.
 

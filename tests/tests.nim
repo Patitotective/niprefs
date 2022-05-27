@@ -5,14 +5,16 @@
 #
 # To run these tests, simply execute `nimble test`.
 
-import std/[unittest, strutils]
+import std/[unittest, strutils, os]
 import niprefs
+import niprefs/parser/escaper
 
-const path = "Prefs/Prefs/settings.niprefs"
+const path = "Prefs/subdir/settings.niprefs"
 
 let defaultPrefs = toPrefs {
   lang: "es",
-  la_ng: "en", # Overwrites lang
+  la_NG: "en", # Overwrites lang
+  raw: r"\x3858923589sjdfjksdjkglsdg""l",
   dark: true,
   keybindings: [],
   users: {:},
@@ -35,12 +37,21 @@ let defaultPrefs = toPrefs {
 var prefs = initPrefs(defaultPrefs, path)
 prefs.overwrite()
 
+test "can parse escaped sequences":
+  assert "a=1\nb=2".parsePrefs() == "a=1\c\nb=2".parsePrefs()
+
+  assert '\x23' == r"\x23".parseEscapedChar()
+  assert "\p\r\c\n\l\f\t\v\\\"\'\a\b\e" == r"\p\r\c\n\l\f\t\v\\\""\'\a\b\e".parseEscaped()
+  assert "\x00\x0aa\u1235a\u{10ffff}a" == r"\x00\x0aa\u1235a\u{10ffff}a".parseEscaped()
+
 test "can read":
+  check "bAcKgRoUnD" in prefs["scheme"]
+  check "bAcKgRoUnD" in prefs["scheme"].getObject()
   check prefs.content == prefs.table
 
 test "can write":
   prefs["l_A_n_G"] = "es" # Keys are normalized as nim identifiers
-  prefs.table["lang"] = "es".toPrefs
+  prefs.table["la_ng"] = "es".toPrefs
 
   prefs["scheme/font/size"] = 20
   prefs.table["scheme"]["font"]["size"] = 20.toPrefs
@@ -55,12 +66,16 @@ test "can write many":
   
   check prefs.content == prefs.table
 
+test "can recreate":
+  if fileExists(prefs.path): prefs.path.removeFile()
+  assert prefs["lang"] == prefs.table["lang"]
+
 test "can remove":
   prefs.del("lang")
   prefs.table.del("lang")
 
   prefs.del("scheme/font/size")
-  prefs.table["scheme"]["font"].del("size")
+  prefs.table["schemE"]["font"].del("size")
 
   check prefs.content == prefs.table
 

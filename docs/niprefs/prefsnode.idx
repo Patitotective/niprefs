@@ -35,16 +35,16 @@ getObject	niprefs/prefsnode.html#getObject,PrefsNode_2	prefsnode: getObject(node
 getString	niprefs/prefsnode.html#getString,PrefsNode_2	prefsnode: getString(node: var PrefsNode): var string	
 getCharSet	niprefs/prefsnode.html#getCharSet,PrefsNode_2	prefsnode: getCharSet(node: var PrefsNode): var set[char]	
 getByteSet	niprefs/prefsnode.html#getByteSet,PrefsNode_2	prefsnode: getByteSet(node: var PrefsNode): var set[byte]	
-newPInt	niprefs/prefsnode.html#newPInt,int	prefsnode: newPInt(val: int = default int): PrefsNode	
 newPEmpty	niprefs/prefsnode.html#newPEmpty	prefsnode: newPEmpty(): PrefsNode	
 newPNil	niprefs/prefsnode.html#newPNil	prefsnode: newPNil(): PrefsNode	
+newPInt	niprefs/prefsnode.html#newPInt,int	prefsnode: newPInt(val: int = default int): PrefsNode	
 newPSeq	niprefs/prefsnode.html#newPSeq,PSeqParam	prefsnode: newPSeq(val: PSeqParam = default PSeqType): PrefsNode	
 newPBool	niprefs/prefsnode.html#newPBool,bool	prefsnode: newPBool(val: bool = default bool): PrefsNode	
 newPChar	niprefs/prefsnode.html#newPChar,char	prefsnode: newPChar(val: char = default char): PrefsNode	
 newPChar	niprefs/prefsnode.html#newPChar,string,Natural	prefsnode: newPChar(val: string = default string; start: Natural = 0): PrefsNode	
 newPFloat	niprefs/prefsnode.html#newPFloat,float	prefsnode: newPFloat(val: float = default float): PrefsNode	
 newPObject	niprefs/prefsnode.html#newPObject,PObjectType	prefsnode: newPObject(val: PObjectType = default PObjectType): PrefsNode	
-newPString	niprefs/prefsnode.html#newPString,string	prefsnode: newPString(val: string = default string): PrefsNode	
+newPString	niprefs/prefsnode.html#newPString,string,bool	prefsnode: newPString(val: string = default string; raw: bool = false): PrefsNode	
 newPCharSet	niprefs/prefsnode.html#newPCharSet,set[char]	prefsnode: newPCharSet(val: set[char] = default set[char]): PrefsNode	
 newPByteSet	niprefs/prefsnode.html#newPByteSet,set[byte]	prefsnode: newPByteSet(val: set[byte] = default set[byte]): PrefsNode	
 newPByteSet	niprefs/prefsnode.html#newPByteSet,set[T]	prefsnode: newPByteSet[T: not byte](val: set[T]): PrefsNode	
@@ -54,7 +54,7 @@ newPNode	niprefs/prefsnode.html#newPNode,bool	prefsnode: newPNode(obj: bool): Pr
 newPNode	niprefs/prefsnode.html#newPNode,char	prefsnode: newPNode(obj: char): PrefsNode	
 newPNode	niprefs/prefsnode.html#newPNode,float	prefsnode: newPNode(obj: float): PrefsNode	
 newPNode	niprefs/prefsnode.html#newPNode,PObjectType	prefsnode: newPNode(obj: PObjectType): PrefsNode	
-newPNode	niprefs/prefsnode.html#newPNode,string	prefsnode: newPNode(obj: string): PrefsNode	
+newPNode	niprefs/prefsnode.html#newPNode,string,bool	prefsnode: newPNode(obj: string; raw: bool = false): PrefsNode	
 newPNode	niprefs/prefsnode.html#newPNode,set[char]	prefsnode: newPNode(obj: set[char]): PrefsNode	
 newPNode	niprefs/prefsnode.html#newPNode,set[byte]	prefsnode: newPNode(obj: set[byte]): PrefsNode	
 toPrefs	niprefs/prefsnode.html#toPrefs.m,untyped	prefsnode: toPrefs(obj: untyped): PrefsNode	
@@ -69,7 +69,11 @@ toPrefs	niprefs/prefsnode.html#toPrefs.m,untyped	prefsnode: toPrefs(obj: untyped
 `[]=`	niprefs/prefsnode.html#[]=,PrefsNode,int,PrefsNode	prefsnode: `[]=`(node: var PrefsNode; index: int; val: PrefsNode)	
 `[]=`	niprefs/prefsnode.html#[]=,PrefsNode,string,T	prefsnode: `[]=`[T: not PrefsNode](node: var PrefsNode; key: string; val: T)	
 `[]=`	niprefs/prefsnode.html#[]=,PrefsNode,string,PrefsNode	prefsnode: `[]=`(node: var PrefsNode; key: string; val: PrefsNode)	
-len	niprefs/prefsnode.html#len,PrefsNode	prefsnode: len(node: var PrefsNode): int	
+`[]`	niprefs/prefsnode.html#[],PObjectType,string	prefsnode: `[]`(table: PObjectType; key: string): PrefsNode	
+`[]`	niprefs/prefsnode.html#[],PObjectType,string_2	prefsnode: `[]`(table: var PObjectType; key: string): var PrefsNode	
+`[]=`	niprefs/prefsnode.html#[]=,PObjectType,string,PrefsNode	prefsnode: `[]=`(table: var PObjectType; key: string; val: PrefsNode)	
+`[]=`	niprefs/prefsnode.html#[]=,PObjectType,string,T	prefsnode: `[]=`[T: not PrefsNode](table: var PObjectType; key: string; val: T)	
+len	niprefs/prefsnode.html#len,PrefsNode	prefsnode: len(node: PrefsNode): int	
 del	niprefs/prefsnode.html#del,PrefsNode,string	prefsnode: del(node: var PrefsNode; key: string)	
 delete	niprefs/prefsnode.html#delete,PrefsNode,Natural	prefsnode: delete(node: var PrefsNode; i: Natural)	
 deleted	niprefs/prefsnode.html#deleted,PrefsNode,Natural	prefsnode: deleted(node: var PrefsNode; i: Natural): PrefsNode	
@@ -77,6 +81,7 @@ add	niprefs/prefsnode.html#add,PrefsNode,T	prefsnode: add[T: not PrefsNode](node
 add	niprefs/prefsnode.html#add,PrefsNode,PrefsNode	prefsnode: add(node: var PrefsNode; val: PrefsNode)	
 added	niprefs/prefsnode.html#added,PrefsNode,T	prefsnode: added[T: not PrefsNode](node: var PrefsNode; val: T): PrefsNode	
 added	niprefs/prefsnode.html#added,PrefsNode,PrefsNode	prefsnode: added(node: var PrefsNode; val: PrefsNode): PrefsNode	
+contains	niprefs/prefsnode.html#contains,PObjectType,string	prefsnode: contains(table: PObjectType; key: string): bool	
 contains	niprefs/prefsnode.html#contains,PrefsNode,string	prefsnode: contains(node: PrefsNode; key: string): bool	
 contains	niprefs/prefsnode.html#contains,PrefsNode,char	prefsnode: contains(node: PrefsNode; ele: char): bool	
 contains	niprefs/prefsnode.html#contains,PrefsNode,byte	prefsnode: contains(node: PrefsNode; ele: byte): bool	

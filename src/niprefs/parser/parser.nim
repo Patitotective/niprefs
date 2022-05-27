@@ -120,7 +120,7 @@ proc parseVal(token: PToken): PrefsNode =
   of STRING:
     result = token.lex[1..^2].parseEscaped().newPString()
   of RAWSTRING:
-    result = token.lex[2..^2].newPString()
+    result = token.lex[2..^2].newPString(raw = true)
   else:
     raise newException(SyntaxError, &"Unkown token {token.lex} of {token.kind} at {token.pos}")
 
