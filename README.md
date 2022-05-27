@@ -1,8 +1,8 @@
-# NiPrefs
+# niprefs
 > _Store and manage preferences in a text file within a table-like structure._
 
 ## Installation
-You can install _NiPrefs_ with [_nimble_](https://nimble.directory):
+You can install niprefs with _nimble_:
 ```sh
 nimble install niprefs
 ```
