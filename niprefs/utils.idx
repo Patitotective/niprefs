@@ -1,0 +1,2 @@
+changeNested	niprefs/utils.html#changeNested,PObjectType,varargs[string],PrefsNode	utils: changeNested(table: PObjectType; keys: varargs[string]; val: PrefsNode): PObjectType	
+getNested	niprefs/utils.html#getNested,PObjectType,varargs[string]	utils: getNested(table: PObjectType; keys: varargs[string]): PrefsNode	
