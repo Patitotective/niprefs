@@ -1,3 +1,0 @@
-parsePrefs	niprefs/parser/parser.html#parsePrefs,seq[PToken]	parser: parsePrefs(tokens: seq[PToken]): PObjectType	
-parsePrefs	niprefs/parser/parser.html#parsePrefs,string	parser: parsePrefs(source: string): PObjectType	
-readPrefs	niprefs/parser/parser.html#readPrefs,string	parser: readPrefs(path: string): PObjectType	
