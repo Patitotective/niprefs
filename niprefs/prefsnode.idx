@@ -14,7 +14,6 @@ PCharSet	niprefs/prefsnode.html#PCharSet	PrefsKind.PCharSet
 PByteSet	niprefs/prefsnode.html#PByteSet	PrefsKind.PByteSet	
 PrefsKind	niprefs/prefsnode.html#PrefsKind	prefsnode: PrefsKind	
 PrefsNode	niprefs/prefsnode.html#PrefsNode	prefsnode: PrefsNode	
-PrefsNodeObj	niprefs/prefsnode.html#PrefsNodeObj	prefsnode: PrefsNodeObj	
 isEmpty	niprefs/prefsnode.html#isEmpty,PrefsNode	prefsnode: isEmpty(node: PrefsNode): bool	
 isNil	niprefs/prefsnode.html#isNil,PrefsNode	prefsnode: isNil(node: PrefsNode): bool	
 getInt	niprefs/prefsnode.html#getInt,PrefsNode	prefsnode: getInt(node: PrefsNode): int	
@@ -76,15 +75,17 @@ toPrefs	niprefs/prefsnode.html#toPrefs.m,untyped	prefsnode: toPrefs(obj: untyped
 len	niprefs/prefsnode.html#len,PrefsNode	prefsnode: len(node: PrefsNode): int	
 del	niprefs/prefsnode.html#del,PrefsNode,string	prefsnode: del(node: var PrefsNode; key: string)	
 delete	niprefs/prefsnode.html#delete,PrefsNode,Natural	prefsnode: delete(node: var PrefsNode; i: Natural)	
-deleted	niprefs/prefsnode.html#deleted,PrefsNode,Natural	prefsnode: deleted(node: var PrefsNode; i: Natural): PrefsNode	
+deleted	niprefs/prefsnode.html#deleted,PrefsNode,Natural	prefsnode: deleted(node: PrefsNode; i: Natural): PrefsNode	
 add	niprefs/prefsnode.html#add,PrefsNode,T	prefsnode: add[T: not PrefsNode](node: var PrefsNode; val: T)	
 add	niprefs/prefsnode.html#add,PrefsNode,PrefsNode	prefsnode: add(node: var PrefsNode; val: PrefsNode)	
-added	niprefs/prefsnode.html#added,PrefsNode,T	prefsnode: added[T: not PrefsNode](node: var PrefsNode; val: T): PrefsNode	
-added	niprefs/prefsnode.html#added,PrefsNode,PrefsNode	prefsnode: added(node: var PrefsNode; val: PrefsNode): PrefsNode	
+added	niprefs/prefsnode.html#added,PrefsNode,T	prefsnode: added[T: not PrefsNode](node: PrefsNode; val: T): PrefsNode	
+added	niprefs/prefsnode.html#added,PrefsNode,PrefsNode	prefsnode: added(node: PrefsNode; val: PrefsNode): PrefsNode	
 contains	niprefs/prefsnode.html#contains,PObjectType,string	prefsnode: contains(table: PObjectType; key: string): bool	
-contains	niprefs/prefsnode.html#contains,PrefsNode,string	prefsnode: contains(node: PrefsNode; key: string): bool	
 contains	niprefs/prefsnode.html#contains,PrefsNode,char	prefsnode: contains(node: PrefsNode; ele: char): bool	
 contains	niprefs/prefsnode.html#contains,PrefsNode,byte	prefsnode: contains(node: PrefsNode; ele: byte): bool	
+contains	niprefs/prefsnode.html#contains,PrefsNode,PrefsNode	prefsnode: contains(node: PrefsNode; val: PrefsNode): bool	
+contains	niprefs/prefsnode.html#contains,PrefsNode,T	prefsnode: contains[T: not PrefsNode](node: PrefsNode; val: T): bool	
+contains	niprefs/prefsnode.html#contains,PrefsNode,string	prefsnode: contains(node: PrefsNode; val: string): bool	
 card	niprefs/prefsnode.html#card,PrefsNode	prefsnode: card(node: PrefsNode): int	
 incl	niprefs/prefsnode.html#incl,PrefsNode,char	prefsnode: incl(node: var PrefsNode; ele: char)	
 excl	niprefs/prefsnode.html#excl,PrefsNode,char	prefsnode: excl(node: var PrefsNode; ele: char)	
