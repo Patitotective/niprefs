@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### v0.2.3
+- Fixed `added` and `deleted` procs.
+- Added `contains` for `PSeq`.
+
 ### v0.2.2
 - Using `createDir` instead of `checkFile` to create the directories to the prefs path avoiding permission errors.
 

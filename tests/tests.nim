@@ -20,7 +20,8 @@ let defaultPrefs = toPrefs {
   users: {:},
   test: {
     c: [-1, 2, [3, {d: 4}], 5.2, -45.9d],
-    b: ['d', 'e', 0x034, {3..7}]
+    b: ['d', 'e', 0x034, {3..7}], 
+    d: ["a", "b"], 
   }, 
   chars: {'a'..'g', 's'},
   bytes: {0, 8..16},
@@ -29,7 +30,7 @@ let defaultPrefs = toPrefs {
     font: {
       size: 15,
       family: "UbuntuMono",
-      color: "#73D216"
+      color: "#73D216", 
     }
   }
 }
@@ -51,10 +52,10 @@ test "can read":
 
 test "can write":
   prefs["l_A_n_G"] = "es" # Keys are normalized as nim identifiers
-  prefs.table["la_ng"] = "es".toPrefs
+  prefs.table["la_ng"] = "es"
 
   prefs["scheme/font/size"] = 20
-  prefs.table["scheme"]["font"]["size"] = 20.toPrefs
+  prefs.table["scheme"]["font"]["size"] = 20
 
   check prefs.content == prefs.table
 
@@ -121,8 +122,11 @@ test "can do stuff with nodes":
   for k, v in node:
     discard
 
+  check node["d"].added("c") == toPrefs(["a", "b", "c"])
+  check node["d"].deleted(1) == toPrefs(["a"])
   check node["c"] == toPrefs([-1, 3, 4, 5.2, -45.9, 5, -6])
   check "c" in node
+  check 5.2 in node["c"]
 
 test "can overwrite":
   prefs.table["lang"] = "en".toPrefs

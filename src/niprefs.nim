@@ -180,7 +180,7 @@ proc `[]`*(prefs: Prefs, key: string): PrefsNode =
     assert prefs["lang"] == "en" # newPNode("en") is not required
     assert prefs["scheme/font"] == "UbuntuMono"
 
-  result = prefs.get(key)
+  prefs.get(key)
 
 proc `[]=`*[T: not PrefsNode](prefs: Prefs, keys: varargs[string], val: T) = 
   ## Write the last key from `keys`, the other elements being it's path, in the preferences file.

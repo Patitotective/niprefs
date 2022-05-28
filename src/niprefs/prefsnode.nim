@@ -18,8 +18,7 @@ type
     PCharSet,
     PByteSet,
 
-  PrefsNode* = ref PrefsNodeObj ## Reference to PrefsNodeObj
-  PrefsNodeObj* = object ## Object variant
+  PrefsNode* = ref object ## Object variant
     case kind*: PrefsKind
     of PEmpty, PNil:
       discard
@@ -294,7 +293,8 @@ macro toPrefs*(obj: untyped): PrefsNode =
 proc `==`*(node1: PrefsNode, node2: PrefsNode): bool =
   ## Checks if two nodes of the same kind have the same value
 
-  assert node1.kind == node2.kind
+  # assert node1.kind == node2.kind
+  if node1.kind != node2.kind: return false
 
   case node1.kind:
   of PInt:
@@ -444,13 +444,13 @@ proc delete*(node: var PrefsNode, i: Natural) =
 
   node.seqV.delete(i)
 
-proc deleted*(node: var PrefsNode, i: Natural): PrefsNode = 
+proc deleted*(node: PrefsNode, i: Natural): PrefsNode = 
   ## Returns `node` with `i` index deleted from `node.seqV`. 
   runnableExamples:
     var node = toPrefs([1, 2, 3])
     assert node.deleted(0) == toPrefs([2, 3])
 
-  result = node
+  result.deepCopy(node)
   result.seqV.delete(i)
 
 proc add*[T: not PrefsNode](node: var PrefsNode, val: T) = 
@@ -461,27 +461,38 @@ proc add*(node: var PrefsNode, val: PrefsNode) =
   ## Add `node` to `node.seqV`
   node.seqV.add val
 
-proc added*[T: not PrefsNode](node: var PrefsNode, val: T): PrefsNode = 
+proc added*[T: not PrefsNode](node: PrefsNode, val: T): PrefsNode = 
   ## Returns `node` with `val` added to `node.seqV`.
-  result = node
+  result.deepCopy(node)
   result.seqV.add val.newPNode()
 
-proc added*(node: var PrefsNode, val: PrefsNode): PrefsNode = 
+proc added*(node: PrefsNode, val: PrefsNode): PrefsNode = 
   ## Returns `node` with `val` added to `node.seqV`.
-  result = node
+  result.deepCopy(node)
   result.seqV.add val
 
 proc contains*(table: PObjectType, key: string): bool = 
   tables.contains(table, key.nimIdentNormalize())
-
-proc contains*(node: PrefsNode, key: string): bool =
-  node.getObject().contains(key)
 
 proc contains*(node: PrefsNode, ele: char): bool =
   node.getCharSet().contains(ele)
 
 proc contains*(node: PrefsNode, ele: byte): bool =
   node.getByteSet().contains(ele)
+
+proc contains*(node: PrefsNode, val: PrefsNode): bool = 
+  node.getSeq().contains(val)
+
+proc contains*[T: not PrefsNode](node: PrefsNode, val: T): bool =
+  node.getSeq().contains(val.newPNode())
+
+proc contains*(node: PrefsNode, val: string): bool =
+  case node.kind
+  of PObject:
+    node.getObject().contains(val)
+  of PSeq:
+    node.getSeq().contains(val.newPNode())
+  else: false
 
 proc card*(node: PrefsNode): int = 
   case node.kind
