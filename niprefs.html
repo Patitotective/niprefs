@@ -100,7 +100,8 @@ window.addEventListener('DOMContentLoaded', main);
   <ul class="simple simple-toc" id="toc-list">
 <li><a class="reference" id="syntax_toc" href="#syntax">Syntax</a></li>
 <li><a class="reference" id="basic-usage_toc" href="#basic-usage">Basic usage</a></li>
-<ul class="simple"><li><a class="reference" id="basic-usage-reading_toc" href="#basic-usage-reading">Reading</a></li>
+<ul class="simple"><li><a class="reference" id="basic-usage-why-does-the-niprefs-file-doesn-t-change-if-i-change-the-toprefs-macroqmark_toc" href="#basic-usage-why-does-the-niprefs-file-doesn-t-change-if-i-change-the-toprefs-macroqmark">Why does the niprefs file doesn't change if I change the toPrefs macro?</a></li>
+</ul><ul class="simple"><li><a class="reference" id="basic-usage-reading_toc" href="#basic-usage-reading">Reading</a></li>
 <li><a class="reference" id="basic-usage-writing_toc" href="#basic-usage-writing">Writing</a></li>
 <li><a class="reference" id="basic-usage-removing_toc" href="#basic-usage-removing">Removing</a></li>
 <li><a class="reference" id="basic-usage-more_toc" href="#basic-usage-more">More</a></li>
@@ -201,8 +202,8 @@ class="link-seesrc" target="_blank">Source</a>
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc">NiPrefs is a library that offers a dynamic preferences-system in a text file within a table-like structure. It stores the preferences in an <tt class="docutils literal"><span class="pre"><span class="Identifier">OrderedTable</span><span class="Punctuation">[</span><span class="Identifier">string</span><span class="Punctuation">,</span> <span class="Identifier">PrefsNode</span><span class="Punctuation">]</span></span></tt>, where <tt class="docutils literal"><span class="pre"><span class="Identifier">PrefsNode</span></span></tt> is an object variation that supports the following types:<ul class="simple"><li><tt class="docutils literal"><span class="pre"><span class="Identifier">int</span></span></tt></li>
-<li><tt class="docutils literal"><span class="pre"><span class="Keyword">nil</span></span></tt></li>
+  <p class="module-desc">NiPrefs is a library that offers a dynamic preferences-system in a text file within a table-like structure. It stores the preferences in an <tt class="docutils literal"><span class="pre"><span class="Identifier">OrderedTable</span><span class="Punctuation">[</span><span class="Identifier">string</span><span class="Punctuation">,</span> <span class="Identifier">PrefsNode</span><span class="Punctuation">]</span></span></tt>, where <tt class="docutils literal"><span class="pre"><span class="Identifier">PrefsNode</span></span></tt> is an object variation that supports the following types:<ul class="simple"><li><tt class="docutils literal"><span class="pre"><span class="Keyword">nil</span></span></tt></li>
+<li><tt class="docutils literal"><span class="pre"><span class="Identifier">int</span></span></tt></li>
 <li><tt class="docutils literal"><span class="pre"><span class="Identifier">seq</span></span></tt> (there are no arrays)</li>
 <li><tt class="docutils literal"><span class="pre"><span class="Identifier">bool</span></span></tt></li>
 <li><tt class="docutils literal"><span class="pre"><span class="Identifier">char</span></span></tt></li>
@@ -210,7 +211,7 @@ class="link-seesrc" target="_blank">Source</a>
 <li><tt class="docutils literal"><span class="pre"><span class="Identifier">string</span></span></tt> (and raw strings)</li>
 <li><tt class="docutils literal"><span class="pre"><span class="Identifier">set</span><span class="Punctuation">[</span><span class="Identifier">char</span><span class="Punctuation">]</span></span></tt></li>
 <li><tt class="docutils literal"><span class="pre"><span class="Identifier">set</span><span class="Punctuation">[</span><span class="Identifier">byte</span><span class="Punctuation">]</span></span></tt></li>
-<li><tt class="docutils literal"><span class="pre"><span class="Identifier">OrderedTable</span><span class="Punctuation">[</span><span class="Identifier">string</span><span class="Punctuation">,</span> <span class="Identifier">PrefsNode</span><span class="Punctuation">]</span></span></tt> (nested tables)</li>
+<li>Objects and tables</li>
 </ul>
 
 <h1><a class="toc-backref" id="syntax" href="#syntax">Syntax</a></h1><p>NiPrefs writes the preferences down to a text file using a pretty straightforward syntax that goes like this:</p>
@@ -218,7 +219,7 @@ class="link-seesrc" target="_blank">Source</a>
 <span class="Comment"># key=val</span>
 <span class="Identifier">lang</span><span class="Operator">=</span><span class="StringLit">&quot;en&quot;</span> <span class="Comment"># Keys do not require quotes</span>
 <span class="Identifier">dark</span><span class="Operator">=</span><span class="Identifier">false</span>
-<span class="Identifier">scheme</span><span class="Operator">=&gt;</span> <span class="Comment"># Nested tables are defined with a greater than symbol and indentation-in</span>
+<span class="Identifier">scheme</span><span class="Operator">=&gt;</span> <span class="Comment"># Nested objects are defined with a greater than symbol and indentation-in</span>
   <span class="Identifier">background</span><span class="Operator">=</span><span class="StringLit">&quot;#ffffff&quot;</span> <span class="Comment"># background belongs to scheme</span>
   <span class="Identifier">font</span><span class="Operator">=&gt;</span>
     <span class="Identifier">family</span><span class="Operator">=</span><span class="StringLit">&quot;UbuntuMono&quot;</span> <span class="Comment"># scheme/font/family</span>
@@ -254,7 +255,9 @@ class="link-seesrc" target="_blank">Source</a>
     <span class="Identifier">size</span><span class="Operator">=</span><span class="DecNumber">15</span>
     <span class="Identifier">family</span><span class="Operator">=</span><span class="StringLit">&quot;UbuntuMono&quot;</span>
     <span class="Identifier">color</span><span class="Operator">=</span><span class="StringLit">&quot;#73D216&quot;</span>
-</pre> ### Why does the niprefs file doesn't change if I change the toPrefs macro? Well, niprefs is meant to be used as a preferences system, what that means is that the file is created with the default values if it doesn't exist. If it does exist, it just reads it. If you want to reset the file with the default prefs manually, you may use <a class="reference external" href="prefsbase.html#overwrite%2CPrefsBase%2CPObjectType">overwrite</a>.  </p>
+</pre></p>
+
+<h3><a class="toc-backref" id="basic-usage-why-does-the-niprefs-file-doesn-t-change-if-i-change-the-toprefs-macroqmark" href="#basic-usage-why-does-the-niprefs-file-doesn-t-change-if-i-change-the-toprefs-macroqmark">Why does the niprefs file doesn't change if I change the toPrefs macro?</a></h3><p>Well, niprefs is meant to be used as a preferences system, what that means is that the file is created with the default values if it doesn't exist. If it does exist, it just reads it. If you want to reset the file with the default prefs manually, you may use <a class="reference external" href="prefsbase.html#overwrite%2CPrefsBase%2CPObjectType">overwrite</a>.  </p>
 
 <h2><a class="toc-backref" id="basic-usage-reading" href="#basic-usage-reading">Reading</a></h2><p>To read a key from your preferences file you can access to it as it were a table:</p>
 <p><pre class="listing"><span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Punctuation">[</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">]</span> <span class="Operator">==</span> <span class="StringLit">&quot;en&quot;</span>
@@ -310,9 +313,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Provides a table-like interface for the PrefsBase object
 &nbsp;&nbsp;<a
-href="https://github.com//tree/main/src/niprefs.nim#L123"
+href="https://github.com//tree/main/src/niprefs.nim#L124"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L123" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L124" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -334,9 +337,9 @@ Instead of printing the prefs object, print it's content
 
 <span class="Identifier">assert</span> <span class="Operator">$</span><span class="Identifier">prefs</span> <span class="Operator">==</span> <span class="StringLit">&quot;{</span><span class="EscapeSequence">\&quot;</span><span class="StringLit">lang</span><span class="EscapeSequence">\&quot;</span><span class="StringLit">: </span><span class="EscapeSequence">\&quot;</span><span class="StringLit">en</span><span class="EscapeSequence">\&quot;</span><span class="StringLit">, </span><span class="EscapeSequence">\&quot;</span><span class="StringLit">theme</span><span class="EscapeSequence">\&quot;</span><span class="StringLit">: </span><span class="EscapeSequence">\&quot;</span><span class="StringLit">dark</span><span class="EscapeSequence">\&quot;</span><span class="StringLit">}&quot;</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com//tree/main/src/niprefs.nim#L145"
+href="https://github.com//tree/main/src/niprefs.nim#L146"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L145" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L146" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -358,9 +361,9 @@ class="link-seesrc" target="_blank">Source</a>
 <span class="Identifier">prefs</span><span class="Punctuation">[</span><span class="StringLit">&quot;keybindings&quot;</span><span class="Punctuation">]</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="Punctuation">{</span><span class="StringLit">&quot;keys&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;Ctrl+C&quot;</span><span class="Punctuation">,</span>
     <span class="StringLit">&quot;command&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;copy&quot;</span><span class="Punctuation">}</span><span class="Punctuation">]</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com//tree/main/src/niprefs.nim#L218"
+href="https://github.com//tree/main/src/niprefs.nim#L219"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L218" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L219" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -381,9 +384,9 @@ class="link-seesrc" target="_blank">Source</a>
 <span class="Identifier">prefs</span><span class="Punctuation">[</span><span class="StringLit">&quot;keybindings&quot;</span><span class="Punctuation">]</span> <span class="Operator">=</span> <span class="Identifier">toPrefs</span> <span class="Operator">@</span><span class="Punctuation">[</span><span class="Punctuation">{</span><span class="StringLit">&quot;keys&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;Ctrl+C&quot;</span><span class="Punctuation">,</span>
     <span class="StringLit">&quot;command&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;copy&quot;</span><span class="Punctuation">}</span><span class="Punctuation">]</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com//tree/main/src/niprefs.nim#L235"
+href="https://github.com//tree/main/src/niprefs.nim#L236"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L235" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L236" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -404,9 +407,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 <span class="Identifier">prefs</span><span class="Punctuation">[</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">]</span> <span class="Operator">=</span> <span class="StringLit">&quot;es&quot;</span> <span class="Comment"># newPString(&quot;es&quot;) is not required, since `string` is not a structured type</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com//tree/main/src/niprefs.nim#L198"
+href="https://github.com//tree/main/src/niprefs.nim#L199"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L198" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L199" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -424,9 +427,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 <span class="Identifier">prefs</span><span class="Punctuation">[</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">]</span> <span class="Operator">=</span> <span class="StringLit">&quot;es&quot;</span> <span class="Comment"># newPString(&quot;es&quot;) is not required, since `string` is not a structured type</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com//tree/main/src/niprefs.nim#L185"
+href="https://github.com//tree/main/src/niprefs.nim#L186"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L185" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L186" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -448,9 +451,9 @@ class="link-seesrc" target="_blank">Source</a>
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Punctuation">[</span><span class="StringLit">&quot;lang&quot;</span><span class="Punctuation">]</span> <span class="Operator">==</span> <span class="StringLit">&quot;en&quot;</span> <span class="Comment"># newPNode(&quot;en&quot;) is not required</span>
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Punctuation">[</span><span class="StringLit">&quot;scheme/font&quot;</span><span class="Punctuation">]</span> <span class="Operator">==</span> <span class="StringLit">&quot;UbuntuMono&quot;</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com//tree/main/src/niprefs.nim#L169"
+href="https://github.com//tree/main/src/niprefs.nim#L170"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L169" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L170" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -469,9 +472,9 @@ Get the last key from <tt class="docutils literal"><span class="pre"><span class
 
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Punctuation">[</span><span class="StringLit">&quot;scheme&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;font&quot;</span><span class="Punctuation">]</span> <span class="Operator">==</span> <span class="StringLit">&quot;UbuntuMono&quot;</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com//tree/main/src/niprefs.nim#L156"
+href="https://github.com//tree/main/src/niprefs.nim#L157"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L156" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L157" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -486,9 +489,9 @@ Clears the content of the file.
 <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">clear</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">content</span> <span class="Operator">==</span> <span class="Identifier">default</span> <span class="Identifier">PObjectType</span> <span class="Comment"># PObject stands for OrderedTable[string, PrefsNode]</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com//tree/main/src/niprefs.nim#L250"
+href="https://github.com//tree/main/src/niprefs.nim#L251"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L250" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L251" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -505,9 +508,9 @@ Alias of <a class="reference external" href="prefsbase.html#hasKey%2CPrefsBase%2
 
 <span class="Identifier">assert</span> <span class="StringLit">&quot;lang&quot;</span> <span class="Keyword">in</span> <span class="Identifier">prefs</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com//tree/main/src/niprefs.nim#L259"
+href="https://github.com//tree/main/src/niprefs.nim#L260"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L259" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L260" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -519,9 +522,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Deletes <tt class="docutils literal"><span class="pre"><span class="Identifier">key</span></span></tt> from the <em>prefs</em> file. Does nothing if the key does not exist.
 &nbsp;&nbsp;<a
-href="https://github.com//tree/main/src/niprefs.nim#L269"
+href="https://github.com//tree/main/src/niprefs.nim#L270"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L269" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L270" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -534,9 +537,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Creates a new Prefs object and checks if a file exists at <tt class="docutils literal"><span class="pre"><span class="Identifier">path</span></span></tt> to create it if it doesn't.
 &nbsp;&nbsp;<a
-href="https://github.com//tree/main/src/niprefs.nim#L125"
+href="https://github.com//tree/main/src/niprefs.nim#L126"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L125" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L126" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -548,9 +551,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Creates a new Prefs object and checks if a file exists at <tt class="docutils literal"><span class="pre"><span class="Identifier">path</span></span></tt> to create it if it doesn't.
 &nbsp;&nbsp;<a
-href="https://github.com//tree/main/src/niprefs.nim#L130"
+href="https://github.com//tree/main/src/niprefs.nim#L131"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L130" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L131" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -568,9 +571,9 @@ Same as <tt class="docutils literal"><span class="pre"><span class="Identifier">
 
 <span class="Identifier">assert</span> <span class="Identifier">prefs</span><span class="Operator">.</span><span class="Identifier">len</span> <span class="Operator">==</span> <span class="DecNumber">2</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com//tree/main/src/niprefs.nim#L134"
+href="https://github.com//tree/main/src/niprefs.nim#L135"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L134" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L135" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -593,9 +596,9 @@ Deletes the <tt class="docutils literal"><span class="pre"><span class="Identifi
 <span class="Identifier">assert</span> <span class="StringLit">&quot;lang&quot;</span> <span class="Keyword">notin</span> <span class="Identifier">prefs</span>
 <span class="Identifier">assert</span> <span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">getString</span><span class="Punctuation">(</span><span class="Punctuation">)</span> <span class="Operator">==</span> <span class="StringLit">&quot;en&quot;</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com//tree/main/src/niprefs.nim#L274"
+href="https://github.com//tree/main/src/niprefs.nim#L275"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L274" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L275" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -618,9 +621,9 @@ Deletes the last key from <tt class="docutils literal"><span class="pre"><span c
 <span class="Identifier">assert</span> <span class="StringLit">&quot;scheme/theme&quot;</span> <span class="Keyword">notin</span> <span class="Identifier">prefs</span>
 <span class="Identifier">assert</span> <span class="Identifier">s</span> <span class="Operator">==</span> <span class="StringLit">&quot;dark&quot;</span></pre>
 &nbsp;&nbsp;<a
-href="https://github.com//tree/main/src/niprefs.nim#L298"
+href="https://github.com//tree/main/src/niprefs.nim#L299"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L298" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com//edit/devel/src/niprefs.nim#L299" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -629,7 +632,7 @@ class="link-seesrc" target="_blank">Source</a>
 <div class="section" id="19">
 <h1><a class="toc-backref" href="#19">Exports</a></h1>
 <dl class="item">
-<a href="niprefs/prefsbase.html#writeMany,PrefsBase,PrefsNode"><span class="Identifier">writeMany</span></a>, <a href="niprefs/prefsnode.html#[]=,PrefsNode,int,T"><span class="Identifier">[]=</span></a>, <a href="niprefs/prefsnode.html#newPChar,char"><span class="Identifier">newPChar</span></a>, <a href="niprefs/prefsnode.html#getByteSet,PrefsNode"><span class="Identifier">getByteSet</span></a>, <a href="niprefs/prefsnode.html#PSeqParam"><span class="Identifier">PSeqParam</span></a>, <a href="niprefs/prefsnode.html#newPNode,string,bool"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#PrefsKind"><span class="Identifier">PrefsKind</span></a>, <a href="niprefs/prefsnode.html#contains,PObjectType,string"><span class="Identifier">contains</span></a>, <a href="niprefs/prefsbase.html#write,PrefsBase,string,T"><span class="Identifier">write</span></a>, <a href="niprefs/prefsnode.html#[]=,PrefsNode,string,T"><span class="Identifier">[]=</span></a>, <a href="niprefs/prefsnode.html#newPChar,string,Natural"><span class="Identifier">newPChar</span></a>, <a href="niprefs/prefsnode.html#getChar,PrefsNode"><span class="Identifier">getChar</span></a>, <a href="niprefs/prefsbase.html#hasKey,PrefsBase,string"><span class="Identifier">hasKey</span></a>, <a href="niprefs/prefsnode.html#$,PrefsNode"><span class="Identifier">$</span></a>, <a href="niprefs/prefsnode.html#newPNode,set[byte]"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsbase.html#InvalidKey"><span class="Identifier">InvalidKey</span></a>, <a href="niprefs/prefsnode.html#newPNode,PObjectType"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#[],PObjectType,string"><span class="Identifier">[]</span></a>, <a href="niprefs/prefsnode.html#newPCharSet,set[char]"><span class="Identifier">newPCharSet</span></a>, <a href="niprefs/prefsnode.html#getSeq,PrefsNode"><span class="Identifier">getSeq</span></a>, <a href="niprefs/prefsbase.html#writeMany,PrefsBase,PObjectType"><span class="Identifier">writeMany</span></a>, <a href="niprefs/prefsnode.html#getFloat,PrefsNode"><span class="Identifier">getFloat</span></a>, <a href="niprefs/prefsnode.html#newPNode,PSeqParam"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#[]=,PObjectType,string,PrefsNode"><span class="Identifier">[]=</span></a>, <a href="niprefs/prefsbase.html#checkFile,PrefsBase"><span class="Identifier">checkFile</span></a>, <a href="niprefs/prefsnode.html#newPNode,bool"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#newPBool,bool"><span class="Identifier">newPBool</span></a>, <a href="niprefs/prefsnode.html#toPrefs.m,untyped"><span class="Identifier">toPrefs</span></a>, <a href="niprefs/prefsnode.html#incl,PrefsNode,char"><span class="Identifier">incl</span></a>, <a href="niprefs/prefsnode.html#getInt,PrefsNode"><span class="Identifier">getInt</span></a>, <a href="niprefs/prefsbase.html#create,PrefsBase,OrderedTable[system.string, prefsnode.PrefsNode]"><span class="Identifier">create</span></a>, <a href="niprefs/prefsnode.html#isEmpty,PrefsNode"><span class="Identifier">isEmpty</span></a>, <a href="niprefs/prefsbase.html#getPath,PrefsBase,varargs[string]"><span class="Identifier">getPath</span></a>, <a href="niprefs/prefsnode.html#added,PrefsNode,T"><span class="Identifier">added</span></a>, <a href="niprefs/prefsnode.html#newPNode,set[char]"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a>, <a href="niprefs/prefsnode.html#newPInt,int"><span class="Identifier">newPInt</span></a>, <a href="niprefs/prefsbase.html#toString,PrefsNode,int"><span class="Identifier">toString</span></a>, <a href="niprefs/prefsbase.html#content,PrefsBase"><span class="Identifier">content</span></a>, <a href="niprefs/prefsnode.html#getInt,PrefsNode_2"><span class="Identifier">getInt</span></a>, <a href="niprefs/prefsnode.html#==,PrefsNode,PrefsNode"><span class="Identifier">==</span></a>, <a href="niprefs/prefsnode.html#delete,PrefsNode,Natural"><span class="Identifier">delete</span></a>, <a href="niprefs/prefsnode.html#card,PrefsNode"><span class="Identifier">card</span></a>, <a href="niprefs/prefsnode.html#contains,PrefsNode,byte"><span class="Identifier">contains</span></a>, <a href="niprefs/prefsnode.html#[]=,PObjectType,string,T"><span class="Identifier">[]=</span></a>, <a href="niprefs/prefsnode.html#newPByteSet,set[byte]"><span class="Identifier">newPByteSet</span></a>, <a href="niprefs/prefsnode.html#add,PrefsNode,T"><span class="Identifier">add</span></a>, <a href="niprefs/prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a>, <a href="niprefs/prefsbase.html#get,PrefsBase,string"><span class="Identifier">get</span></a>, <a href="niprefs/prefsbase.html#write,PrefsBase,string,PrefsNode"><span class="Identifier">write</span></a>, <a href="niprefs/prefsnode.html#getBool,PrefsNode"><span class="Identifier">getBool</span></a>, <a href="niprefs/prefsnode.html#newPNode,int"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a>, <a href="niprefs/prefsnode.html#PSeqType"><span class="Identifier">PSeqType</span></a>, <a href="niprefs/prefsbase.html#overwrite,PrefsBase,PObjectType"><span class="Identifier">overwrite</span></a>, <a href="niprefs/prefsnode.html#getObject,PrefsNode"><span class="Identifier">getObject</span></a>, <a href="niprefs/parser/parser.html#readPrefs,string"><span class="Identifier">readPrefs</span></a>, <a href="niprefs/prefsnode.html#newPNode,char"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#newPObject,PObjectType"><span class="Identifier">newPObject</span></a>, <a href="niprefs/parser/parser.html#parsePrefs,seq[PToken]"><span class="Identifier">parsePrefs</span></a>, <a href="niprefs/prefsnode.html#isNil,PrefsNode"><span class="Identifier">isNil</span></a>, <a href="niprefs/prefsnode.html#contains,PrefsNode,T"><span class="Identifier">contains</span></a>, <a href="niprefs/parser/parser.html#parsePrefs,string"><span class="Identifier">parsePrefs</span></a>, <a href="niprefs/prefsnode.html#newPEmpty"><span class="Identifier">newPEmpty</span></a>, <a href="niprefs/prefsbase.html#write,PrefsBase,varargs[string],PrefsNode"><span class="Identifier">write</span></a>, <a href="niprefs/prefsnode.html#contains,PrefsNode,PrefsNode"><span class="Identifier">contains</span></a>, <a href="niprefs/prefsnode.html#getChar,PrefsNode_2"><span class="Identifier">getChar</span></a>, <a href="niprefs/prefsnode.html#newPFloat,float"><span class="Identifier">newPFloat</span></a>, <a href="niprefs/prefsnode.html#[],PObjectType,string_2"><span class="Identifier">[]</span></a>, <a href="niprefs/prefsnode.html#deleted,PrefsNode,Natural"><span class="Identifier">deleted</span></a>, <a href="niprefs/prefsbase.html#hasPath,PrefsBase,varargs[string]"><span class="Identifier">hasPath</span></a>, <a href="niprefs/prefsnode.html#newPNil"><span class="Identifier">newPNil</span></a>, <a href="niprefs/prefsnode.html#getCharSet,PrefsNode"><span class="Identifier">getCharSet</span></a>, <a href="niprefs/prefsnode.html#excl,PrefsNode,char"><span class="Identifier">excl</span></a>, <a href="niprefs/prefsbase.html#toString,PObjectType,int"><span class="Identifier">toString</span></a>, <a href="niprefs/prefsnode.html#==,PrefsNode,T"><span class="Identifier">==</span></a>, <a href="niprefs/prefsnode.html#getBool,PrefsNode_2"><span class="Identifier">getBool</span></a>, <a href="niprefs/prefsbase.html#delKey,PrefsBase,string"><span class="Identifier">delKey</span></a>, <a href="niprefs/prefsnode.html#del,PrefsNode,string"><span class="Identifier">del</span></a>, <a href="niprefs/prefsbase.html#delete,PrefsBase"><span class="Identifier">delete</span></a>, <a href="niprefs/prefsnode.html#getObject,PrefsNode_2"><span class="Identifier">getObject</span></a>, <a href="niprefs/prefsnode.html#getSeq,PrefsNode_2"><span class="Identifier">getSeq</span></a>, <a href="niprefs/prefsnode.html#getCharSet,PrefsNode_2"><span class="Identifier">getCharSet</span></a>, <a href="niprefs/prefsnode.html#pairs.i,PrefsNode"><span class="Identifier">pairs</span></a>, <a href="niprefs/prefsnode.html#[]=,PrefsNode,int,PrefsNode"><span class="Identifier">[]=</span></a>, <a href="niprefs/prefsnode.html#contains,PrefsNode,string"><span class="Identifier">contains</span></a>, <a href="niprefs/prefsnode.html#newPNode,float"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#getString,PrefsNode"><span class="Identifier">getString</span></a>, <a href="niprefs/prefsbase.html#read,PrefsBase"><span class="Identifier">read</span></a>, <a href="niprefs/prefsnode.html#getByteSet,PrefsNode_2"><span class="Identifier">getByteSet</span></a>, <a href="niprefs/prefsnode.html#items.i,PrefsNode"><span class="Identifier">items</span></a>, <a href="niprefs/prefsnode.html#newPSeq,PSeqParam"><span class="Identifier">newPSeq</span></a>, <a href="niprefs/prefsnode.html#newPByteSet,set[T]"><span class="Identifier">newPByteSet</span></a>, <a href="niprefs/prefsnode.html#getFloat,PrefsNode_2"><span class="Identifier">getFloat</span></a>, <a href="niprefs/prefsnode.html#[],PrefsNode,BackwardsIndex"><span class="Identifier">[]</span></a>, <a href="niprefs/prefsbase.html#write,PrefsBase,varargs[string],T"><span class="Identifier">write</span></a>, <a href="niprefs/prefsnode.html#[]=,PrefsNode,string,PrefsNode"><span class="Identifier">[]=</span></a>, <a href="niprefs/prefsnode.html#len,PrefsNode"><span class="Identifier">len</span></a>, <a href="niprefs/prefsnode.html#added,PrefsNode,PrefsNode"><span class="Identifier">added</span></a>, <a href="niprefs/prefsnode.html#contains,PrefsNode,char"><span class="Identifier">contains</span></a>, <a href="niprefs/prefsnode.html#add,PrefsNode,PrefsNode"><span class="Identifier">add</span></a>, <a href="niprefs/prefsnode.html#[],PrefsNode,string"><span class="Identifier">[]</span></a>, <a href="niprefs/prefsnode.html#newPString,string,bool"><span class="Identifier">newPString</span></a>, <a href="niprefs/prefsbase.html#overwrite,PrefsBase,string"><span class="Identifier">overwrite</span></a>, <a href="niprefs/prefsbase.html#delPath,PrefsBase,varargs[string]"><span class="Identifier">delPath</span></a>, <a href="niprefs/prefsnode.html#getString,PrefsNode_2"><span class="Identifier">getString</span></a>, <a href="niprefs/prefsbase.html#initPrefsBase,PrefsNode,string"><span class="Identifier">initPrefsBase</span></a>, <a href="niprefs/prefsnode.html#[],PrefsNode,int"><span class="Identifier">[]</span></a>, <a href="niprefs/prefsbase.html#initPrefsBase,PObjectType,string"><span class="Identifier">initPrefsBase</span></a>, <a href="niprefs/prefsnode.html#[],PrefsNode,string_2"><span class="Identifier">[]</span></a>
+<a href="niprefs/prefsbase.html#writeMany,PrefsBase,PrefsNode"><span class="Identifier">writeMany</span></a>, <a href="niprefs/prefsnode.html#[]=,PrefsNode,int,T"><span class="Identifier">[]=</span></a>, <a href="niprefs/prefsnode.html#newPChar,char"><span class="Identifier">newPChar</span></a>, <a href="niprefs/prefsnode.html#getByteSet,PrefsNode"><span class="Identifier">getByteSet</span></a>, <a href="niprefs/prefsnode.html#PSeqParam"><span class="Identifier">PSeqParam</span></a>, <a href="niprefs/prefsnode.html#newPNode,string,bool"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#PrefsKind"><span class="Identifier">PrefsKind</span></a>, <a href="niprefs/prefsnode.html#contains,PObjectType,string"><span class="Identifier">contains</span></a>, <a href="niprefs/prefsbase.html#write,PrefsBase,string,T"><span class="Identifier">write</span></a>, <a href="niprefs/prefsnode.html#[]=,PrefsNode,string,T"><span class="Identifier">[]=</span></a>, <a href="niprefs/prefsnode.html#newPChar,string,Natural"><span class="Identifier">newPChar</span></a>, <a href="niprefs/prefsnode.html#getChar,PrefsNode"><span class="Identifier">getChar</span></a>, <a href="niprefs/prefsbase.html#hasKey,PrefsBase,string"><span class="Identifier">hasKey</span></a>, <a href="niprefs/prefsnode.html#$,PrefsNode"><span class="Identifier">$</span></a>, <a href="niprefs/prefsnode.html#newPNode,set[byte]"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsbase.html#InvalidKey"><span class="Identifier">InvalidKey</span></a>, <a href="niprefs/prefsnode.html#newPNode,PObjectType"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#[],PObjectType,string"><span class="Identifier">[]</span></a>, <a href="niprefs/prefsnode.html#newPCharSet,set[char]"><span class="Identifier">newPCharSet</span></a>, <a href="niprefs/prefsnode.html#getSeq,PrefsNode"><span class="Identifier">getSeq</span></a>, <a href="niprefs/prefsbase.html#writeMany,PrefsBase,PObjectType"><span class="Identifier">writeMany</span></a>, <a href="niprefs/prefsnode.html#getFloat,PrefsNode"><span class="Identifier">getFloat</span></a>, <a href="niprefs/prefsnode.html#newPNode,PSeqParam"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#[]=,PObjectType,string,PrefsNode"><span class="Identifier">[]=</span></a>, <a href="niprefs/prefsbase.html#checkFile,PrefsBase"><span class="Identifier">checkFile</span></a>, <a href="niprefs/prefsnode.html#newPNode,bool"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#newPBool,bool"><span class="Identifier">newPBool</span></a>, <a href="niprefs/prefsnode.html#toPrefs.m,untyped"><span class="Identifier">toPrefs</span></a>, <a href="niprefs/prefsnode.html#incl,PrefsNode,char"><span class="Identifier">incl</span></a>, <a href="niprefs/prefsnode.html#getInt,PrefsNode"><span class="Identifier">getInt</span></a>, <a href="niprefs/prefsbase.html#create,PrefsBase,OrderedTable[system.string, prefsnode.PrefsNode]"><span class="Identifier">create</span></a>, <a href="niprefs/prefsnode.html#isEmpty,PrefsNode"><span class="Identifier">isEmpty</span></a>, <a href="niprefs/prefsbase.html#getPath,PrefsBase,varargs[string]"><span class="Identifier">getPath</span></a>, <a href="niprefs/prefsnode.html#added,PrefsNode,T"><span class="Identifier">added</span></a>, <a href="niprefs/prefsnode.html#newPNode,set[char]"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#PObjectType"><span class="Identifier">PObjectType</span></a>, <a href="niprefs/prefsnode.html#newPInt,int64"><span class="Identifier">newPInt</span></a>, <a href="niprefs/prefsbase.html#toString,PrefsNode,int"><span class="Identifier">toString</span></a>, <a href="niprefs/prefsbase.html#content,PrefsBase"><span class="Identifier">content</span></a>, <a href="niprefs/prefsnode.html#getInt,PrefsNode_2"><span class="Identifier">getInt</span></a>, <a href="niprefs/prefsnode.html#==,PrefsNode,PrefsNode"><span class="Identifier">==</span></a>, <a href="niprefs/prefsnode.html#delete,PrefsNode,Natural"><span class="Identifier">delete</span></a>, <a href="niprefs/prefsnode.html#card,PrefsNode"><span class="Identifier">card</span></a>, <a href="niprefs/prefsnode.html#contains,PrefsNode,byte"><span class="Identifier">contains</span></a>, <a href="niprefs/prefsnode.html#[]=,PObjectType,string,T"><span class="Identifier">[]=</span></a>, <a href="niprefs/prefsnode.html#newPByteSet,set[byte]"><span class="Identifier">newPByteSet</span></a>, <a href="niprefs/prefsnode.html#add,PrefsNode,T"><span class="Identifier">add</span></a>, <a href="niprefs/prefsbase.html#PrefsBase"><span class="Identifier">PrefsBase</span></a>, <a href="niprefs/prefsbase.html#get,PrefsBase,string"><span class="Identifier">get</span></a>, <a href="niprefs/prefsbase.html#write,PrefsBase,string,PrefsNode"><span class="Identifier">write</span></a>, <a href="niprefs/prefsnode.html#getBool,PrefsNode"><span class="Identifier">getBool</span></a>, <a href="niprefs/prefsnode.html#newPNode,int64"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a>, <a href="niprefs/prefsnode.html#PSeqType"><span class="Identifier">PSeqType</span></a>, <a href="niprefs/prefsbase.html#overwrite,PrefsBase,PObjectType"><span class="Identifier">overwrite</span></a>, <a href="niprefs/prefsnode.html#getObject,PrefsNode"><span class="Identifier">getObject</span></a>, <a href="niprefs/parser/parser.html#readPrefs,string"><span class="Identifier">readPrefs</span></a>, <a href="niprefs/prefsnode.html#newPNode,char"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#newPObject,PObjectType"><span class="Identifier">newPObject</span></a>, <a href="niprefs/parser/parser.html#parsePrefs,seq[PToken]"><span class="Identifier">parsePrefs</span></a>, <a href="niprefs/prefsnode.html#isNil,PrefsNode"><span class="Identifier">isNil</span></a>, <a href="niprefs/prefsnode.html#contains,PrefsNode,T"><span class="Identifier">contains</span></a>, <a href="niprefs/parser/parser.html#parsePrefs,string"><span class="Identifier">parsePrefs</span></a>, <a href="niprefs/prefsnode.html#newPEmpty"><span class="Identifier">newPEmpty</span></a>, <a href="niprefs/prefsbase.html#write,PrefsBase,varargs[string],PrefsNode"><span class="Identifier">write</span></a>, <a href="niprefs/prefsnode.html#contains,PrefsNode,PrefsNode"><span class="Identifier">contains</span></a>, <a href="niprefs/prefsnode.html#getChar,PrefsNode_2"><span class="Identifier">getChar</span></a>, <a href="niprefs/prefsnode.html#newPFloat,float"><span class="Identifier">newPFloat</span></a>, <a href="niprefs/prefsnode.html#[],PObjectType,string_2"><span class="Identifier">[]</span></a>, <a href="niprefs/prefsnode.html#deleted,PrefsNode,Natural"><span class="Identifier">deleted</span></a>, <a href="niprefs/prefsbase.html#hasPath,PrefsBase,varargs[string]"><span class="Identifier">hasPath</span></a>, <a href="niprefs/prefsnode.html#newPNil"><span class="Identifier">newPNil</span></a>, <a href="niprefs/prefsnode.html#getCharSet,PrefsNode"><span class="Identifier">getCharSet</span></a>, <a href="niprefs/prefsnode.html#excl,PrefsNode,char"><span class="Identifier">excl</span></a>, <a href="niprefs/prefsbase.html#toString,PObjectType,int"><span class="Identifier">toString</span></a>, <a href="niprefs/prefsnode.html#==,PrefsNode,T"><span class="Identifier">==</span></a>, <a href="niprefs/prefsnode.html#getBool,PrefsNode_2"><span class="Identifier">getBool</span></a>, <a href="niprefs/prefsbase.html#delKey,PrefsBase,string"><span class="Identifier">delKey</span></a>, <a href="niprefs/prefsnode.html#del,PrefsNode,string"><span class="Identifier">del</span></a>, <a href="niprefs/prefsbase.html#delete,PrefsBase"><span class="Identifier">delete</span></a>, <a href="niprefs/prefsnode.html#getObject,PrefsNode_2"><span class="Identifier">getObject</span></a>, <a href="niprefs/prefsnode.html#getSeq,PrefsNode_2"><span class="Identifier">getSeq</span></a>, <a href="niprefs/prefsnode.html#getCharSet,PrefsNode_2"><span class="Identifier">getCharSet</span></a>, <a href="niprefs/prefsnode.html#pairs.i,PrefsNode"><span class="Identifier">pairs</span></a>, <a href="niprefs/prefsnode.html#[]=,PrefsNode,int,PrefsNode"><span class="Identifier">[]=</span></a>, <a href="niprefs/prefsnode.html#contains,PrefsNode,string"><span class="Identifier">contains</span></a>, <a href="niprefs/prefsnode.html#newPNode,float"><span class="Identifier">newPNode</span></a>, <a href="niprefs/prefsnode.html#getString,PrefsNode"><span class="Identifier">getString</span></a>, <a href="niprefs/prefsbase.html#read,PrefsBase"><span class="Identifier">read</span></a>, <a href="niprefs/prefsnode.html#getByteSet,PrefsNode_2"><span class="Identifier">getByteSet</span></a>, <a href="niprefs/prefsnode.html#items.i,PrefsNode"><span class="Identifier">items</span></a>, <a href="niprefs/prefsnode.html#newPSeq,PSeqParam"><span class="Identifier">newPSeq</span></a>, <a href="niprefs/prefsnode.html#newPByteSet,set[T]"><span class="Identifier">newPByteSet</span></a>, <a href="niprefs/prefsnode.html#getFloat,PrefsNode_2"><span class="Identifier">getFloat</span></a>, <a href="niprefs/prefsnode.html#[],PrefsNode,BackwardsIndex"><span class="Identifier">[]</span></a>, <a href="niprefs/prefsbase.html#write,PrefsBase,varargs[string],T"><span class="Identifier">write</span></a>, <a href="niprefs/prefsnode.html#[]=,PrefsNode,string,PrefsNode"><span class="Identifier">[]=</span></a>, <a href="niprefs/prefsnode.html#len,PrefsNode"><span class="Identifier">len</span></a>, <a href="niprefs/prefsnode.html#added,PrefsNode,PrefsNode"><span class="Identifier">added</span></a>, <a href="niprefs/prefsnode.html#contains,PrefsNode,char"><span class="Identifier">contains</span></a>, <a href="niprefs/prefsnode.html#add,PrefsNode,PrefsNode"><span class="Identifier">add</span></a>, <a href="niprefs/prefsnode.html#[],PrefsNode,string"><span class="Identifier">[]</span></a>, <a href="niprefs/prefsnode.html#newPString,string,bool"><span class="Identifier">newPString</span></a>, <a href="niprefs/prefsbase.html#overwrite,PrefsBase,string"><span class="Identifier">overwrite</span></a>, <a href="niprefs/prefsbase.html#delPath,PrefsBase,varargs[string]"><span class="Identifier">delPath</span></a>, <a href="niprefs/prefsnode.html#getString,PrefsNode_2"><span class="Identifier">getString</span></a>, <a href="niprefs/prefsbase.html#initPrefsBase,PrefsNode,string"><span class="Identifier">initPrefsBase</span></a>, <a href="niprefs/prefsnode.html#[],PrefsNode,int"><span class="Identifier">[]</span></a>, <a href="niprefs/prefsbase.html#initPrefsBase,PObjectType,string"><span class="Identifier">initPrefsBase</span></a>, <a href="niprefs/prefsnode.html#[],PrefsNode,string_2"><span class="Identifier">[]</span></a>
 </dl></div>
 
   </div>
@@ -639,7 +642,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-05-29 01:42:27 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-05-29 17:00:55 UTC</small>
       </div>
     </div>
   </div>

@@ -16,7 +16,7 @@ PrefsKind	niprefs/prefsnode.html#PrefsKind	prefsnode: PrefsKind
 PrefsNode	niprefs/prefsnode.html#PrefsNode	prefsnode: PrefsNode	
 isEmpty	niprefs/prefsnode.html#isEmpty,PrefsNode	prefsnode: isEmpty(node: PrefsNode): bool	
 isNil	niprefs/prefsnode.html#isNil,PrefsNode	prefsnode: isNil(node: PrefsNode): bool	
-getInt	niprefs/prefsnode.html#getInt,PrefsNode	prefsnode: getInt(node: PrefsNode): int	
+getInt	niprefs/prefsnode.html#getInt,PrefsNode	prefsnode: getInt(node: PrefsNode): int64	
 getSeq	niprefs/prefsnode.html#getSeq,PrefsNode	prefsnode: getSeq(node: PrefsNode): PSeqType	
 getBool	niprefs/prefsnode.html#getBool,PrefsNode	prefsnode: getBool(node: PrefsNode): bool	
 getChar	niprefs/prefsnode.html#getChar,PrefsNode	prefsnode: getChar(node: PrefsNode): char	
@@ -25,7 +25,7 @@ getObject	niprefs/prefsnode.html#getObject,PrefsNode	prefsnode: getObject(node: 
 getString	niprefs/prefsnode.html#getString,PrefsNode	prefsnode: getString(node: PrefsNode): string	
 getCharSet	niprefs/prefsnode.html#getCharSet,PrefsNode	prefsnode: getCharSet(node: PrefsNode): set[char]	
 getByteSet	niprefs/prefsnode.html#getByteSet,PrefsNode	prefsnode: getByteSet(node: PrefsNode): set[byte]	
-getInt	niprefs/prefsnode.html#getInt,PrefsNode_2	prefsnode: getInt(node: var PrefsNode): var int	
+getInt	niprefs/prefsnode.html#getInt,PrefsNode_2	prefsnode: getInt(node: var PrefsNode): var int64	
 getSeq	niprefs/prefsnode.html#getSeq,PrefsNode_2	prefsnode: getSeq(node: var PrefsNode): var PSeqType	
 getBool	niprefs/prefsnode.html#getBool,PrefsNode_2	prefsnode: getBool(node: var PrefsNode): var bool	
 getChar	niprefs/prefsnode.html#getChar,PrefsNode_2	prefsnode: getChar(node: var PrefsNode): var char	
@@ -36,7 +36,7 @@ getCharSet	niprefs/prefsnode.html#getCharSet,PrefsNode_2	prefsnode: getCharSet(n
 getByteSet	niprefs/prefsnode.html#getByteSet,PrefsNode_2	prefsnode: getByteSet(node: var PrefsNode): var set[byte]	
 newPEmpty	niprefs/prefsnode.html#newPEmpty	prefsnode: newPEmpty(): PrefsNode	
 newPNil	niprefs/prefsnode.html#newPNil	prefsnode: newPNil(): PrefsNode	
-newPInt	niprefs/prefsnode.html#newPInt,int	prefsnode: newPInt(val: int = default int): PrefsNode	
+newPInt	niprefs/prefsnode.html#newPInt,int64	prefsnode: newPInt(val: int64 = default int64): PrefsNode	
 newPSeq	niprefs/prefsnode.html#newPSeq,PSeqParam	prefsnode: newPSeq(val: PSeqParam = default PSeqType): PrefsNode	
 newPBool	niprefs/prefsnode.html#newPBool,bool	prefsnode: newPBool(val: bool = default bool): PrefsNode	
 newPChar	niprefs/prefsnode.html#newPChar,char	prefsnode: newPChar(val: char = default char): PrefsNode	
@@ -47,7 +47,7 @@ newPString	niprefs/prefsnode.html#newPString,string,bool	prefsnode: newPString(v
 newPCharSet	niprefs/prefsnode.html#newPCharSet,set[char]	prefsnode: newPCharSet(val: set[char] = default set[char]): PrefsNode	
 newPByteSet	niprefs/prefsnode.html#newPByteSet,set[byte]	prefsnode: newPByteSet(val: set[byte] = default set[byte]): PrefsNode	
 newPByteSet	niprefs/prefsnode.html#newPByteSet,set[T]	prefsnode: newPByteSet[T: not byte](val: set[T]): PrefsNode	
-newPNode	niprefs/prefsnode.html#newPNode,int	prefsnode: newPNode(obj: int): PrefsNode	
+newPNode	niprefs/prefsnode.html#newPNode,int64	prefsnode: newPNode(obj: int64): PrefsNode	
 newPNode	niprefs/prefsnode.html#newPNode,PSeqParam	prefsnode: newPNode(obj: PSeqParam): PrefsNode	
 newPNode	niprefs/prefsnode.html#newPNode,bool	prefsnode: newPNode(obj: bool): PrefsNode	
 newPNode	niprefs/prefsnode.html#newPNode,char	prefsnode: newPNode(obj: char): PrefsNode	

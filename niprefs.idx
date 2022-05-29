@@ -16,6 +16,7 @@ pop	niprefs.html#pop,Prefs,string,PrefsNode	niprefs: pop(prefs: Prefs; key: stri
 pop	niprefs.html#pop,Prefs,varargs[string],PrefsNode	niprefs: pop(prefs: Prefs; keys: varargs[string]; val: var PrefsNode): bool	
 Syntax	niprefs.html#syntax	 Syntax	
 Basic usage	niprefs.html#basic-usage	 Basic usage	
+Why does the niprefs file doesn't change if I change the toPrefs macro?	niprefs.html#basic-usage-why-does-the-niprefs-file-doesn-t-change-if-i-change-the-toprefs-macroqmark	   Why does the niprefs file doesn't change if I change the toPrefs macro?	
 Reading	niprefs.html#basic-usage-reading	  Reading	
 Writing	niprefs.html#basic-usage-writing	  Writing	
 Removing	niprefs.html#basic-usage-removing	  Removing	

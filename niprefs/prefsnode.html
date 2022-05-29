@@ -114,7 +114,7 @@ window.addEventListener('DOMContentLoaded', main);
       nil
 
   of PInt:
-      intV*: int
+      intV*: int64
 
   of PSeq:
       seqV*: PSeqType
@@ -283,9 +283,9 @@ window.addEventListener('DOMContentLoaded', main);
   </ul>
   <ul class="simple nested-toc-section">getInt
       <li><a class="reference" href="#getInt%2CPrefsNode"
-    title="getInt(node: PrefsNode): int">getInt(node: PrefsNode): int</a></li>
+    title="getInt(node: PrefsNode): int64">getInt(node: PrefsNode): int64</a></li>
   <li><a class="reference" href="#getInt%2CPrefsNode_2"
-    title="getInt(node: var PrefsNode): var int">getInt(node: var PrefsNode): var int</a></li>
+    title="getInt(node: var PrefsNode): var int64">getInt(node: var PrefsNode): var int64</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">getObject
@@ -364,8 +364,8 @@ window.addEventListener('DOMContentLoaded', main);
 
   </ul>
   <ul class="simple nested-toc-section">newPInt
-      <li><a class="reference" href="#newPInt%2Cint"
-    title="newPInt(val: int = default int): PrefsNode">newPInt(val: int = default int): PrefsNode</a></li>
+      <li><a class="reference" href="#newPInt%2Cint64"
+    title="newPInt(val: int64 = default int64): PrefsNode">newPInt(val: int64 = default int64): PrefsNode</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">newPNil
@@ -380,8 +380,8 @@ window.addEventListener('DOMContentLoaded', main);
     title="newPNode(obj: char): PrefsNode">newPNode(obj: char): PrefsNode</a></li>
   <li><a class="reference" href="#newPNode%2Cfloat"
     title="newPNode(obj: float): PrefsNode">newPNode(obj: float): PrefsNode</a></li>
-  <li><a class="reference" href="#newPNode%2Cint"
-    title="newPNode(obj: int): PrefsNode">newPNode(obj: int): PrefsNode</a></li>
+  <li><a class="reference" href="#newPNode%2Cint64"
+    title="newPNode(obj: int64): PrefsNode">newPNode(obj: int64): PrefsNode</a></li>
   <li><a class="reference" href="#newPNode%2CPObjectType"
     title="newPNode(obj: PObjectType): PrefsNode">newPNode(obj: PObjectType): PrefsNode</a></li>
   <li><a class="reference" href="#newPNode%2CPSeqParam"
@@ -488,7 +488,7 @@ class="link-seesrc" target="_blank">Source</a>
       <span class="Keyword">nil</span>
 
   <span class="Keyword">of</span> <span class="Identifier">PInt</span><span class="Other">:</span>
-      <span class="Identifier">intV</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">int</span>
+      <span class="Identifier">intV</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">int64</span>
 
   <span class="Keyword">of</span> <span class="Identifier">PSeq</span><span class="Other">:</span>
       <span class="Identifier">seqV</span><span class="Operator">*</span><span class="Other">:</span> <a href="prefsnode.html#PSeqType"><span class="Identifier">PSeqType</span></a>
@@ -1055,7 +1055,7 @@ class="link-seesrc" target="_blank">Source</a>
 </dd>
 </div>
 <div id="getInt,PrefsNode">
-<dt><pre><span class="Keyword">proc</span> <a href="#getInt%2CPrefsNode"><span class="Identifier">getInt</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#getInt%2CPrefsNode"><span class="Identifier">getInt</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int64</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 Get the <tt class="docutils literal"><span class="pre"><span class="Identifier">intV</span></span></tt> field from <tt class="docutils literal"><span class="pre"><span class="Identifier">node</span></span></tt>.
@@ -1067,7 +1067,7 @@ class="link-seesrc" target="_blank">Source</a>
 </dd>
 </div>
 <div id="getInt,PrefsNode_2">
-<dt><pre><span class="Keyword">proc</span> <a href="#getInt%2CPrefsNode_2"><span class="Identifier">getInt</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">int</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#getInt%2CPrefsNode_2"><span class="Identifier">getInt</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Keyword">var</span> <span class="Identifier">int64</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 
@@ -1297,8 +1297,8 @@ class="link-seesrc" target="_blank">Source</a>
 
 </dd>
 </div>
-<div id="newPInt,int">
-<dt><pre><span class="Keyword">proc</span> <a href="#newPInt%2Cint"><span class="Identifier">newPInt</span></a><span class="Other">(</span><span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="Identifier">default</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<div id="newPInt,int64">
+<dt><pre><span class="Keyword">proc</span> <a href="#newPInt%2Cint64"><span class="Identifier">newPInt</span></a><span class="Other">(</span><span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">int64</span> <span class="Other">=</span> <span class="Identifier">default</span> <span class="Identifier">int64</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 Create a new PrefsNode of <tt class="docutils literal"><span class="pre"><span class="Identifier">PInt</span></span></tt> kind.
@@ -1357,8 +1357,8 @@ class="link-seesrc" target="_blank">Source</a>
 
 </dd>
 </div>
-<div id="newPNode,int">
-<dt><pre><span class="Keyword">proc</span> <a href="#newPNode%2Cint"><span class="Identifier">newPNode</span></a><span class="Other">(</span><span class="Identifier">obj</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<div id="newPNode,int64">
+<dt><pre><span class="Keyword">proc</span> <a href="#newPNode%2Cint64"><span class="Identifier">newPNode</span></a><span class="Other">(</span><span class="Identifier">obj</span><span class="Other">:</span> <span class="Identifier">int64</span><span class="Other">)</span><span class="Other">:</span> <a href="prefsnode.html#PrefsNode"><span class="Identifier">PrefsNode</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 Create a new PrefsNode from <tt class="docutils literal"><span class="pre"><span class="Identifier">obj</span></span></tt>.
@@ -1541,7 +1541,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-05-29 01:42:05 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-05-29 17:00:36 UTC</small>
       </div>
     </div>
   </div>
