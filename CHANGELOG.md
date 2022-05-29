@@ -1,5 +1,11 @@
 # CHANGELOG
 
+### v0.2.4
+- Removed negative bin/bin/oct.
+- Now using `int64` for `PInt`.
+- Testing on i386.
+- Fixed some floats parsing errors.
+
 ### v0.2.3
 - Fixed `added` and `deleted` procs.
 - Added `contains` for `PSeq`.

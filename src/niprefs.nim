@@ -1,7 +1,7 @@
 ## NiPrefs is a library that offers a dynamic preferences-system in a text file within a table-like structure.
 ## It stores the preferences in an `OrderedTable[string, PrefsNode]`, where `PrefsNode` is an object variation that supports the following types:  
-## - `int`
 ## - `nil`
+## - `int`
 ## - `seq` (there are no arrays)
 ## - `bool`
 ## - `char`
@@ -9,7 +9,7 @@
 ## - `string` (and raw strings)
 ## - `set[char]`
 ## - `set[byte]`
-## - `OrderedTable[string, PrefsNode]` (nested tables)
+## - Objects and tables
 
 ## # Syntax
 ## NiPrefs writes the preferences down to a text file using a pretty straightforward syntax that goes like this:
@@ -18,7 +18,7 @@
 ## # key=val
 ## lang="en" # Keys do not require quotes
 ## dark=false
-## scheme=> # Nested tables are defined with a greater than symbol and indentation-in
+## scheme=> # Nested objects are defined with a greater than symbol and indentation-in
 ##   background="#ffffff" # background belongs to scheme
 ##   font=>
 ##     family="UbuntuMono" # scheme/font/family
@@ -58,6 +58,7 @@ runnableExamples:
 ##     family="UbuntuMono"
 ##     color="#73D216"
 ## ```
+##
 ## ### Why does the niprefs file doesn't change if I change the toPrefs macro?
 ## Well, niprefs is meant to be used as a preferences system, what that means is that the file is created with the default values if it doesn't exist.  
 ## If it does exist, it just reads it. If you want to reset the file with the default prefs manually, you may use [overwrite](prefsbase.html#overwrite%2CPrefsBase%2CPObjectType).  

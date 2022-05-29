@@ -1,4 +1,4 @@
-import std/[strutils, strformat, sequtils, options, tables]
+import std/[parseutils, strformat, strutils, sequtils, options, tables]
 import npeg, npeg/codegen
 import lexer, escaper
 
@@ -44,7 +44,7 @@ proc removeTypeSuf(num: string): string =
   ## 69'd64 -> 69
 
   for i in num:
-    if i.isDigit() or i == '-' or i == '.':
+    if i.isDigit() or i in {'-', '.', 'b', 'o', 'x', 'e', '+'}:
       result.add i
     else:
       break
@@ -52,28 +52,31 @@ proc removeTypeSuf(num: string): string =
 proc parseInt(token: PToken): PrefsNode =
   ## Parse an string representation of an integer.
 
-  var
-    lex = token.lex.removeTypeSuf()
-    num: int
-
-  let negative = if lex.startsWith('-'): true else: false
-  lex.removePrefix('-')
-
-  if lex.len <= 1:
-    num = lex.parseInt()
-  else:
-    case lex[0..1]
-    of "0b": # Bin
-      num = lex.parseBinInt()
-    of "0x": # Hex
-      num = lex.parseHexInt()
-    of "0o": # Oct
-      num = lex.parseOctInt()
+  var lex = token.lex.removeTypeSuf()
+  var num: int64
+  try:
+    if lex.len <= 1:
+      if parseBiggestInt(lex, num) != lex.len:
+        raise newException(SyntaxError, &"Invalid integer at {token.pos.line}:{token.pos.col}")
     else:
-      num = lex.parseInt()
-
-  if negative:
-    num = -num
+      case lex[0..1]
+      of "0b": # Bin
+        lex = lex[2..^1]
+        if parseBin(lex, num, maxLen = lex.len) != lex.len:
+          raise newException(SyntaxError, &"Invalid bin integer at {token.pos.line}:{token.pos.col}")
+      of "0x": # Hex
+        lex = lex[2..^1]
+        if parseHex(lex, num, maxLen = lex.len) != lex.len:
+          raise newException(SyntaxError, &"Invalid bin integer at {token.pos.line}:{token.pos.col}")
+      of "0o": # Oct
+        lex = lex[2..^1]
+        if parseOct(lex, num, maxLen = lex.len) != lex.len:
+          raise newException(SyntaxError, &"Invalid bin integer at {token.pos.line}:{token.pos.col}")
+      else:
+        if parseBiggestInt(lex, num) != lex.len:
+          raise newException(SyntaxError, &"Invalid integer at {token.pos.line}:{token.pos.col}")
+  except ValueError:
+    raise newException(SyntaxError, &"Integer out of valid range at {token.pos.line}:{token.pos.col}")
 
   result = num.newPInt()
 
@@ -81,33 +84,41 @@ proc parseFloat(token: PToken): PrefsNode =
   ## Parse an string representation of a float.
   
   var lex = token.lex.removeTypeSuf()
+  var num: float
 
-  let negative = if lex.startsWith('-'): true else: false
-  lex.removePrefix('-')
-
-  if lex.len <= 1:
-    result = lex.parseFloat().newPFloat()
-  else:
-    var num: float
-
-    case lex[0..1]
-    of "0b": # Bin
-      num = cast[float](lex.parseBinInt)
-    of "0x": # Hex
-      num = cast[float](lex.parseHexInt)
-    of "0o": # Oct
-      num = cast[float](lex.parseOctInt)
+  try:
+    if lex.len <= 1:
+      if parseFloat(lex, num) != lex.len:
+        raise newException(SyntaxError, &"Invalid float at {token.pos.line}:{token.pos.col}")
     else:
-      num = lex.parseFloat()
+      var tempInt: int64
 
-    if negative:
-      num = -num
+      case lex[0..1]
+      of "0b": # Bin
+        lex = lex[2..^1]
+        if parseBin(lex, tempInt, maxLen = lex.len) != lex.len:
+          raise newException(SyntaxError, &"Invalid bin float at {token.pos.line}:{token.pos.col}")
+        num = cast[float](tempInt)
+      of "0x": # Hex
+        lex = lex[2..^1]
+        if parseHex(lex, tempInt, maxLen = lex.len) != lex.len:
+          raise newException(SyntaxError, &"Invalid hex float at {token.pos.line}:{token.pos.col}")
+        num = cast[float](tempInt)
+      of "0o": # Oct
+        lex = lex[2..^1]
+        if parseOct(lex, tempInt, maxLen = lex.len) != lex.len:
+          raise newException(SyntaxError, &"Invalid oct float at {token.pos.line}:{token.pos.col}")
+        num = cast[float](tempInt)
+      else:
+        if parseFloat(lex, num) != lex.len:
+          raise newException(SyntaxError, &"Invalid float at {token.pos.line}:{token.pos.col}")
+  except ValueError:
+    raise newException(SyntaxError, &"Integer out of valid range at {token.pos.line}:{token.pos.col}")
 
-    result = num.newPFloat()
+  result = num.newPFloat()
 
 proc parseVal(token: PToken): PrefsNode =
   ## Parses a token to get an actual PrefsNode.
-
   case token.kind
   of DEC, BIN, OCT, HEX:
     result = token.parseInt()
@@ -203,7 +214,7 @@ proc indenOut(data: var PParseData, ind: int, pos: PTokenPos) =
     elif ind == data.indentStack[i]:
       break
     else:
-      raise newException(SyntaxError, &"Invalid indentation at {pos.line}:{pos.col} (#{pos.idx}), found {ind}, expected {data.indentStack[i]} or {data.indentStack[i+1]}")
+      raise newException(SyntaxError, &"Invalid indentation at {pos.line}:{pos.col}, found {ind}, expected {data.indentStack[i]} or {data.indentStack[i+1]}")
 
 const parser = peg(content, PToken, data: PParseData):
   spaced(rule) <- *[SPACE] * rule * *[SPACE]
@@ -221,7 +232,7 @@ const parser = peg(content, PToken, data: PParseData):
       let
         lex = ($0).lex
         pos = ($0).pos
-      raise newException(SyntaxError, &"Expected new line or end of the file at {pos.line}:{pos.col} (#{pos.idx}), found \"{lex}\"")
+      raise newException(SyntaxError, &"Expected new line or end of the file at {pos.line}:{pos.col}, found \"{lex}\"")
 
   pair <- indSame * (>[IDEN] | E"key") * spaced(sep) * (>val | invalidVal) * endLn:
     data.add(($1).lex, $2)
@@ -245,7 +256,7 @@ const parser = peg(content, PToken, data: PParseData):
     
     elif ind != data.indentStack.top: # Error
       let pos = ($0).pos
-      raise newException(SyntaxError, &"Invalid indentation at {pos.line}:{pos.col} (#{pos.idx}), found {ind}, expected {data.indentStack.top}")
+      raise newException(SyntaxError, &"Invalid indentation at {pos.line}:{pos.col}, found {ind}, expected {data.indentStack.top}")
 
   indIn <- &[SPACE]:
     validate ($0).lex.len > data.indentStack.top
@@ -339,7 +350,7 @@ proc parsePrefs*(tokens: seq[PToken]): PObjectType =
 
   if not output.ok:
     let pos = tokens[output.matchLen].pos
-    raise newException(SyntaxError, &"Error while parsing at {pos.line}:{pos.col} (#{pos.idx}), parsed table: {result}")
+    raise newException(SyntaxError, &"Error while parsing at {pos.line}:{pos.col}, parsed table: {result}")
 
 proc parsePrefs*(source: string): PObjectType =
   ## Parse a string as a NiPrefs file.

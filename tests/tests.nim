@@ -1,8 +1,3 @@
-# This is just an example to get you started. You may wish to put all of your
-# tests into a single file, or separate them into multiple `test1`, `test2`
-# etc. files (better names are recommended, just make sure the name starts with
-# the letter 't').
-#
 # To run these tests, simply execute `nimble test`.
 
 import std/[unittest, strutils, os]
@@ -14,7 +9,8 @@ const path = "Prefs/subdir/settings.niprefs"
 let defaultPrefs = toPrefs {
   lang: "es",
   la_NG: "en", # Overwrites lang
-  raw: r"\x3858923589sjdfjksdjkglsdg""l",
+  raw: r"\x3858923589\s\\\\j'dfjksdjkglsdg""l",
+  nums: [0b100001110011110101110100010001001101000101110100001011010000000f32, 0b100001110011110101110100010001001101000101110100001011010000000d, 0b100001110011110101110100010001001101000101110100001011010000000],
   dark: true,
   keybindings: [],
   users: {:},

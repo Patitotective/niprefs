@@ -23,7 +23,7 @@ type
     of PEmpty, PNil:
       discard
     of PInt:
-      intV*: int
+      intV*: int64
     of PSeq:
       seqV*: PSeqType
     of PBool:
@@ -51,7 +51,7 @@ proc isNil*(node: PrefsNode): bool =
 
   node.kind == PNil
 
-proc getInt*(node: PrefsNode): int =
+proc getInt*(node: PrefsNode): int64 =
   ## Get the `intV` field from `node`.
   node.intV
 
@@ -90,7 +90,7 @@ proc getByteSet*(node: PrefsNode): set[byte] =
   ## Get the `byteSet` field from `node`.
   node.byteSetV
 
-proc getInt*(node: var PrefsNode): var int =
+proc getInt*(node: var PrefsNode): var int64 =
   ## Get the `intV` field from a `PrefsNode`.
   node.intV
 
@@ -137,7 +137,7 @@ proc newPNil*(): PrefsNode =
   ## Create a new PrefsNode of `PNil` kind.
   PrefsNode(kind: PNil)
 
-proc newPInt*(val: int = default int): PrefsNode =
+proc newPInt*(val: int64 = default int64): PrefsNode =
   ## Create a new PrefsNode of `PInt` kind.
   PrefsNode(kind: PInt, intV: val)
 
@@ -180,7 +180,7 @@ proc newPByteSet*(val: set[byte] = default set[byte]): PrefsNode =
 proc newPByteSet*[T: not byte](val: set[T]): PrefsNode = 
   newPByteSet(cast[ptr set[byte]](val.unsafeAddr)[])
 
-proc newPNode*(obj: int): PrefsNode =
+proc newPNode*(obj: int64): PrefsNode =
   ## Create a new PrefsNode from `obj`.
   newPInt(obj)
 

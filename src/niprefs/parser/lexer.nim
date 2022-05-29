@@ -53,7 +53,7 @@ type
     source*: string
 
 proc `$`*(lexer: PLexer): string =
-  result.add &"{lexer.ok} {lexer.matchLen}/{lexer.matchMax}\n"
+  result.add &"Success: {lexer.ok} {lexer.matchLen}/{lexer.matchMax}\n"
   
   for token in lexer.stack:
     case token.kind
@@ -81,8 +81,8 @@ grammar "number":
   minus <- '-'
   octdigit <- {'0'..'7'}
   bindigit <- {'0'..'1'}
-  nums <- Digit * *(?'_' * Digit)
-  exponent <- i"e" * ('+' | '-') * nums
+  digits(rule) <- rule * *(?'_' * rule)
+  exponent <- i"e" * ('+' | '-') * digits(Digit)
 
   iSuffix <- i"i" * ("8" |
       "16" | "32" | "64")
@@ -91,14 +91,13 @@ grammar "number":
   typeSuffix <- ?'\'' * (uSuffix | iSuffix)
   f32Suffix <- i"f" * ?"32"
   f64Suffix <- i"f64" | i"d"
-  # fSuffix <- f32Suffix | f64Suffix
 
-  Hex <- ?minus * '0' * i"x" * Xdigit * *(?'_' * Xdigit)
-  Dec <- ?minus * nums
-  Oct <- ?minus * '0' * 'o' * octdigit * *(?'_' * octdigit)
-  Bin <- ?minus * '0' * i"b" * bindigit * *(?'_' * bindigit)
+  Dec <- ?minus * digits(Digit)
+  Hex <- '0' * i"x" * digits(Xdigit)
+  Oct <- '0' * 'o' * digits(octdigit)
+  Bin <- '0' * i"b" * digits(bindigit)
 
-  Float <- ?minus * nums * (('.' * nums * ?exponent) | exponent)
+  Float <- ?minus * digits(Digit) * (('.' * digits(Digit) * ?exponent) | exponent)
 
   Float32 <- Hex * ?'\'' * f32Suffix |
     (Float | Oct | Bin | Dec) * ?'\'' * f32Suffix
