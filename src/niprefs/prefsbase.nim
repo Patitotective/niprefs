@@ -4,7 +4,6 @@ export prefsnode, parser
 
 const
   commentChar = '#'
-  firstLine = &"{commentChar}NiPrefs"
   endChar = '\n'
   indentChar = "  "
   keyPathSep* = '/'
@@ -56,18 +55,10 @@ proc `content`*(prefs: PrefsBase): PObjectType =
 proc toString*(table: PObjectType, depth: int = 0): string =
   ## Given a `table` convert it to Prefs format and return it.
   runnableExamples:
-    import std/strutils
-
     var table = toPrefs({"lang": "en", "theme": "dark"}).getObject()
-    let str = """
-    #NiPrefs
-    lang="en"
-    theme="dark"
-    """
 
-    assert table.toString() == str.dedent()
+    assert table.toString() == """lang="en"theme="dark""""
 
-  if depth == 0: result.add &"{firstLine}{endChar}"
   let indent = indentChar.repeat depth
 
   for key, val in table.pairs:
