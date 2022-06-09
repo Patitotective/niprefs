@@ -1,5 +1,5 @@
 # niprefs
-> _Store and manage preferences in a text file within a table-like structure._
+A Nim library to manage preferences in a TOML file.
 
 ## Installation
 You can install niprefs with _nimble_:
@@ -11,42 +11,28 @@ Or directly from this repo:
 nimble install https://github.com/Patitotective/niprefs
 ```
 
-## Syntax
-NiPrefs writes the preferences down to a text file using a pretty straightforward syntax that goes like this:
-```nim
-# Comment
-# key=val
-lang="en" # Keys do not require quotes
-dark=false
-scheme=> # Nested tables are defined with a greater than symbol and indentation-in
-  background="#ffffff" # background belongs to scheme
-  font=>
-    family="UbuntuMono" # scheme/font/family
-    size=15
-    color="#000000"
-users={"ElegantBeef": 28, "Rika": 22} # Tables are also supported (and keys do require quotes inside tables)
-```
-
 ## Usage
-_NiPrefs_ store your preferences in an `OrderedTable[string, PrefsNode]`, where `PrefsNode` is an object variation that supports the following types:
-- `int`
-- `nil`
-- `seq` (there are no arrays)
-- `bool`
-- `char`
-- `float`
-- `string` (and raw strings)
-- `set[char]`
-- `set[byte]`
-- `OrderedTable[string, PrefsNode]` (nested tables)
+A `Prefs` object requires a `path` and a `default` preferences. A TOML file is created at `path` with `default` whenever it's not found, if it exists it will read it.  
+To access the actual preferences (not the default) you may want to use `Prefs.content` and at the end of your program call `Prefs.save()` to update the preferences file.
 
+`toToml` is a helpful macro to define your default preferences.  
+Instead of having to write:
+```nim
+{"a": [1.newTInt(), 2.newTInt()].newTArray()}.newTTable()
+```
+Using the `toToml` it's just as easy as writing:
+```nim
+toToml {a: [1, 2]}
+```
 
 ```nim
 import niprefs
 
 # Default preferences are used the first time you run the program or whenever the file gets deleted.
-var prefs = toPrefs({
-  "lang": "en", # Keys do not require quotes when using toPrefs macro.
+var prefs = initPrefs(
+  path = "prefs.toml", 
+  default = toToml {
+  "lang": "en", # Keys do not require quotes when using toToml macro
   dark: true,
   keybindings: {:},
   scheme: {
@@ -57,14 +43,16 @@ var prefs = toPrefs({
       color: "#73D216"
     }
   }
-}).initPrefs()
+})
 
 prefs["lang"] = "es"
 assert prefs["lang"] == "es"
 
-prefs.del("lang")
+prefs.delelete("lang")
 
 assert "lang" notin prefs
+
+prefs.save()
 ```
 
 Check the [docs](https://patitotective.github.io/niprefs) for more.
