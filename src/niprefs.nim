@@ -61,7 +61,7 @@ runnableExamples:
 ##
 ## ### Why does the niprefs file doesn't change if I change the toPrefs macro?
 ## Well, niprefs is meant to be used as a preferences system, what that means is that the file is created with the default values if it doesn't exist.  
-## If it does exist, it just reads it. If you want to reset the file with the default prefs manually, you may use [overwrite](prefsbase.html#overwrite%2CPrefsBase%2CPObjectType).  
+## If it does exist, it just reads it. If you want to reset the file with the default prefs manually, you may use [overwrite](Prefs.html#overwrite%2CPrefs%2CPObjectType).  
 
 
 ## ## Reading
@@ -108,214 +108,144 @@ runnableExamples:
 ## There are more useful procedures.
 ##
 ## Check them here:
-## - [writeMany](prefsbase.html#writeMany%2CPrefsBase%2CPObjectType)
+## - [writeMany](Prefs.html#writeMany%2CPrefs%2CPObjectType)
 ## - [clear](#clear%2CPrefs)
-## - [overwrite](prefsbase.html#overwrite%2CPrefsBase%2Cstring)
-## - [delete](prefsbase.html#delete%2CPrefsBase)
+## - [overwrite](Prefs.html#overwrite%2CPrefs%2Cstring)
+## - [delete](Prefs.html#delete%2CPrefs)
 ## - [parsePrefs](parser/parser.html#parsePrefs%2Cstring)
 ## - [readPrefs](parser/parser.html#readPrefs%2Cstring)
+import std/os
+import toml_serialization
 
-import std/tables
-import niprefs/prefsbase
-export prefsbase except keyPathSep
-export tables
+import niprefs/node
+export node
 
 type
-  Prefs* = object of PrefsBase ## Provides a table-like interface for the PrefsBase object
+  Prefs* = object
+    path*: string
+    default: TomlValueRef
+    content*: TomlValueRef
 
-proc initPrefs*(table: PObjectType = default PObjectType, path: string = "prefs.niprefs"): Prefs =
-  ## Creates a new Prefs object and checks if a file exists at `path` to create it if it doesn't.
-  result = Prefs(table: table, path: path)
-  result.checkFile()
+proc save*(prefs: Prefs) =
+  prefs.path.splitPath.head.createDir()
+  Toml.saveFile(prefs.path, prefs.content)
 
-proc initPrefs*(table: PrefsNode = newPObject(), path: string = "prefs.niprefs"): Prefs =
-  ## Creates a new Prefs object and checks if a file exists at `path` to create it if it doesn't.
-  initPrefs(table = table.getObject(), path = path)
+proc initPrefs*(path: string, default: TomlValueRef): Prefs =
+  ## Create a Prefs object and load the content from `path` if it exists otherwise create it with `default`.
+  assert default.kind == TomlKind.Table
 
-proc len*(prefs: Prefs): int =
-  ## Same as `prefs.content.len`.
-  runnableExamples:
-    var prefs = toPrefs({"lang": "en", "theme": "dark"}).initPrefs
+  result = Prefs(path: path, default: default.copy())
 
-    prefs.overwrite() # To avoid conflicts
+  if not path.fileExists:
+    result.content = default
+    result.save()
 
-    assert prefs.len == 2
+  result.content = Toml.loadFile(result.path, TomlValueRef)
 
-  result = prefs.content.len
+proc remove*(prefs: Prefs) =
+  ## Deletes the niprefs file if it exists.
+  if fileExists(prefs.path):
+    removeFile(prefs.path)
+
+proc default*(prefs: Prefs): TomlValueRef = 
+  prefs.default
 
 proc `$`*(prefs: Prefs): string =
   ## Instead of printing the prefs object, print it's content
   runnableExamples:
-    var prefs = toPrefs({"lang": "en", "theme": "dark"}).initPrefs
+    var prefs = initPrefs("prefs.toml", toToml({"lang": "en", "theme": "dark"}))
 
-    prefs.overwrite() # To avoid conflicts
+    prefs.overwrite() # Ignore this line
 
     assert $prefs == "{\"lang\": \"en\", \"theme\": \"dark\"}"
 
   $prefs.content
 
-proc `[]`*(prefs: Prefs, keys: varargs[string]): PrefsNode = 
-  ## Get the last key from `keys`, the other elements being it's path, from the preferences file by separating the keys with a comma.
+proc `[]`*(prefs: Prefs, key: string): TomlValueRef =
+  prefs.content[key]
 
+proc `{}`*(prefs: Prefs, keys: varargs[string]): TomlValueRef =
+  prefs.content{keys}
+
+proc `[]=`*[T: not TomlValueRef](prefs: var Prefs, key: string, val: T) =
+  prefs.content[key] = newTNode(val)
+
+proc `{}=`*[T: not TomlValueRef](prefs: var Prefs, keys: varargs[string], val: T) =
+  prefs.content{keys} = newTNode(val)
+
+proc len*(prefs: Prefs): int =
   runnableExamples:
-    var prefs = toPrefs({"lang": "en", "scheme": {
-        "font": "UbuntuMono"}}).initPrefs
+    var prefs = initPrefs("prefs.toml", toToml({"lang": "en", "theme": "dark"}))
 
-    prefs.overwrite() # To avoid conflicts
+    prefs.overwrite() # Ignore this line
 
-    assert prefs["scheme", "font"] == "UbuntuMono"
+    assert prefs.len == 2
 
-  prefs.getPath(keys)
+  prefs.content.len
 
-proc `[]`*(prefs: Prefs, key: string): PrefsNode =
-  ## Get a key from the preferences file.
-  ##
-  ## Supports *key path*.
-
+proc delete*(prefs: var Prefs, key: string) =
   runnableExamples:
-    var prefs = toPrefs({"lang": "en", "scheme": {
-        "font": "UbuntuMono"}}).initPrefs
+    var prefs = initPrefs("prefs.toml", toToml({"lang": "en", "theme": "dark"}))
 
-    prefs.overwrite() # To avoid conflicts
+    prefs.overwrite() # Ignore this line
 
-    assert prefs["lang"] == "en" # newPNode("en") is not required
-    assert prefs["scheme/font"] == "UbuntuMono"
+    prefs.delete("theme")
 
-  prefs.get(key)
+    assert "theme" notin prefs
 
-proc `[]=`*[T: not PrefsNode](prefs: Prefs, keys: varargs[string], val: T) = 
-  ## Write the last key from `keys`, the other elements being it's path, in the preferences file.
-  ##
-  ## `newPNode` is called on `val`, meaning that for [structured types](https://nim-lang.org/docs/manual.html#types-structured-types) you may want to use the [toPrefs](prefsnode.html#toPrefs.m%2Cuntyped) macro.
+  prefs.content.delete(key)
+
+proc hasKey*(prefs: Prefs, key: string): bool =
   runnableExamples:
-    var prefs = toPrefs({"lang": "en", "theme": "dark"}).initPrefs
+    var prefs = initPrefs("prefs.toml", toToml({"lang": "en", "theme": "dark"}))
 
-    prefs.overwrite() # To avoid conflicts
+    prefs.overwrite() # Ignore this line
 
-    prefs["lang"] = "es" # newPString("es") is not required, since `string` is not a structured type
+    assert prefs.hasKey("lang")
 
-  prefs.write(keys, newPNode(val))
+  prefs.content.hasKey(key)
 
-proc `[]=`*[T: not PrefsNode](prefs: Prefs, key: string, val: T) =
-  ## Write in the *prefs* file the given key-value pair.
-  ##
-  ## `newPNode` is called on `val`, meaning that only the [structured types](https://nim-lang.org/docs/manual.html#types-structured-types) require `PrefsNode` type.
-  ##
-  ## For structured types use [`[]=`(prefs: Prefs, key: string: val: PrefsNode)](#[]%3D%2CPrefs%2Cstring%2CPrefsNode).
-  ##
-  ## *(See the example below)*
-  ##
-  ## Supports *key path*.
-
+proc contains*(prefs: Prefs, key: string): bool = 
   runnableExamples:
-    var prefs = toPrefs({"lang": "en", "theme": "dark"}).initPrefs
+    var prefs = initPrefs("prefs.toml", toToml({"lang": "en", "theme": "dark"}))
 
-    prefs.overwrite() # To avoid conflicts
-
-    prefs["lang"] = "es" # newPString("es") is not required, since `string` is not a structured type
-
-  prefs.write(key, newPNode(val))
-
-proc `[]=`*(prefs: Prefs, key: string, val: PrefsNode) =
-  ## Write in the *prefs* file the given key-value pair.
-  ##
-  ## Use this procedure for [structured types](https://nim-lang.org/docs/manual.html#types-structured-types) with the [toPrefs](prefsnode.html#toPrefs.m%2Cuntyped) macro.
-  ##
-  ## *(See the example below)*
-  ##
-  ## Supports *key path*.
-
-  runnableExamples:
-    var prefs = toPrefs({"lang": "en"}).initPrefs
-
-    prefs["keybindings"] = toPrefs @[{"keys": "Ctrl+C",
-        "command": "copy"}]
-
-  prefs.write(key, val)
-
-proc `[]=`*(prefs: Prefs, keys: varargs[string], val: PrefsNode) =
-  ## Write the last key from `keys`, the other elements being it's path, in the preferences file.
-  ##
-  ## Use this procedure for [structured types](https://nim-lang.org/docs/manual.html#types-structured-types) with the [toPrefs](prefsnode.html#toPrefs.m%2Cuntyped) macro.
-  ##
-  ## *(See the example below)*
-
-  runnableExamples:
-    var prefs = toPrefs({"lang": "en"}).initPrefs
-
-    prefs["keybindings"] = toPrefs @[{"keys": "Ctrl+C",
-        "command": "copy"}]
-
-  prefs.write(keys, val)
-
-proc clear*(prefs: Prefs) =
-  ## Clears the content of the file.
-  runnableExamples:
-    var prefs = toPrefs({"lang": "en", "theme": "dark"}).initPrefs
-    prefs.clear()
-    assert prefs.content == default PObjectType # PObject stands for OrderedTable[string, PrefsNode]
-
-  prefs.overwrite(default PObjectType)
-
-proc contains*(prefs: Prefs, key: string): bool =
-  ## Alias of [hasKey proc](prefsbase.html#hasKey%2CPrefsBase%2Cstring) for use with the `in` operator.
-  runnableExamples:
-    var prefs = toPrefs({"lang": "en", "theme": "dark"}).initPrefs
-    prefs.overwrite() # To avoid conflicts
+    prefs.overwrite() # Ignore this line
 
     assert "lang" in prefs
 
   prefs.hasKey(key)
 
-proc del*(prefs: Prefs, key: string) =
-  ## Deletes `key` from the *prefs* file. Does nothing if the key does not exist.
-
-  prefs.delKey(key)
-
-proc pop*(prefs: Prefs, key: string, val: var PrefsNode): bool =
-  ## Deletes the `key` from the *prefs* file.
-  ## Returns `true`, if the `key` existed, and sets `val` to the
-  ## mapping of the key. Otherwise, returns `false`, and the `val` is
-  ## unchanged.
-
+proc overwrite*(prefs: var Prefs, key: string) =
+  ## Overwrites `key` in the niprefs file with it's default value from `prefs.default`.
   runnableExamples:
-    var
-      prefs = toPrefs({"lang": "en", "theme": "dark"}).initPrefs
-      s: PrefsNode
+    var prefs = initPrefs("prefs.toml", toToml({"lang": "en", "theme": "dark"}))
 
-    prefs.overwrite() # To avoid conflicts
+    prefs.overwrite() # Ignore this line
 
-    assert prefs.pop("lang", s) == true
-    assert "lang" notin prefs
-    assert s.getString() == "en"
+    prefs["lang"] = "en"
+    prefs["theme"] = "light"
 
-  if key in prefs:
-    val = prefs[key]
-    result = true
-    prefs.delKey(key)
-  else:
-    result = false
+    prefs.overwrite("lang")
 
-proc pop*(prefs: Prefs, keys: varargs[string], val: var PrefsNode): bool =
-  ## Deletes the last key from `keys`, the other elements being it's path, from the *prefs* file.
-  ## Returns `true`, if the key existed, and sets `val` to the
-  ## mapping of the key. Otherwise, returns `false`, and `val` is
-  ## unchanged.
+    assert prefs["lang"] == "es" # "es" is the default value
+    assert prefs["theme"] == "light" # "theme" was not overwritten
 
+  assert key in prefs.default
+  prefs.content[key] = prefs.default[key]
+
+proc overwrite*(prefs: var Prefs, table: TomlValueRef = prefs.default) =
+  ## Overwrites the whole niprefs file with `table`.
   runnableExamples:
-    var
-      prefs = toPrefs({"scheme": {"theme": "dark"}}).initPrefs
-      s: PrefsNode
+    var prefs = initPrefs("settings.niprefs", toToml({lang: "es", theme: "dark"}))
+    
+    prefs.overwrite() # Ignore this line
 
-    prefs.overwrite() # To avoid conflicts
+    prefs.content["lang"] = "en"
+    prefs.content["theme"] = "light"
 
-    assert prefs.pop("scheme", "theme", s) == true
-    assert "scheme/theme" notin prefs
-    assert s == "dark"
+    prefs.overwrite()
 
-  if prefs.hasPath(keys):
-    val = prefs[keys]
-    result = true
-    prefs.delPath(keys)
-  else:
-    result = false
+    assert prefs.get("lang") == "es" # "es" is the default value
+    assert prefs.get("theme") == "dark" # "dark" is the default value
+
+  prefs.content = table

@@ -1,26 +1,20 @@
 # To run these tests, simply execute `nimble test`.
 
-import std/[unittest, strutils, os]
+import std/[unittest]
 import niprefs
-import niprefs/parser/escaper
 
-const path = "Prefs/subdir/settings.niprefs"
+const path = "Prefs/subdir/settings.toml"
 
-let defaultPrefs = toPrefs {
-  lang: "es",
-  la_NG: "en", # Overwrites lang
-  raw: r"\x3858923589\s\\\\j'dfjksdjkglsdg""l",
+let defaultPrefs = toToml {
+  lang: "en", 
   nums: [0b100001110011110101110100010001001101000101110100001011010000000f32, 0b100001110011110101110100010001001101000101110100001011010000000d, 0b100001110011110101110100010001001101000101110100001011010000000],
   dark: true,
   keybindings: [],
   users: {:},
   test: {
     c: [-1, 2, [3, {d: 4}], 5.2, -45.9d],
-    b: ['d', 'e', 0x034, {3..7}], 
     d: ["a", "b"], 
   }, 
-  chars: {'a'..'g', 's'},
-  bytes: {0, 8..16},
   scheme: {
     background: "#000000",
     font: {
@@ -31,86 +25,38 @@ let defaultPrefs = toPrefs {
   }
 }
 
-var prefs = initPrefs(defaultPrefs, path)
+var prefs = initPrefs(path, defaultPrefs)
 prefs.overwrite()
 
-test "can parse escaped sequences":
-  assert "a=1\nb=2".parsePrefs() == "a=1\c\nb=2".parsePrefs()
-
-  assert '\x23' == r"\x23".parseEscapedChar()
-  assert "\p\r\c\n\l\f\t\v\\\"\'\a\b\e" == r"\p\r\c\n\l\f\t\v\\\""\'\a\b\e".parseEscaped()
-  assert "\x00\x0aa\u1235a\u{10ffff}a" == r"\x00\x0aa\u1235a\u{10ffff}a".parseEscaped()
-
-test "can read":
-  check "bAcKgRoUnD" in prefs["scheme"]
-  check "bAcKgRoUnD" in prefs["scheme"].getObject()
-  check prefs.content == prefs.table
-
 test "can write":
-  prefs["l_A_n_G"] = "es" # Keys are normalized as nim identifiers
-  prefs.table["la_ng"] = "es"
+  prefs["lang"] = "es"
+  defaultPrefs["lang"] = "es"
 
-  prefs["scheme/font/size"] = 20
-  prefs.table["scheme"]["font"]["size"] = 20
+  prefs{"scheme", "font", "size"} = 20
+  defaultPrefs{"scheme", "font", "size"} = 20
 
-  check prefs.content == prefs.table
-
-test "can write many":
-  prefs.writeMany(toPrefs({"dark": false, "scheme/background": "#CF3030"}))
-  
-  prefs.table["dark"] = false.toPrefs
-  prefs.table["scheme"]["background"] = "#CF3030".toPrefs
-  
-  check prefs.content == prefs.table
-
-test "can recreate":
-  if fileExists(prefs.path): prefs.path.removeFile()
-  assert prefs["lang"] == prefs.table["lang"]
+  check prefs.content == defaultPrefs
 
 test "can remove":
-  prefs.del("lang")
-  prefs.table.del("lang")
+  prefs.delete("lang")
+  defaultPrefs.delete("lang")
 
-  prefs.del("scheme/font/size")
-  prefs.table["schemE"]["font"].del("size")
+  prefs["scheme"]["font"].delete("size")
+  defaultPrefs["scheme"]["font"].delete("size")
 
-  check prefs.content == prefs.table
+  check prefs.content == defaultPrefs
 
 test "contains and len":
-  check ("keybindings" in prefs) == ("keybindings" in prefs.table)
-  check prefs.len == prefs.table.len
-
-test "can parse":
-  let text = """
-  lang="en"
-  dark=true
-  float32=13f
-  float64=69d
-  scheme=>
-    background="#ffffff"
-    font="#000000"
-  """.dedent()
-
-  let content = toPrefs({
-    "lang": "en", 
-    "dark": true, 
-    "float32": 13f,
-    "float64": 69d,
-    "scheme": {
-      "background": "#ffffff", 
-      "font": "#000000"
-    }
-  }).getObject()
-
-  check text.parsePrefs() == content
+  check ("keybindings" in prefs) == ("keybindings" in defaultPrefs)
+  check prefs.len == defaultPrefs.len
 
 test "can do stuff with nodes":
   var node = prefs["test"]
 
   node["c"][1] = 3
-  node["c"][2] = newPInt(4)
+  node["c"][2] = newTInt(4)
   node["c"].add 5
-  node["c"].add -6.newPInt()
+  node["c"].add -6.newTInt()
 
   for i in node["c"]:
     discard
@@ -118,22 +64,20 @@ test "can do stuff with nodes":
   for k, v in node:
     discard
 
-  check node["d"].added("c") == toPrefs(["a", "b", "c"])
-  check node["d"].deleted(1) == toPrefs(["a"])
-  check node["c"] == toPrefs([-1, 3, 4, 5.2, -45.9, 5, -6])
+  check node["c"] == toToml([-1, 3, 4, 5.2, -45.9, 5, -6])
   check "c" in node
   check 5.2 in node["c"]
 
-test "can overwrite":
-  prefs.table["lang"] = "en".toPrefs
-  prefs.overwrite("lang")
+# test "can overwrite":
+#   prefs.table["lang"] = "en".toToml
+#   prefs.overwrite("lang")
 
-  prefs.table["scheme"]["font"]["family"] = "UbuntuMono".toPrefs
-  prefs.overwrite("scheme/font/family")
+#   prefs.table["scheme"]["font"]["family"] = "UbuntuMono".toToml
+#   prefs.overwrite("scheme/font/family")
 
-  check prefs.content == prefs.table
+#   check prefs.content == prefs.table
 
-  prefs.overwrite(toPrefs({"theme": "dark"}).getObject())
-  prefs.table = toPrefs({"theme": "dark"}).getObject()
+#   prefs.overwrite(toToml({"theme": "dark"}).getObject())
+#   prefs.table = toToml({"theme": "dark"}).getObject()
 
-  check prefs.content == prefs.table
+#   check prefs.content == prefs.table
