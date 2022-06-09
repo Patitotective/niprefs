@@ -70,593 +70,261 @@ window.addEventListener('DOMContentLoaded', main);
 <div class="document" id="documentId">
   <div class="container">
     <h1 class="title">Index</h1>
-    Modules: <a href="niprefs.html">niprefs</a>, <a href="niprefs/parser/escaper.html">niprefs/parser/escaper</a>, <a href="niprefs/parser/lexer.html">niprefs/parser/lexer</a>, <a href="niprefs/parser/parser.html">niprefs/parser/parser</a>, <a href="niprefs/prefsbase.html">niprefs/prefsbase</a>, <a href="niprefs/prefsnode.html">niprefs/prefsnode</a>, <a href="niprefs/utils.html">niprefs/utils</a>.<br/><p /><h2>API symbols</h2>
+    Modules: <a href="niprefs.html">niprefs</a>, <a href="niprefs/node.html">niprefs/node</a>.<br/><p /><h2>API symbols</h2>
 <dl><dt><a name="%60%24%60" href="#%60%24%60"><span>`$`:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="niprefs: `$`(prefs: Prefs): string" href="niprefs.html#%24%2CPrefs">niprefs: `$`(prefs: Prefs): string</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="lexer: `$`(lexer: PLexer): string" href="niprefs/parser/lexer.html#%24%2CPLexer">lexer: `$`(lexer: PLexer): string</a></li>
+          data-doc-search-tag="node: `$`(date: TomlDate): string" href="niprefs/node.html#%24%2CTomlDate">node: `$`(date: TomlDate): string</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsnode: `$`(node: PrefsNode): string" href="niprefs/prefsnode.html#%24%2CPrefsNode">prefsnode: `$`(node: PrefsNode): string</a></li>
+          data-doc-search-tag="node: `$`(datetime: TomlDateTime): string" href="niprefs/node.html#%24%2CTomlDateTime">node: `$`(datetime: TomlDateTime): string</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="node: `$`(time: TomlTime): string" href="niprefs/node.html#%24%2CTomlTime">node: `$`(time: TomlTime): string</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="node: `$`(zone: TomlTimeZone): string" href="niprefs/node.html#%24%2CTomlTimeZone">node: `$`(zone: TomlTimeZone): string</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="node: `$`(node: TomlValue): string" href="niprefs/node.html#%24%2CTomlValue">node: `$`(node: TomlValue): string</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="node: `$`(node: TomlValueRef): string" href="niprefs/node.html#%24%2CTomlValueRef">node: `$`(node: TomlValueRef): string</a></li>
           </ul></dd>
 <dt><a name="%60%3D%3D%60" href="#%60%3D%3D%60"><span>`==`:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsnode: `==`(node1: PrefsNode; node2: PrefsNode): bool" href="niprefs/prefsnode.html#%3D%3D%2CPrefsNode%2CPrefsNode">prefsnode: `==`(node1: PrefsNode; node2: PrefsNode): bool</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: `==`[T: not PrefsNode](node1: PrefsNode; node2: T): bool" href="niprefs/prefsnode.html#%3D%3D%2CPrefsNode%2CT">prefsnode: `==`[T: not PrefsNode](node1: PrefsNode; node2: T): bool</a></li>
+          data-doc-search-tag="node: `==`[T: not TomlValueRef](node: TomlValueRef; val: T): bool" href="niprefs/node.html#%3D%3D%2CTomlValueRef%2CT">node: `==`[T: not TomlValueRef](node: TomlValueRef; val: T): bool</a></li>
           </ul></dd>
 <dt><a name="%60%5B%5D%3D%60" href="#%60%5B%5D%3D%60"><span>`[]=`:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="niprefs: `[]=`(prefs: Prefs; key: string; val: PrefsNode)" href="niprefs.html#%5B%5D%3D%2CPrefs%2Cstring%2CPrefsNode">niprefs: `[]=`(prefs: Prefs; key: string; val: PrefsNode)</a></li>
+          data-doc-search-tag="niprefs: `[]=`[T: not TomlValueRef](prefs: Prefs; key: string; val: T)" href="niprefs.html#%5B%5D%3D%2CPrefs%2Cstring%2CT">niprefs: `[]=`[T: not TomlValueRef](prefs: Prefs; key: string; val: T)</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="niprefs: `[]=`[T: not PrefsNode](prefs: Prefs; key: string; val: T)" href="niprefs.html#%5B%5D%3D%2CPrefs%2Cstring%2CT">niprefs: `[]=`[T: not PrefsNode](prefs: Prefs; key: string; val: T)</a></li>
+          data-doc-search-tag="niprefs: `[]=`(prefs: Prefs; key: string; val: TomlValueRef)" href="niprefs.html#%5B%5D%3D%2CPrefs%2Cstring%2CTomlValueRef">niprefs: `[]=`(prefs: Prefs; key: string; val: TomlValueRef)</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="niprefs: `[]=`(prefs: Prefs; keys: varargs[string]; val: PrefsNode)" href="niprefs.html#%5B%5D%3D%2CPrefs%2Cvarargs%5Bstring%5D%2CPrefsNode">niprefs: `[]=`(prefs: Prefs; keys: varargs[string]; val: PrefsNode)</a></li>
+          data-doc-search-tag="node: `[]=`[T: not TomlValueRef](obj: TomlValueRef; index: int; val: T)" href="niprefs/node.html#%5B%5D%3D%2CTomlValueRef%2Cint%2CT">node: `[]=`[T: not TomlValueRef](obj: TomlValueRef; index: int; val: T)</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="niprefs: `[]=`[T: not PrefsNode](prefs: Prefs; keys: varargs[string]; val: T)" href="niprefs.html#%5B%5D%3D%2CPrefs%2Cvarargs%5Bstring%5D%2CT">niprefs: `[]=`[T: not PrefsNode](prefs: Prefs; keys: varargs[string]; val: T)</a></li>
+          data-doc-search-tag="node: `[]=`(obj: TomlValueRef; index: int; val: TomlValueRef)" href="niprefs/node.html#%5B%5D%3D%2CTomlValueRef%2Cint%2CTomlValueRef">node: `[]=`(obj: TomlValueRef; index: int; val: TomlValueRef)</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsnode: `[]=`(table: var PObjectType; key: string; val: PrefsNode)" href="niprefs/prefsnode.html#%5B%5D%3D%2CPObjectType%2Cstring%2CPrefsNode">prefsnode: `[]=`(table: var PObjectType; key: string; val: PrefsNode)</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: `[]=`[T: not PrefsNode](table: var PObjectType; key: string; val: T)" href="niprefs/prefsnode.html#%5B%5D%3D%2CPObjectType%2Cstring%2CT">prefsnode: `[]=`[T: not PrefsNode](table: var PObjectType; key: string; val: T)</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: `[]=`(node: var PrefsNode; index: int; val: PrefsNode)" href="niprefs/prefsnode.html#%5B%5D%3D%2CPrefsNode%2Cint%2CPrefsNode">prefsnode: `[]=`(node: var PrefsNode; index: int; val: PrefsNode)</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: `[]=`[T: not PrefsNode](node: var PrefsNode; index: int; val: T)" href="niprefs/prefsnode.html#%5B%5D%3D%2CPrefsNode%2Cint%2CT">prefsnode: `[]=`[T: not PrefsNode](node: var PrefsNode; index: int; val: T)</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: `[]=`(node: var PrefsNode; key: string; val: PrefsNode)" href="niprefs/prefsnode.html#%5B%5D%3D%2CPrefsNode%2Cstring%2CPrefsNode">prefsnode: `[]=`(node: var PrefsNode; key: string; val: PrefsNode)</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: `[]=`[T: not PrefsNode](node: var PrefsNode; key: string; val: T)" href="niprefs/prefsnode.html#%5B%5D%3D%2CPrefsNode%2Cstring%2CT">prefsnode: `[]=`[T: not PrefsNode](node: var PrefsNode; key: string; val: T)</a></li>
+          data-doc-search-tag="node: `[]=`[T: not TomlValueRef](obj: TomlValueRef; key: string; val: T)" href="niprefs/node.html#%5B%5D%3D%2CTomlValueRef%2Cstring%2CT">node: `[]=`[T: not TomlValueRef](obj: TomlValueRef; key: string; val: T)</a></li>
           </ul></dd>
 <dt><a name="%60%5B%5D%60" href="#%60%5B%5D%60"><span>`[]`:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="niprefs: `[]`(prefs: Prefs; key: string): PrefsNode" href="niprefs.html#%5B%5D%2CPrefs%2Cstring">niprefs: `[]`(prefs: Prefs; key: string): PrefsNode</a></li>
+          data-doc-search-tag="niprefs: `[]`(prefs: Prefs; key: string): TomlValueRef" href="niprefs.html#%5B%5D%2CPrefs%2Cstring">niprefs: `[]`(prefs: Prefs; key: string): TomlValueRef</a></li>
+          </ul></dd>
+<dt><a name="%60%7B%7D%3D%60" href="#%60%7B%7D%3D%60"><span>`{}=`:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="niprefs: `{}=`[T: not TomlValueRef](prefs: Prefs; keys: varargs[string]; val: T)" href="niprefs.html#%7B%7D%3D%2CPrefs%2Cvarargs%5Bstring%5D%2CT">niprefs: `{}=`[T: not TomlValueRef](prefs: Prefs; keys: varargs[string]; val: T)</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="niprefs: `[]`(prefs: Prefs; keys: varargs[string]): PrefsNode" href="niprefs.html#%5B%5D%2CPrefs%2Cvarargs%5Bstring%5D">niprefs: `[]`(prefs: Prefs; keys: varargs[string]): PrefsNode</a></li>
+          data-doc-search-tag="niprefs: `{}=`(prefs: Prefs; keys: varargs[string]; val: TomlValueRef)" href="niprefs.html#%7B%7D%3D%2CPrefs%2Cvarargs%5Bstring%5D%2CTomlValueRef">niprefs: `{}=`(prefs: Prefs; keys: varargs[string]; val: TomlValueRef)</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsnode: `[]`(table: PObjectType; key: string): PrefsNode" href="niprefs/prefsnode.html#%5B%5D%2CPObjectType%2Cstring">prefsnode: `[]`(table: PObjectType; key: string): PrefsNode</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: `[]`(table: var PObjectType; key: string): var PrefsNode" href="niprefs/prefsnode.html#%5B%5D%2CPObjectType%2Cstring_2">prefsnode: `[]`(table: var PObjectType; key: string): var PrefsNode</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: `[]`(node: PrefsNode; index: BackwardsIndex): PrefsNode" href="niprefs/prefsnode.html#%5B%5D%2CPrefsNode%2CBackwardsIndex">prefsnode: `[]`(node: PrefsNode; index: BackwardsIndex): PrefsNode</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: `[]`(node: PrefsNode; index: int): PrefsNode" href="niprefs/prefsnode.html#%5B%5D%2CPrefsNode%2Cint">prefsnode: `[]`(node: PrefsNode; index: int): PrefsNode</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: `[]`(node: var PrefsNode; key: string): var PrefsNode" href="niprefs/prefsnode.html#%5B%5D%2CPrefsNode%2Cstring">prefsnode: `[]`(node: var PrefsNode; key: string): var PrefsNode</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: `[]`(node: PrefsNode; key: string): PrefsNode" href="niprefs/prefsnode.html#%5B%5D%2CPrefsNode%2Cstring_2">prefsnode: `[]`(node: PrefsNode; key: string): PrefsNode</a></li>
+          data-doc-search-tag="node: `{}=`[T: not TomlValueRef](node: TomlValueRef; keys: varargs[string]; value: T)" href="niprefs/node.html#%7B%7D%3D%2CTomlValueRef%2Cvarargs%5Bstring%5D%2CT">node: `{}=`[T: not TomlValueRef](node: TomlValueRef; keys: varargs[string]; value: T)</a></li>
+          </ul></dd>
+<dt><a name="%60%7B%7D%60" href="#%60%7B%7D%60"><span>`{}`:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="niprefs: `{}`(prefs: Prefs; keys: varargs[string]): TomlValueRef" href="niprefs.html#%7B%7D%2CPrefs%2Cvarargs%5Bstring%5D">niprefs: `{}`(prefs: Prefs; keys: varargs[string]): TomlValueRef</a></li>
           </ul></dd>
 <dt><a name="add" href="#add"><span>add:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsnode: add(node: var PrefsNode; val: PrefsNode)" href="niprefs/prefsnode.html#add%2CPrefsNode%2CPrefsNode">prefsnode: add(node: var PrefsNode; val: PrefsNode)</a></li>
+          data-doc-search-tag="node: add[T: not TomlValueRef](node: TomlValueRef; val: T)" href="niprefs/node.html#add%2CTomlValueRef%2CT">node: add[T: not TomlValueRef](node: TomlValueRef; val: T)</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsnode: add[T: not PrefsNode](node: var PrefsNode; val: T)" href="niprefs/prefsnode.html#add%2CPrefsNode%2CT">prefsnode: add[T: not PrefsNode](node: var PrefsNode; val: T)</a></li>
-          </ul></dd>
-<dt><a name="added" href="#added"><span>added:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: added(node: PrefsNode; val: PrefsNode): PrefsNode" href="niprefs/prefsnode.html#added%2CPrefsNode%2CPrefsNode">prefsnode: added(node: PrefsNode; val: PrefsNode): PrefsNode</a></li>
+          data-doc-search-tag="node: add(node: TomlValueRef; table: TomlTableRef)" href="niprefs/node.html#add%2CTomlValueRef%2CTomlTableRef">node: add(node: TomlValueRef; table: TomlTableRef)</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsnode: added[T: not PrefsNode](node: PrefsNode; val: T): PrefsNode" href="niprefs/prefsnode.html#added%2CPrefsNode%2CT">prefsnode: added[T: not PrefsNode](node: PrefsNode; val: T): PrefsNode</a></li>
-          </ul></dd>
-<dt><a name="BIN" href="#BIN"><span>BIN:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.BIN" href="niprefs/parser/lexer.html#BIN">PTokenKind.BIN</a></li>
-          </ul></dd>
-<dt><a name="BOOL" href="#BOOL"><span>BOOL:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.BOOL" href="niprefs/parser/lexer.html#BOOL">PTokenKind.BOOL</a></li>
-          </ul></dd>
-<dt><a name="card" href="#card"><span>card:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: card(node: PrefsNode): int" href="niprefs/prefsnode.html#card%2CPrefsNode">prefsnode: card(node: PrefsNode): int</a></li>
-          </ul></dd>
-<dt><a name="changeNested" href="#changeNested"><span>changeNested:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="utils: changeNested(table: PObjectType; keys: varargs[string]; val: PrefsNode): PObjectType" href="niprefs/utils.html#changeNested%2CPObjectType%2Cvarargs%5Bstring%5D%2CPrefsNode">utils: changeNested(table: PObjectType; keys: varargs[string]; val: PrefsNode): PObjectType</a></li>
-          </ul></dd>
-<dt><a name="CHAR" href="#CHAR"><span>CHAR:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.CHAR" href="niprefs/parser/lexer.html#CHAR">PTokenKind.CHAR</a></li>
-          </ul></dd>
-<dt><a name="checkFile" href="#checkFile"><span>checkFile:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsbase: checkFile(prefs: PrefsBase)" href="niprefs/prefsbase.html#checkFile%2CPrefsBase">prefsbase: checkFile(prefs: PrefsBase)</a></li>
-          </ul></dd>
-<dt><a name="clear" href="#clear"><span>clear:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="niprefs: clear(prefs: Prefs)" href="niprefs.html#clear%2CPrefs">niprefs: clear(prefs: Prefs)</a></li>
-          </ul></dd>
-<dt><a name="COLON" href="#COLON"><span>COLON:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.COLON" href="niprefs/parser/lexer.html#COLON">PTokenKind.COLON</a></li>
-          </ul></dd>
-<dt><a name="COMMA" href="#COMMA"><span>COMMA:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.COMMA" href="niprefs/parser/lexer.html#COMMA">PTokenKind.COMMA</a></li>
+          data-doc-search-tag="node: add(node: TomlValueRef; val: TomlValueRef)" href="niprefs/node.html#add%2CTomlValueRef%2CTomlValueRef">node: add(node: TomlValueRef; val: TomlValueRef)</a></li>
           </ul></dd>
 <dt><a name="contains" href="#contains"><span>contains:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="niprefs: contains(prefs: Prefs; key: string): bool" href="niprefs.html#contains%2CPrefs%2Cstring">niprefs: contains(prefs: Prefs; key: string): bool</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsnode: contains(table: PObjectType; key: string): bool" href="niprefs/prefsnode.html#contains%2CPObjectType%2Cstring">prefsnode: contains(table: PObjectType; key: string): bool</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: contains(node: PrefsNode; ele: byte): bool" href="niprefs/prefsnode.html#contains%2CPrefsNode%2Cbyte">prefsnode: contains(node: PrefsNode; ele: byte): bool</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: contains(node: PrefsNode; ele: char): bool" href="niprefs/prefsnode.html#contains%2CPrefsNode%2Cchar">prefsnode: contains(node: PrefsNode; ele: char): bool</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: contains(node: PrefsNode; val: PrefsNode): bool" href="niprefs/prefsnode.html#contains%2CPrefsNode%2CPrefsNode">prefsnode: contains(node: PrefsNode; val: PrefsNode): bool</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: contains(node: PrefsNode; val: string): bool" href="niprefs/prefsnode.html#contains%2CPrefsNode%2Cstring">prefsnode: contains(node: PrefsNode; val: string): bool</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: contains[T: not PrefsNode](node: PrefsNode; val: T): bool" href="niprefs/prefsnode.html#contains%2CPrefsNode%2CT">prefsnode: contains[T: not PrefsNode](node: PrefsNode; val: T): bool</a></li>
+          data-doc-search-tag="node: contains[T: not TomlValueRef](node: TomlValueRef; val: T): bool" href="niprefs/node.html#contains%2CTomlValueRef%2CT">node: contains[T: not TomlValueRef](node: TomlValueRef; val: T): bool</a></li>
           </ul></dd>
-<dt><a name="content" href="#content"><span>content:</span></a></dt><dd><ul class="simple">
+<dt><a name="default" href="#default"><span>default:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsbase: content(prefs: PrefsBase): PObjectType" href="niprefs/prefsbase.html#content%2CPrefsBase">prefsbase: content(prefs: PrefsBase): PObjectType</a></li>
-          </ul></dd>
-<dt><a name="create" href="#create"><span>create:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsbase: create(prefs: PrefsBase; table = prefs.table)" href="niprefs/prefsbase.html#create%2CPrefsBase%2COrderedTable%5Bsystem.string%2C%20prefsnode.PrefsNode%5D">prefsbase: create(prefs: PrefsBase; table = prefs.table)</a></li>
-          </ul></dd>
-<dt><a name="CURLYCLOSE" href="#CURLYCLOSE"><span>CURLYCLOSE:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.CURLYCLOSE" href="niprefs/parser/lexer.html#CURLYCLOSE">PTokenKind.CURLYCLOSE</a></li>
-          </ul></dd>
-<dt><a name="CURLYOPEN" href="#CURLYOPEN"><span>CURLYOPEN:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.CURLYOPEN" href="niprefs/parser/lexer.html#CURLYOPEN">PTokenKind.CURLYOPEN</a></li>
-          </ul></dd>
-<dt><a name="DEC" href="#DEC"><span>DEC:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.DEC" href="niprefs/parser/lexer.html#DEC">PTokenKind.DEC</a></li>
-          </ul></dd>
-<dt><a name="del" href="#del"><span>del:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="niprefs: del(prefs: Prefs; key: string)" href="niprefs.html#del%2CPrefs%2Cstring">niprefs: del(prefs: Prefs; key: string)</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: del(node: var PrefsNode; key: string)" href="niprefs/prefsnode.html#del%2CPrefsNode%2Cstring">prefsnode: del(node: var PrefsNode; key: string)</a></li>
+          data-doc-search-tag="niprefs: default(prefs: Prefs): TomlValueRef" href="niprefs.html#default%2CPrefs">niprefs: default(prefs: Prefs): TomlValueRef</a></li>
           </ul></dd>
 <dt><a name="delete" href="#delete"><span>delete:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsbase: delete(prefs: PrefsBase)" href="niprefs/prefsbase.html#delete%2CPrefsBase">prefsbase: delete(prefs: PrefsBase)</a></li>
+          data-doc-search-tag="niprefs: delete(prefs: Prefs; key: string)" href="niprefs.html#delete%2CPrefs%2Cstring">niprefs: delete(prefs: Prefs; key: string)</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsnode: delete(node: var PrefsNode; i: Natural)" href="niprefs/prefsnode.html#delete%2CPrefsNode%2CNatural">prefsnode: delete(node: var PrefsNode; i: Natural)</a></li>
+          data-doc-search-tag="node: delete(node: TomlValueRef; index: int)" href="niprefs/node.html#delete%2CTomlValueRef%2Cint">node: delete(node: TomlValueRef; index: int)</a></li>
           </ul></dd>
-<dt><a name="deleted" href="#deleted"><span>deleted:</span></a></dt><dd><ul class="simple">
+<dt><a name="getArray" href="#getArray"><span>getArray:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsnode: deleted(node: PrefsNode; i: Natural): PrefsNode" href="niprefs/prefsnode.html#deleted%2CPrefsNode%2CNatural">prefsnode: deleted(node: PrefsNode; i: Natural): PrefsNode</a></li>
-          </ul></dd>
-<dt><a name="delKey" href="#delKey"><span>delKey:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsbase: delKey(prefs: PrefsBase; key: string)" href="niprefs/prefsbase.html#delKey%2CPrefsBase%2Cstring">prefsbase: delKey(prefs: PrefsBase; key: string)</a></li>
-          </ul></dd>
-<dt><a name="delPath" href="#delPath"><span>delPath:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsbase: delPath(prefs: PrefsBase; keys: varargs[string])" href="niprefs/prefsbase.html#delPath%2CPrefsBase%2Cvarargs%5Bstring%5D">prefsbase: delPath(prefs: PrefsBase; keys: varargs[string])</a></li>
-          </ul></dd>
-<dt><a name="DOT" href="#DOT"><span>DOT:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.DOT" href="niprefs/parser/lexer.html#DOT">PTokenKind.DOT</a></li>
-          </ul></dd>
-<dt><a name="EOF" href="#EOF"><span>EOF:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.EOF" href="niprefs/parser/lexer.html#EOF">PTokenKind.EOF</a></li>
-          </ul></dd>
-<dt><a name="EQUAL" href="#EQUAL"><span>EQUAL:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.EQUAL" href="niprefs/parser/lexer.html#EQUAL">PTokenKind.EQUAL</a></li>
-          </ul></dd>
-<dt><a name="excl" href="#excl"><span>excl:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: excl(node: var PrefsNode; ele: char)" href="niprefs/prefsnode.html#excl%2CPrefsNode%2Cchar">prefsnode: excl(node: var PrefsNode; ele: char)</a></li>
-          </ul></dd>
-<dt><a name="FLOAT" href="#FLOAT"><span>FLOAT:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.FLOAT" href="niprefs/parser/lexer.html#FLOAT">PTokenKind.FLOAT</a></li>
-          </ul></dd>
-<dt><a name="FLOAT32" href="#FLOAT32"><span>FLOAT32:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.FLOAT32" href="niprefs/parser/lexer.html#FLOAT32">PTokenKind.FLOAT32</a></li>
-          </ul></dd>
-<dt><a name="FLOAT64" href="#FLOAT64"><span>FLOAT64:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.FLOAT64" href="niprefs/parser/lexer.html#FLOAT64">PTokenKind.FLOAT64</a></li>
-          </ul></dd>
-<dt><a name="get" href="#get"><span>get:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsbase: get(prefs: PrefsBase; key: string): PrefsNode" href="niprefs/prefsbase.html#get%2CPrefsBase%2Cstring">prefsbase: get(prefs: PrefsBase; key: string): PrefsNode</a></li>
+          data-doc-search-tag="node: getArray(node: TomlValueRef): TomlArray" href="niprefs/node.html#getArray%2CTomlValueRef">node: getArray(node: TomlValueRef): TomlArray</a></li>
           </ul></dd>
 <dt><a name="getBool" href="#getBool"><span>getBool:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsnode: getBool(node: PrefsNode): bool" href="niprefs/prefsnode.html#getBool%2CPrefsNode">prefsnode: getBool(node: PrefsNode): bool</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: getBool(node: var PrefsNode): var bool" href="niprefs/prefsnode.html#getBool%2CPrefsNode_2">prefsnode: getBool(node: var PrefsNode): var bool</a></li>
+          data-doc-search-tag="node: getBool(node: TomlValueRef): bool" href="niprefs/node.html#getBool%2CTomlValueRef">node: getBool(node: TomlValueRef): bool</a></li>
           </ul></dd>
-<dt><a name="getByteSet" href="#getByteSet"><span>getByteSet:</span></a></dt><dd><ul class="simple">
+<dt><a name="getDateTime" href="#getDateTime"><span>getDateTime:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsnode: getByteSet(node: PrefsNode): set[byte]" href="niprefs/prefsnode.html#getByteSet%2CPrefsNode">prefsnode: getByteSet(node: PrefsNode): set[byte]</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: getByteSet(node: var PrefsNode): var set[byte]" href="niprefs/prefsnode.html#getByteSet%2CPrefsNode_2">prefsnode: getByteSet(node: var PrefsNode): var set[byte]</a></li>
-          </ul></dd>
-<dt><a name="getChar" href="#getChar"><span>getChar:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: getChar(node: PrefsNode): char" href="niprefs/prefsnode.html#getChar%2CPrefsNode">prefsnode: getChar(node: PrefsNode): char</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: getChar(node: var PrefsNode): var char" href="niprefs/prefsnode.html#getChar%2CPrefsNode_2">prefsnode: getChar(node: var PrefsNode): var char</a></li>
-          </ul></dd>
-<dt><a name="getCharSet" href="#getCharSet"><span>getCharSet:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: getCharSet(node: PrefsNode): set[char]" href="niprefs/prefsnode.html#getCharSet%2CPrefsNode">prefsnode: getCharSet(node: PrefsNode): set[char]</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: getCharSet(node: var PrefsNode): var set[char]" href="niprefs/prefsnode.html#getCharSet%2CPrefsNode_2">prefsnode: getCharSet(node: var PrefsNode): var set[char]</a></li>
+          data-doc-search-tag="node: getDateTime(node: TomlValueRef): TomlDateTime" href="niprefs/node.html#getDateTime%2CTomlValueRef">node: getDateTime(node: TomlValueRef): TomlDateTime</a></li>
           </ul></dd>
 <dt><a name="getFloat" href="#getFloat"><span>getFloat:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsnode: getFloat(node: PrefsNode): float" href="niprefs/prefsnode.html#getFloat%2CPrefsNode">prefsnode: getFloat(node: PrefsNode): float</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: getFloat(node: var PrefsNode): var float" href="niprefs/prefsnode.html#getFloat%2CPrefsNode_2">prefsnode: getFloat(node: var PrefsNode): var float</a></li>
+          data-doc-search-tag="node: getFloat(node: TomlValueRef): float64" href="niprefs/node.html#getFloat%2CTomlValueRef">node: getFloat(node: TomlValueRef): float64</a></li>
           </ul></dd>
 <dt><a name="getInt" href="#getInt"><span>getInt:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsnode: getInt(node: PrefsNode): int64" href="niprefs/prefsnode.html#getInt%2CPrefsNode">prefsnode: getInt(node: PrefsNode): int64</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: getInt(node: var PrefsNode): var int64" href="niprefs/prefsnode.html#getInt%2CPrefsNode_2">prefsnode: getInt(node: var PrefsNode): var int64</a></li>
-          </ul></dd>
-<dt><a name="getNested" href="#getNested"><span>getNested:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="utils: getNested(table: PObjectType; keys: varargs[string]): PrefsNode" href="niprefs/utils.html#getNested%2CPObjectType%2Cvarargs%5Bstring%5D">utils: getNested(table: PObjectType; keys: varargs[string]): PrefsNode</a></li>
-          </ul></dd>
-<dt><a name="getObject" href="#getObject"><span>getObject:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: getObject(node: PrefsNode): PObjectType" href="niprefs/prefsnode.html#getObject%2CPrefsNode">prefsnode: getObject(node: PrefsNode): PObjectType</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: getObject(node: var PrefsNode): var PObjectType" href="niprefs/prefsnode.html#getObject%2CPrefsNode_2">prefsnode: getObject(node: var PrefsNode): var PObjectType</a></li>
-          </ul></dd>
-<dt><a name="getPath" href="#getPath"><span>getPath:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsbase: getPath(prefs: PrefsBase; keys: varargs[string]): PrefsNode" href="niprefs/prefsbase.html#getPath%2CPrefsBase%2Cvarargs%5Bstring%5D">prefsbase: getPath(prefs: PrefsBase; keys: varargs[string]): PrefsNode</a></li>
-          </ul></dd>
-<dt><a name="getSeq" href="#getSeq"><span>getSeq:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: getSeq(node: PrefsNode): PSeqType" href="niprefs/prefsnode.html#getSeq%2CPrefsNode">prefsnode: getSeq(node: PrefsNode): PSeqType</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: getSeq(node: var PrefsNode): var PSeqType" href="niprefs/prefsnode.html#getSeq%2CPrefsNode_2">prefsnode: getSeq(node: var PrefsNode): var PSeqType</a></li>
+          data-doc-search-tag="node: getInt(node: TomlValueRef): int64" href="niprefs/node.html#getInt%2CTomlValueRef">node: getInt(node: TomlValueRef): int64</a></li>
           </ul></dd>
 <dt><a name="getString" href="#getString"><span>getString:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsnode: getString(node: PrefsNode): string" href="niprefs/prefsnode.html#getString%2CPrefsNode">prefsnode: getString(node: PrefsNode): string</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: getString(node: var PrefsNode): var string" href="niprefs/prefsnode.html#getString%2CPrefsNode_2">prefsnode: getString(node: var PrefsNode): var string</a></li>
+          data-doc-search-tag="node: getString(node: TomlValueRef): string" href="niprefs/node.html#getString%2CTomlValueRef">node: getString(node: TomlValueRef): string</a></li>
           </ul></dd>
-<dt><a name="GREATER" href="#GREATER"><span>GREATER:</span></a></dt><dd><ul class="simple">
+<dt><a name="getTable" href="#getTable"><span>getTable:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="PTokenKind.GREATER" href="niprefs/parser/lexer.html#GREATER">PTokenKind.GREATER</a></li>
+          data-doc-search-tag="node: getTable(node: TomlValueRef): TomlTableRef" href="niprefs/node.html#getTable%2CTomlValueRef">node: getTable(node: TomlValueRef): TomlTableRef</a></li>
+          </ul></dd>
+<dt><a name="getTables" href="#getTables"><span>getTables:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="node: getTables(node: TomlValueRef): TomlTables" href="niprefs/node.html#getTables%2CTomlValueRef">node: getTables(node: TomlValueRef): TomlTables</a></li>
           </ul></dd>
 <dt><a name="hasKey" href="#hasKey"><span>hasKey:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsbase: hasKey(prefs: PrefsBase; key: string): bool" href="niprefs/prefsbase.html#hasKey%2CPrefsBase%2Cstring">prefsbase: hasKey(prefs: PrefsBase; key: string): bool</a></li>
-          </ul></dd>
-<dt><a name="hasPath" href="#hasPath"><span>hasPath:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsbase: hasPath(prefs: PrefsBase; keys: varargs[string]): bool" href="niprefs/prefsbase.html#hasPath%2CPrefsBase%2Cvarargs%5Bstring%5D">prefsbase: hasPath(prefs: PrefsBase; keys: varargs[string]): bool</a></li>
-          </ul></dd>
-<dt><a name="HEX" href="#HEX"><span>HEX:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.HEX" href="niprefs/parser/lexer.html#HEX">PTokenKind.HEX</a></li>
-          </ul></dd>
-<dt><a name="IDEN" href="#IDEN"><span>IDEN:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.IDEN" href="niprefs/parser/lexer.html#IDEN">PTokenKind.IDEN</a></li>
-          </ul></dd>
-<dt><a name="incl" href="#incl"><span>incl:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: incl(node: var PrefsNode; ele: char)" href="niprefs/prefsnode.html#incl%2CPrefsNode%2Cchar">prefsnode: incl(node: var PrefsNode; ele: char)</a></li>
+          data-doc-search-tag="niprefs: hasKey(prefs: Prefs; key: string): bool" href="niprefs.html#hasKey%2CPrefs%2Cstring">niprefs: hasKey(prefs: Prefs; key: string): bool</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="niprefs: hasKey(prefs: Prefs; keys: varargs[string]): bool" href="niprefs.html#hasKey%2CPrefs%2Cvarargs%5Bstring%5D">niprefs: hasKey(prefs: Prefs; keys: varargs[string]): bool</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="node: hasKey(node: TomlValueRef; keys: varargs[string]): bool" href="niprefs/node.html#hasKey%2CTomlValueRef%2Cvarargs%5Bstring%5D">node: hasKey(node: TomlValueRef; keys: varargs[string]): bool</a></li>
           </ul></dd>
 <dt><a name="initPrefs" href="#initPrefs"><span>initPrefs:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="niprefs: initPrefs(table: PObjectType = default PObjectType;
-          path: string = &quot;prefs.niprefs&quot;): Prefs" href="niprefs.html#initPrefs%2CPObjectType%2Cstring">niprefs: initPrefs(table: PObjectType = default PObjectType;
-          path: string = &quot;prefs.niprefs&quot;): Prefs</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="niprefs: initPrefs(table: PrefsNode = newPObject(); path: string = &quot;prefs.niprefs&quot;): Prefs" href="niprefs.html#initPrefs%2CPrefsNode%2Cstring">niprefs: initPrefs(table: PrefsNode = newPObject(); path: string = &quot;prefs.niprefs&quot;): Prefs</a></li>
-          </ul></dd>
-<dt><a name="initPrefsBase" href="#initPrefsBase"><span>initPrefsBase:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsbase: initPrefsBase(table: PObjectType; path: string): PrefsBase" href="niprefs/prefsbase.html#initPrefsBase%2CPObjectType%2Cstring">prefsbase: initPrefsBase(table: PObjectType; path: string): PrefsBase</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsbase: initPrefsBase(table: PrefsNode; path: string): PrefsBase" href="niprefs/prefsbase.html#initPrefsBase%2CPrefsNode%2Cstring">prefsbase: initPrefsBase(table: PrefsNode; path: string): PrefsBase</a></li>
-          </ul></dd>
-<dt><a name="InvalidKey" href="#InvalidKey"><span>InvalidKey:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsbase: InvalidKey" href="niprefs/prefsbase.html#InvalidKey">prefsbase: InvalidKey</a></li>
-          </ul></dd>
-<dt><a name="isEmpty" href="#isEmpty"><span>isEmpty:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: isEmpty(node: PrefsNode): bool" href="niprefs/prefsnode.html#isEmpty%2CPrefsNode">prefsnode: isEmpty(node: PrefsNode): bool</a></li>
-          </ul></dd>
-<dt><a name="isNil" href="#isNil"><span>isNil:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: isNil(node: PrefsNode): bool" href="niprefs/prefsnode.html#isNil%2CPrefsNode">prefsnode: isNil(node: PrefsNode): bool</a></li>
+          data-doc-search-tag="niprefs: initPrefs(path: string; default: TomlValueRef): Prefs" href="niprefs.html#initPrefs%2Cstring%2CTomlValueRef">niprefs: initPrefs(path: string; default: TomlValueRef): Prefs</a></li>
           </ul></dd>
 <dt><a name="items" href="#items"><span>items:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsnode: items(node: PrefsNode): PrefsNode" href="niprefs/prefsnode.html#items.i%2CPrefsNode">prefsnode: items(node: PrefsNode): PrefsNode</a></li>
-          </ul></dd>
-<dt><a name="keyPathSep" href="#keyPathSep"><span>keyPathSep:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsbase: keyPathSep" href="niprefs/prefsbase.html#keyPathSep">prefsbase: keyPathSep</a></li>
+          data-doc-search-tag="node: items(node: TomlValueRef): TomlValueRef" href="niprefs/node.html#items.i%2CTomlValueRef">node: items(node: TomlValueRef): TomlValueRef</a></li>
           </ul></dd>
 <dt><a name="len" href="#len"><span>len:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="niprefs: len(prefs: Prefs): int" href="niprefs.html#len%2CPrefs">niprefs: len(prefs: Prefs): int</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsnode: len(node: PrefsNode): int" href="niprefs/prefsnode.html#len%2CPrefsNode">prefsnode: len(node: PrefsNode): int</a></li>
+          data-doc-search-tag="node: len(node: TomlValueRef): int" href="niprefs/node.html#len%2CTomlValueRef">node: len(node: TomlValueRef): int</a></li>
           </ul></dd>
-<dt><a name="newPBool" href="#newPBool"><span>newPBool:</span></a></dt><dd><ul class="simple">
+<dt><a name="newTArray" href="#newTArray"><span>newTArray:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPBool(val: bool = default bool): PrefsNode" href="niprefs/prefsnode.html#newPBool%2Cbool">prefsnode: newPBool(val: bool = default bool): PrefsNode</a></li>
+          data-doc-search-tag="node: newTArray(val: openArray[TomlValueRef] = default TomlArray): TomlValueRef" href="niprefs/node.html#newTArray%2CopenArray%5BTomlValueRef%5D">node: newTArray(val: openArray[TomlValueRef] = default TomlArray): TomlValueRef</a></li>
           </ul></dd>
-<dt><a name="newPByteSet" href="#newPByteSet"><span>newPByteSet:</span></a></dt><dd><ul class="simple">
+<dt><a name="newTBool" href="#newTBool"><span>newTBool:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPByteSet(val: set[byte] = default set[byte]): PrefsNode" href="niprefs/prefsnode.html#newPByteSet%2Cset%5Bbyte%5D">prefsnode: newPByteSet(val: set[byte] = default set[byte]): PrefsNode</a></li>
+          data-doc-search-tag="node: newTBool(val: bool = default bool): TomlValueRef" href="niprefs/node.html#newTBool%2Cbool">node: newTBool(val: bool = default bool): TomlValueRef</a></li>
+          </ul></dd>
+<dt><a name="newTDateTime" href="#newTDateTime"><span>newTDateTime:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="node: newTDateTime(val: TomlDateTime = default TomlDateTime): TomlValueRef" href="niprefs/node.html#newTDateTime%2CTomlDateTime">node: newTDateTime(val: TomlDateTime = default TomlDateTime): TomlValueRef</a></li>
+          </ul></dd>
+<dt><a name="newTFloat" href="#newTFloat"><span>newTFloat:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="node: newTFloat(val: float64 = default float64): TomlValueRef" href="niprefs/node.html#newTFloat%2Cfloat64">node: newTFloat(val: float64 = default float64): TomlValueRef</a></li>
+          </ul></dd>
+<dt><a name="newTInt" href="#newTInt"><span>newTInt:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="node: newTInt(val: int64 = default int64): TomlValueRef" href="niprefs/node.html#newTInt%2Cint64">node: newTInt(val: int64 = default int64): TomlValueRef</a></li>
+          </ul></dd>
+<dt><a name="newTNode" href="#newTNode"><span>newTNode:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="node: newTNode(val: bool): TomlValueRef" href="niprefs/node.html#newTNode%2Cbool">node: newTNode(val: bool): TomlValueRef</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPByteSet[T: not byte](val: set[T]): PrefsNode" href="niprefs/prefsnode.html#newPByteSet%2Cset%5BT%5D">prefsnode: newPByteSet[T: not byte](val: set[T]): PrefsNode</a></li>
-          </ul></dd>
-<dt><a name="newPChar" href="#newPChar"><span>newPChar:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPChar(val: char = default char): PrefsNode" href="niprefs/prefsnode.html#newPChar%2Cchar">prefsnode: newPChar(val: char = default char): PrefsNode</a></li>
+          data-doc-search-tag="node: newTNode(val: float64): TomlValueRef" href="niprefs/node.html#newTNode%2Cfloat64">node: newTNode(val: float64): TomlValueRef</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPChar(val: string = default string; start: Natural = 0): PrefsNode" href="niprefs/prefsnode.html#newPChar%2Cstring%2CNatural">prefsnode: newPChar(val: string = default string; start: Natural = 0): PrefsNode</a></li>
-          </ul></dd>
-<dt><a name="newPCharSet" href="#newPCharSet"><span>newPCharSet:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPCharSet(val: set[char] = default set[char]): PrefsNode" href="niprefs/prefsnode.html#newPCharSet%2Cset%5Bchar%5D">prefsnode: newPCharSet(val: set[char] = default set[char]): PrefsNode</a></li>
-          </ul></dd>
-<dt><a name="newPEmpty" href="#newPEmpty"><span>newPEmpty:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPEmpty(): PrefsNode" href="niprefs/prefsnode.html#newPEmpty">prefsnode: newPEmpty(): PrefsNode</a></li>
-          </ul></dd>
-<dt><a name="newPFloat" href="#newPFloat"><span>newPFloat:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPFloat(val: float = default float): PrefsNode" href="niprefs/prefsnode.html#newPFloat%2Cfloat">prefsnode: newPFloat(val: float = default float): PrefsNode</a></li>
-          </ul></dd>
-<dt><a name="newPInt" href="#newPInt"><span>newPInt:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPInt(val: int64 = default int64): PrefsNode" href="niprefs/prefsnode.html#newPInt%2Cint64">prefsnode: newPInt(val: int64 = default int64): PrefsNode</a></li>
-          </ul></dd>
-<dt><a name="newPNil" href="#newPNil"><span>newPNil:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPNil(): PrefsNode" href="niprefs/prefsnode.html#newPNil">prefsnode: newPNil(): PrefsNode</a></li>
-          </ul></dd>
-<dt><a name="newPNode" href="#newPNode"><span>newPNode:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPNode(obj: bool): PrefsNode" href="niprefs/prefsnode.html#newPNode%2Cbool">prefsnode: newPNode(obj: bool): PrefsNode</a></li>
+          data-doc-search-tag="node: newTNode(val: int64): TomlValueRef" href="niprefs/node.html#newTNode%2Cint64">node: newTNode(val: int64): TomlValueRef</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPNode(obj: char): PrefsNode" href="niprefs/prefsnode.html#newPNode%2Cchar">prefsnode: newPNode(obj: char): PrefsNode</a></li>
+          data-doc-search-tag="node: newTNode(val: openArray[(string, TomlValueRef)]): TomlValueRef" href="niprefs/node.html#newTNode%2CopenArray%5B%5D">node: newTNode(val: openArray[(string, TomlValueRef)]): TomlValueRef</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPNode(obj: float): PrefsNode" href="niprefs/prefsnode.html#newPNode%2Cfloat">prefsnode: newPNode(obj: float): PrefsNode</a></li>
+          data-doc-search-tag="node: newTNode(val: string): TomlValueRef" href="niprefs/node.html#newTNode%2Cstring">node: newTNode(val: string): TomlValueRef</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPNode(obj: int64): PrefsNode" href="niprefs/prefsnode.html#newPNode%2Cint64">prefsnode: newPNode(obj: int64): PrefsNode</a></li>
+          data-doc-search-tag="node: newTNode(val: TomlArray): TomlValueRef" href="niprefs/node.html#newTNode%2CTomlArray">node: newTNode(val: TomlArray): TomlValueRef</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPNode(obj: PObjectType): PrefsNode" href="niprefs/prefsnode.html#newPNode%2CPObjectType">prefsnode: newPNode(obj: PObjectType): PrefsNode</a></li>
+          data-doc-search-tag="node: newTNode(val: TomlDateTime): TomlValueRef" href="niprefs/node.html#newTNode%2CTomlDateTime">node: newTNode(val: TomlDateTime): TomlValueRef</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPNode(obj: PSeqParam): PrefsNode" href="niprefs/prefsnode.html#newPNode%2CPSeqParam">prefsnode: newPNode(obj: PSeqParam): PrefsNode</a></li>
+          data-doc-search-tag="node: newTNode(val: TomlTableRef): TomlValueRef" href="niprefs/node.html#newTNode%2CTomlTableRef">node: newTNode(val: TomlTableRef): TomlValueRef</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPNode(obj: set[byte]): PrefsNode" href="niprefs/prefsnode.html#newPNode%2Cset%5Bbyte%5D">prefsnode: newPNode(obj: set[byte]): PrefsNode</a></li>
+          data-doc-search-tag="node: newTNode(val: TomlTables): TomlValueRef" href="niprefs/node.html#newTNode%2CTomlTables">node: newTNode(val: TomlTables): TomlValueRef</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPNode(obj: set[char]): PrefsNode" href="niprefs/prefsnode.html#newPNode%2Cset%5Bchar%5D">prefsnode: newPNode(obj: set[char]): PrefsNode</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPNode(obj: string; raw: bool = false): PrefsNode" href="niprefs/prefsnode.html#newPNode%2Cstring%2Cbool">prefsnode: newPNode(obj: string; raw: bool = false): PrefsNode</a></li>
+          data-doc-search-tag="node: newTNode(val: TomlValueRef): TomlValueRef" href="niprefs/node.html#newTNode%2CTomlValueRef">node: newTNode(val: TomlValueRef): TomlValueRef</a></li>
           </ul></dd>
-<dt><a name="newPObject" href="#newPObject"><span>newPObject:</span></a></dt><dd><ul class="simple">
+<dt><a name="newTString" href="#newTString"><span>newTString:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPObject(val: PObjectType = default PObjectType): PrefsNode" href="niprefs/prefsnode.html#newPObject%2CPObjectType">prefsnode: newPObject(val: PObjectType = default PObjectType): PrefsNode</a></li>
+          data-doc-search-tag="node: newTString(val: string = default string): TomlValueRef" href="niprefs/node.html#newTString%2Cstring">node: newTString(val: string = default string): TomlValueRef</a></li>
           </ul></dd>
-<dt><a name="newPSeq" href="#newPSeq"><span>newPSeq:</span></a></dt><dd><ul class="simple">
+<dt><a name="newTTable" href="#newTTable"><span>newTTable:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPSeq(val: PSeqParam = default PSeqType): PrefsNode" href="niprefs/prefsnode.html#newPSeq%2CPSeqParam">prefsnode: newPSeq(val: PSeqParam = default PSeqType): PrefsNode</a></li>
+          data-doc-search-tag="node: newTTable(pairs: openArray[(string, TomlValueRef)]): TomlValueRef" href="niprefs/node.html#newTTable%2CopenArray%5B%5D">node: newTTable(pairs: openArray[(string, TomlValueRef)]): TomlValueRef</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="node: newTTable(val: TomlTableRef = new TomlTableRef): TomlValueRef" href="niprefs/node.html#newTTable%2CTomlTableRef">node: newTTable(val: TomlTableRef = new TomlTableRef): TomlValueRef</a></li>
           </ul></dd>
-<dt><a name="newPString" href="#newPString"><span>newPString:</span></a></dt><dd><ul class="simple">
+<dt><a name="newTTables" href="#newTTables"><span>newTTables:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsnode: newPString(val: string = default string; raw: bool = false): PrefsNode" href="niprefs/prefsnode.html#newPString%2Cstring%2Cbool">prefsnode: newPString(val: string = default string; raw: bool = false): PrefsNode</a></li>
-          </ul></dd>
-<dt><a name="NIL" href="#NIL"><span>NIL:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.NIL" href="niprefs/parser/lexer.html#NIL">PTokenKind.NIL</a></li>
-          </ul></dd>
-<dt><a name="NL" href="#NL"><span>NL:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.NL" href="niprefs/parser/lexer.html#NL">PTokenKind.NL</a></li>
-          </ul></dd>
-<dt><a name="OCT" href="#OCT"><span>OCT:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.OCT" href="niprefs/parser/lexer.html#OCT">PTokenKind.OCT</a></li>
+          data-doc-search-tag="node: newTTables(val: openArray[TomlTableRef] = default TomlTables): TomlValueRef" href="niprefs/node.html#newTTables%2CopenArray%5BTomlTableRef%5D">node: newTTables(val: openArray[TomlTableRef] = default TomlTables): TomlValueRef</a></li>
           </ul></dd>
 <dt><a name="overwrite" href="#overwrite"><span>overwrite:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsbase: overwrite(prefs: PrefsBase; table: PObjectType = prefs.table)" href="niprefs/prefsbase.html#overwrite%2CPrefsBase%2CPObjectType">prefsbase: overwrite(prefs: PrefsBase; table: PObjectType = prefs.table)</a></li>
+          data-doc-search-tag="niprefs: overwrite(prefs: Prefs; keys: openArray[string])" href="niprefs.html#overwrite%2CPrefs%2CopenArray%5Bstring%5D">niprefs: overwrite(prefs: Prefs; keys: openArray[string])</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsbase: overwrite(prefs: PrefsBase; key: string)" href="niprefs/prefsbase.html#overwrite%2CPrefsBase%2Cstring">prefsbase: overwrite(prefs: PrefsBase; key: string)</a></li>
+          data-doc-search-tag="niprefs: overwrite(prefs: Prefs; key: string)" href="niprefs.html#overwrite%2CPrefs%2Cstring">niprefs: overwrite(prefs: Prefs; key: string)</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="niprefs: overwrite(prefs: var Prefs; table: TomlValueRef = prefs.default)" href="niprefs.html#overwrite%2CPrefs%2CTomlValueRef">niprefs: overwrite(prefs: var Prefs; table: TomlValueRef = prefs.default)</a></li>
           </ul></dd>
 <dt><a name="pairs" href="#pairs"><span>pairs:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsnode: pairs(node: PrefsNode): (string, PrefsNode)" href="niprefs/prefsnode.html#pairs.i%2CPrefsNode">prefsnode: pairs(node: PrefsNode): (string, PrefsNode)</a></li>
-          </ul></dd>
-<dt><a name="parseEscaped" href="#parseEscaped"><span>parseEscaped:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="escaper: parseEscaped(str: string): string" href="niprefs/parser/escaper.html#parseEscaped%2Cstring">escaper: parseEscaped(str: string): string</a></li>
-          </ul></dd>
-<dt><a name="parseEscapedChar" href="#parseEscapedChar"><span>parseEscapedChar:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="escaper: parseEscapedChar(str: string; start: Natural = 0): char" href="niprefs/parser/escaper.html#parseEscapedChar%2Cstring%2CNatural">escaper: parseEscapedChar(str: string; start: Natural = 0): char</a></li>
-          </ul></dd>
-<dt><a name="parsePrefs" href="#parsePrefs"><span>parsePrefs:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="parser: parsePrefs(tokens: seq[PToken]): PObjectType" href="niprefs/parser/parser.html#parsePrefs%2Cseq%5BPToken%5D">parser: parsePrefs(tokens: seq[PToken]): PObjectType</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="parser: parsePrefs(source: string): PObjectType" href="niprefs/parser/parser.html#parsePrefs%2Cstring">parser: parsePrefs(source: string): PObjectType</a></li>
-          </ul></dd>
-<dt><a name="PBool" href="#PBool"><span>PBool:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PrefsKind.PBool" href="niprefs/prefsnode.html#PBool">PrefsKind.PBool</a></li>
-          </ul></dd>
-<dt><a name="PByteSet" href="#PByteSet"><span>PByteSet:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PrefsKind.PByteSet" href="niprefs/prefsnode.html#PByteSet">PrefsKind.PByteSet</a></li>
-          </ul></dd>
-<dt><a name="PChar" href="#PChar"><span>PChar:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PrefsKind.PChar" href="niprefs/prefsnode.html#PChar">PrefsKind.PChar</a></li>
-          </ul></dd>
-<dt><a name="PCharSet" href="#PCharSet"><span>PCharSet:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PrefsKind.PCharSet" href="niprefs/prefsnode.html#PCharSet">PrefsKind.PCharSet</a></li>
-          </ul></dd>
-<dt><a name="PEmpty" href="#PEmpty"><span>PEmpty:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PrefsKind.PEmpty" href="niprefs/prefsnode.html#PEmpty">PrefsKind.PEmpty</a></li>
-          </ul></dd>
-<dt><a name="PFloat" href="#PFloat"><span>PFloat:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PrefsKind.PFloat" href="niprefs/prefsnode.html#PFloat">PrefsKind.PFloat</a></li>
-          </ul></dd>
-<dt><a name="PInt" href="#PInt"><span>PInt:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PrefsKind.PInt" href="niprefs/prefsnode.html#PInt">PrefsKind.PInt</a></li>
-          </ul></dd>
-<dt><a name="PNil" href="#PNil"><span>PNil:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PrefsKind.PNil" href="niprefs/prefsnode.html#PNil">PrefsKind.PNil</a></li>
-          </ul></dd>
-<dt><a name="PObject" href="#PObject"><span>PObject:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PrefsKind.PObject" href="niprefs/prefsnode.html#PObject">PrefsKind.PObject</a></li>
-          </ul></dd>
-<dt><a name="PObjectType" href="#PObjectType"><span>PObjectType:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: PObjectType" href="niprefs/prefsnode.html#PObjectType">prefsnode: PObjectType</a></li>
-          </ul></dd>
-<dt><a name="pop" href="#pop"><span>pop:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="niprefs: pop(prefs: Prefs; key: string; val: var PrefsNode): bool" href="niprefs.html#pop%2CPrefs%2Cstring%2CPrefsNode">niprefs: pop(prefs: Prefs; key: string; val: var PrefsNode): bool</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="niprefs: pop(prefs: Prefs; keys: varargs[string]; val: var PrefsNode): bool" href="niprefs.html#pop%2CPrefs%2Cvarargs%5Bstring%5D%2CPrefsNode">niprefs: pop(prefs: Prefs; keys: varargs[string]; val: var PrefsNode): bool</a></li>
+          data-doc-search-tag="node: pairs(node: TomlValueRef): (string, TomlValueRef)" href="niprefs/node.html#pairs.i%2CTomlValueRef">node: pairs(node: TomlValueRef): (string, TomlValueRef)</a></li>
           </ul></dd>
 <dt><a name="Prefs" href="#Prefs"><span>Prefs:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="niprefs: Prefs" href="niprefs.html#Prefs">niprefs: Prefs</a></li>
           </ul></dd>
-<dt><a name="PrefsBase" href="#PrefsBase"><span>PrefsBase:</span></a></dt><dd><ul class="simple">
+<dt><a name="remove" href="#remove"><span>remove:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsbase: PrefsBase" href="niprefs/prefsbase.html#PrefsBase">prefsbase: PrefsBase</a></li>
+          data-doc-search-tag="niprefs: remove(prefs: Prefs)" href="niprefs.html#remove%2CPrefs">niprefs: remove(prefs: Prefs)</a></li>
           </ul></dd>
-<dt><a name="PrefsKind" href="#PrefsKind"><span>PrefsKind:</span></a></dt><dd><ul class="simple">
+<dt><a name="save" href="#save"><span>save:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsnode: PrefsKind" href="niprefs/prefsnode.html#PrefsKind">prefsnode: PrefsKind</a></li>
+          data-doc-search-tag="niprefs: save(prefs: Prefs)" href="niprefs.html#save%2CPrefs">niprefs: save(prefs: Prefs)</a></li>
           </ul></dd>
-<dt><a name="PrefsNode" href="#PrefsNode"><span>PrefsNode:</span></a></dt><dd><ul class="simple">
+<dt><a name="tDate" href="#tDate"><span>tDate:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsnode: PrefsNode" href="niprefs/prefsnode.html#PrefsNode">prefsnode: PrefsNode</a></li>
-          </ul></dd>
-<dt><a name="PSeq" href="#PSeq"><span>PSeq:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PrefsKind.PSeq" href="niprefs/prefsnode.html#PSeq">PrefsKind.PSeq</a></li>
-          </ul></dd>
-<dt><a name="PSeqParam" href="#PSeqParam"><span>PSeqParam:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: PSeqParam" href="niprefs/prefsnode.html#PSeqParam">prefsnode: PSeqParam</a></li>
-          </ul></dd>
-<dt><a name="PSeqType" href="#PSeqType"><span>PSeqType:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: PSeqType" href="niprefs/prefsnode.html#PSeqType">prefsnode: PSeqType</a></li>
-          </ul></dd>
-<dt><a name="PString" href="#PString"><span>PString:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PrefsKind.PString" href="niprefs/prefsnode.html#PString">PrefsKind.PString</a></li>
-          </ul></dd>
-<dt><a name="PToken" href="#PToken"><span>PToken:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="lexer: PToken" href="niprefs/parser/lexer.html#PToken">lexer: PToken</a></li>
-          </ul></dd>
-<dt><a name="PTokenKind" href="#PTokenKind"><span>PTokenKind:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="lexer: PTokenKind" href="niprefs/parser/lexer.html#PTokenKind">lexer: PTokenKind</a></li>
-          </ul></dd>
-<dt><a name="PTokenPos" href="#PTokenPos"><span>PTokenPos:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="lexer: PTokenPos" href="niprefs/parser/lexer.html#PTokenPos">lexer: PTokenPos</a></li>
-          </ul></dd>
-<dt><a name="RAWSTRING" href="#RAWSTRING"><span>RAWSTRING:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.RAWSTRING" href="niprefs/parser/lexer.html#RAWSTRING">PTokenKind.RAWSTRING</a></li>
-          </ul></dd>
-<dt><a name="read" href="#read"><span>read:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsbase: read(prefs: PrefsBase): PObjectType" href="niprefs/prefsbase.html#read%2CPrefsBase">prefsbase: read(prefs: PrefsBase): PObjectType</a></li>
-          </ul></dd>
-<dt><a name="readPrefs" href="#readPrefs"><span>readPrefs:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="parser: readPrefs(path: string): PObjectType" href="niprefs/parser/parser.html#readPrefs%2Cstring">parser: readPrefs(path: string): PObjectType</a></li>
-          </ul></dd>
-<dt><a name="scanPrefs" href="#scanPrefs"><span>scanPrefs:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="lexer: scanPrefs(source: string): PLexer" href="niprefs/parser/lexer.html#scanPrefs%2Cstring">lexer: scanPrefs(source: string): PLexer</a></li>
-          </ul></dd>
-<dt><a name="scanPrefsFile" href="#scanPrefsFile"><span>scanPrefsFile:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="lexer: scanPrefsFile(path: string): PLexer" href="niprefs/parser/lexer.html#scanPrefsFile%2Cstring">lexer: scanPrefsFile(path: string): PLexer</a></li>
-          </ul></dd>
-<dt><a name="SEQCLOSE" href="#SEQCLOSE"><span>SEQCLOSE:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.SEQCLOSE" href="niprefs/parser/lexer.html#SEQCLOSE">PTokenKind.SEQCLOSE</a></li>
-          </ul></dd>
-<dt><a name="SEQOPEN" href="#SEQOPEN"><span>SEQOPEN:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.SEQOPEN" href="niprefs/parser/lexer.html#SEQOPEN">PTokenKind.SEQOPEN</a></li>
-          </ul></dd>
-<dt><a name="SPACE" href="#SPACE"><span>SPACE:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.SPACE" href="niprefs/parser/lexer.html#SPACE">PTokenKind.SPACE</a></li>
-          </ul></dd>
-<dt><a name="STRING" href="#STRING"><span>STRING:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="PTokenKind.STRING" href="niprefs/parser/lexer.html#STRING">PTokenKind.STRING</a></li>
-          </ul></dd>
-<dt><a name="SyntaxError" href="#SyntaxError"><span>SyntaxError:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="lexer: SyntaxError" href="niprefs/parser/lexer.html#SyntaxError">lexer: SyntaxError</a></li>
-          </ul></dd>
-<dt><a name="toPrefs" href="#toPrefs"><span>toPrefs:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsnode: toPrefs(obj: untyped): PrefsNode" href="niprefs/prefsnode.html#toPrefs.m%2Cuntyped">prefsnode: toPrefs(obj: untyped): PrefsNode</a></li>
-          </ul></dd>
-<dt><a name="toString" href="#toString"><span>toString:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="prefsbase: toString(table: PObjectType; depth: int = 0): string" href="niprefs/prefsbase.html#toString%2CPObjectType%2Cint">prefsbase: toString(table: PObjectType; depth: int = 0): string</a></li>
+          data-doc-search-tag="node: tDate(year: range[0 .. 9999] = 0; month: range[1 .. 12] = 1;
+      day: range[1 .. 31] = 1): TomlDate" href="niprefs/node.html#tDate%2Crange%5B%5D%2Crange%5B%5D%2Crange%5B%5D">node: tDate(year: range[0 .. 9999] = 0; month: range[1 .. 12] = 1;
+      day: range[1 .. 31] = 1): TomlDate</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsbase: toString(node: PrefsNode; depth: int = 0): string" href="niprefs/prefsbase.html#toString%2CPrefsNode%2Cint">prefsbase: toString(node: PrefsNode; depth: int = 0): string</a></li>
+          data-doc-search-tag="node: tDate(source: string): TomlDate" href="niprefs/node.html#tDate%2Cstring">node: tDate(source: string): TomlDate</a></li>
           </ul></dd>
-<dt><a name="write" href="#write"><span>write:</span></a></dt><dd><ul class="simple">
+<dt><a name="tDateTime" href="#tDateTime"><span>tDateTime:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsbase: write(prefs: PrefsBase; key: string; val: PrefsNode)" href="niprefs/prefsbase.html#write%2CPrefsBase%2Cstring%2CPrefsNode">prefsbase: write(prefs: PrefsBase; key: string; val: PrefsNode)</a></li>
+          data-doc-search-tag="node: tDateTime(date: Option[TomlDate] = none(TomlDate);
+          time: Option[TomlTime] = none(TomlTime);
+          zone: Option[TomlTimeZone] = none(TomlTimeZone)): TomlDateTime" href="niprefs/node.html#tDateTime%2COption%5BTomlDate%5D%2COption%5BTomlTime%5D%2COption%5BTomlTimeZone%5D">node: tDateTime(date: Option[TomlDate] = none(TomlDate);
+          time: Option[TomlTime] = none(TomlTime);
+          zone: Option[TomlTimeZone] = none(TomlTimeZone)): TomlDateTime</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsbase: write[T: not PrefsNode](prefs: PrefsBase; key: string; val: T)" href="niprefs/prefsbase.html#write%2CPrefsBase%2Cstring%2CT">prefsbase: write[T: not PrefsNode](prefs: PrefsBase; key: string; val: T)</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsbase: write(prefs: PrefsBase; keys: varargs[string]; val: PrefsNode)" href="niprefs/prefsbase.html#write%2CPrefsBase%2Cvarargs%5Bstring%5D%2CPrefsNode">prefsbase: write(prefs: PrefsBase; keys: varargs[string]; val: PrefsNode)</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="prefsbase: write[T: not PrefsNode](prefs: PrefsBase; keys: varargs[string]; val: T)" href="niprefs/prefsbase.html#write%2CPrefsBase%2Cvarargs%5Bstring%5D%2CT">prefsbase: write[T: not PrefsNode](prefs: PrefsBase; keys: varargs[string]; val: T)</a></li>
+          data-doc-search-tag="node: tDateTime(source: string): TomlDateTime" href="niprefs/node.html#tDateTime%2Cstring">node: tDateTime(source: string): TomlDateTime</a></li>
           </ul></dd>
-<dt><a name="writeMany" href="#writeMany"><span>writeMany:</span></a></dt><dd><ul class="simple">
+<dt><a name="TomlArray" href="#TomlArray"><span>TomlArray:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="prefsbase: writeMany(prefs: PrefsBase; items: PObjectType)" href="niprefs/prefsbase.html#writeMany%2CPrefsBase%2CPObjectType">prefsbase: writeMany(prefs: PrefsBase; items: PObjectType)</a></li>
+          data-doc-search-tag="node: TomlArray" href="niprefs/node.html#TomlArray">node: TomlArray</a></li>
+          </ul></dd>
+<dt><a name="TomlTables" href="#TomlTables"><span>TomlTables:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="node: TomlTables" href="niprefs/node.html#TomlTables">node: TomlTables</a></li>
+          </ul></dd>
+<dt><a name="toToml" href="#toToml"><span>toToml:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="node: toToml(obj: untyped): TomlValueRef" href="niprefs/node.html#toToml.m%2Cuntyped">node: toToml(obj: untyped): TomlValueRef</a></li>
+          </ul></dd>
+<dt><a name="tTime" href="#tTime"><span>tTime:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="node: tTime(hour: range[0 .. 23] = 0; minute: range[0 .. 59]; second: range[0 .. 60];
+      subsecond: int = 0): TomlTime" href="niprefs/node.html#tTime%2Crange%5B%5D%2Crange%5B%5D%2Crange%5B%5D%2Cint">node: tTime(hour: range[0 .. 23] = 0; minute: range[0 .. 59]; second: range[0 .. 60];
+      subsecond: int = 0): TomlTime</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="prefsbase: writeMany(prefs: PrefsBase; items: PrefsNode)" href="niprefs/prefsbase.html#writeMany%2CPrefsBase%2CPrefsNode">prefsbase: writeMany(prefs: PrefsBase; items: PrefsNode)</a></li>
+          data-doc-search-tag="node: tTime(source: string): TomlTime" href="niprefs/node.html#tTime%2Cstring">node: tTime(source: string): TomlTime</a></li>
+          </ul></dd>
+<dt><a name="tTimeZone" href="#tTimeZone"><span>tTimeZone:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="node: tTimeZone(positiveShift = false; hourShift, minuteShift: int = 0): TomlTimeZone" href="niprefs/node.html#tTimeZone%2Cint%2Cint">node: tTimeZone(positiveShift = false; hourShift, minuteShift: int = 0): TomlTimeZone</a></li>
           </ul></dd>
 </dl>
     <div class="row">
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-05-31 01:17:02 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-06-09 20:29:33 UTC</small>
       </div>
     </div>
   </div>

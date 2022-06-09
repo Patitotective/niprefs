@@ -1,0 +1,57 @@
+TomlArray	niprefs/node.html#TomlArray	node: TomlArray	
+TomlTables	niprefs/node.html#TomlTables	node: TomlTables	
+newTInt	niprefs/node.html#newTInt,int64	node: newTInt(val: int64 = default int64): TomlValueRef	
+newTFloat	niprefs/node.html#newTFloat,float64	node: newTFloat(val: float64 = default float64): TomlValueRef	
+newTBool	niprefs/node.html#newTBool,bool	node: newTBool(val: bool = default bool): TomlValueRef	
+newTDateTime	niprefs/node.html#newTDateTime,TomlDateTime	node: newTDateTime(val: TomlDateTime = default TomlDateTime): TomlValueRef	
+newTString	niprefs/node.html#newTString,string	node: newTString(val: string = default string): TomlValueRef	
+newTArray	niprefs/node.html#newTArray,openArray[TomlValueRef]	node: newTArray(val: openArray[TomlValueRef] = default TomlArray): TomlValueRef	
+newTTables	niprefs/node.html#newTTables,openArray[TomlTableRef]	node: newTTables(val: openArray[TomlTableRef] = default TomlTables): TomlValueRef	
+newTTable	niprefs/node.html#newTTable,TomlTableRef	node: newTTable(val: TomlTableRef = new TomlTableRef): TomlValueRef	
+newTTable	niprefs/node.html#newTTable,openArray[]	node: newTTable(pairs: openArray[(string, TomlValueRef)]): TomlValueRef	
+newTNode	niprefs/node.html#newTNode,int64	node: newTNode(val: int64): TomlValueRef	
+newTNode	niprefs/node.html#newTNode,float64	node: newTNode(val: float64): TomlValueRef	
+newTNode	niprefs/node.html#newTNode,bool	node: newTNode(val: bool): TomlValueRef	
+newTNode	niprefs/node.html#newTNode,TomlDateTime	node: newTNode(val: TomlDateTime): TomlValueRef	
+newTNode	niprefs/node.html#newTNode,string	node: newTNode(val: string): TomlValueRef	
+newTNode	niprefs/node.html#newTNode,TomlArray	node: newTNode(val: TomlArray): TomlValueRef	
+newTNode	niprefs/node.html#newTNode,TomlTables	node: newTNode(val: TomlTables): TomlValueRef	
+newTNode	niprefs/node.html#newTNode,TomlTableRef	node: newTNode(val: TomlTableRef): TomlValueRef	
+newTNode	niprefs/node.html#newTNode,openArray[]	node: newTNode(val: openArray[(string, TomlValueRef)]): TomlValueRef	
+newTNode	niprefs/node.html#newTNode,TomlValueRef	node: newTNode(val: TomlValueRef): TomlValueRef	
+getInt	niprefs/node.html#getInt,TomlValueRef	node: getInt(node: TomlValueRef): int64	
+getFloat	niprefs/node.html#getFloat,TomlValueRef	node: getFloat(node: TomlValueRef): float64	
+getBool	niprefs/node.html#getBool,TomlValueRef	node: getBool(node: TomlValueRef): bool	
+getDateTime	niprefs/node.html#getDateTime,TomlValueRef	node: getDateTime(node: TomlValueRef): TomlDateTime	
+getString	niprefs/node.html#getString,TomlValueRef	node: getString(node: TomlValueRef): string	
+getArray	niprefs/node.html#getArray,TomlValueRef	node: getArray(node: TomlValueRef): TomlArray	
+getTables	niprefs/node.html#getTables,TomlValueRef	node: getTables(node: TomlValueRef): TomlTables	
+getTable	niprefs/node.html#getTable,TomlValueRef	node: getTable(node: TomlValueRef): TomlTableRef	
+toToml	niprefs/node.html#toToml.m,untyped	node: toToml(obj: untyped): TomlValueRef	
+`[]=`	niprefs/node.html#[]=,TomlValueRef,int,TomlValueRef	node: `[]=`(obj: TomlValueRef; index: int; val: TomlValueRef)	
+`[]=`	niprefs/node.html#[]=,TomlValueRef,int,T	node: `[]=`[T: not TomlValueRef](obj: TomlValueRef; index: int; val: T)	
+`[]=`	niprefs/node.html#[]=,TomlValueRef,string,T	node: `[]=`[T: not TomlValueRef](obj: TomlValueRef; key: string; val: T)	
+`{}=`	niprefs/node.html#{}=,TomlValueRef,varargs[string],T	node: `{}=`[T: not TomlValueRef](node: TomlValueRef; keys: varargs[string]; value: T)	
+`$`	niprefs/node.html#$,TomlTime	node: `$`(time: TomlTime): string	
+`$`	niprefs/node.html#$,TomlDate	node: `$`(date: TomlDate): string	
+`$`	niprefs/node.html#$,TomlTimeZone	node: `$`(zone: TomlTimeZone): string	
+`$`	niprefs/node.html#$,TomlDateTime	node: `$`(datetime: TomlDateTime): string	
+`$`	niprefs/node.html#$,TomlValue	node: `$`(node: TomlValue): string	
+`$`	niprefs/node.html#$,TomlValueRef	node: `$`(node: TomlValueRef): string	
+`==`	niprefs/node.html#==,TomlValueRef,T	node: `==`[T: not TomlValueRef](node: TomlValueRef; val: T): bool	
+tDateTime	niprefs/node.html#tDateTime,Option[TomlDate],Option[TomlTime],Option[TomlTimeZone]	node: tDateTime(date: Option[TomlDate] = none(TomlDate);\n          time: Option[TomlTime] = none(TomlTime);\n          zone: Option[TomlTimeZone] = none(TomlTimeZone)): TomlDateTime	
+tDateTime	niprefs/node.html#tDateTime,string	node: tDateTime(source: string): TomlDateTime	
+tDate	niprefs/node.html#tDate,range[],range[],range[]	node: tDate(year: range[0 .. 9999] = 0; month: range[1 .. 12] = 1;\n      day: range[1 .. 31] = 1): TomlDate	
+tDate	niprefs/node.html#tDate,string	node: tDate(source: string): TomlDate	
+tTime	niprefs/node.html#tTime,range[],range[],range[],int	node: tTime(hour: range[0 .. 23] = 0; minute: range[0 .. 59]; second: range[0 .. 60];\n      subsecond: int = 0): TomlTime	
+tTime	niprefs/node.html#tTime,string	node: tTime(source: string): TomlTime	
+tTimeZone	niprefs/node.html#tTimeZone,int,int	node: tTimeZone(positiveShift = false; hourShift, minuteShift: int = 0): TomlTimeZone	
+len	niprefs/node.html#len,TomlValueRef	node: len(node: TomlValueRef): int	
+add	niprefs/node.html#add,TomlValueRef,TomlTableRef	node: add(node: TomlValueRef; table: TomlTableRef)	
+add	niprefs/node.html#add,TomlValueRef,TomlValueRef	node: add(node: TomlValueRef; val: TomlValueRef)	
+add	niprefs/node.html#add,TomlValueRef,T	node: add[T: not TomlValueRef](node: TomlValueRef; val: T)	
+delete	niprefs/node.html#delete,TomlValueRef,int	node: delete(node: TomlValueRef; index: int)	
+contains	niprefs/node.html#contains,TomlValueRef,T	node: contains[T: not TomlValueRef](node: TomlValueRef; val: T): bool	
+hasKey	niprefs/node.html#hasKey,TomlValueRef,varargs[string]	node: hasKey(node: TomlValueRef; keys: varargs[string]): bool	
+items	niprefs/node.html#items.i,TomlValueRef	node: items(node: TomlValueRef): TomlValueRef	
+pairs	niprefs/node.html#pairs.i,TomlValueRef	node: pairs(node: TomlValueRef): (string, TomlValueRef)	
