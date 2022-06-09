@@ -6,4 +6,5 @@
 trial.*
 *.sublime-*
 *.out
+*.toml
 Prefs
