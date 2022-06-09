@@ -6,7 +6,6 @@ description = "Store and manage preferences dynamically in a text file within ta
 license = "MIT"
 srcDir = "src"
 
-
 # Dependencies
 
 requires "nim >= 1.6.1"

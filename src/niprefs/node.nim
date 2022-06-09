@@ -209,7 +209,7 @@ proc `$`*(node: TomlValue): string =
 
 proc `$`*(node: TomlValueRef): string = 
   if node.isNil:
-    "nil"
+    raise newException(ValueError, "Attempted to read from nil TomlValueRef node. You must initialize it first")
   else:
     $node[]
 

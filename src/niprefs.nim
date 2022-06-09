@@ -187,10 +187,16 @@ proc `[]`*(prefs: Prefs, key: string): TomlValueRef =
 proc `{}`*(prefs: Prefs, keys: varargs[string]): TomlValueRef =
   prefs.content{keys}
 
-proc `[]=`*[T: not TomlValueRef](prefs: var Prefs, key: string, val: T) =
+proc `[]=`*(prefs: Prefs, key: string, val: TomlValueRef) =
+  prefs.content[key] = val
+
+proc `{}=`*(prefs: Prefs, keys: varargs[string], val: TomlValueRef) =
+  prefs.content{keys} = val
+
+proc `[]=`*[T: not TomlValueRef](prefs: Prefs, key: string, val: T) =
   prefs.content[key] = newTNode(val)
 
-proc `{}=`*[T: not TomlValueRef](prefs: var Prefs, keys: varargs[string], val: T) =
+proc `{}=`*[T: not TomlValueRef](prefs: Prefs, keys: varargs[string], val: T) =
   prefs.content{keys} = newTNode(val)
 
 proc len*(prefs: Prefs): int =
@@ -224,6 +230,16 @@ proc hasKey*(prefs: Prefs, key: string): bool =
     assert prefs.hasKey("lang")
 
   prefs.content.hasKey(key)
+
+proc hasKey*(prefs: Prefs, keys: varargs[string]): bool =
+  runnableExamples:
+    var prefs = initPrefs("prefs.toml", toToml({"scheme": {"font": "UbuntuMono"}}))
+
+    prefs.overwrite() # Ignore this line
+
+    assert prefs.hasKey("scheme", "font")
+
+  prefs.content.hasKey(keys)
 
 proc contains*(prefs: Prefs, key: string): bool = 
   runnableExamples:
