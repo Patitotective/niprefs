@@ -13,8 +13,7 @@ jobs:
       - name: Generate
         run: |
           nimble install -d -y
-          nim doc --git.url:https://github.com/${{ github.GITHUB_REPOSITORY }} --git.commit:main --project --outdir:docs src/*.nim
-          echo "<meta http-equiv=\"Refresh\" content=\"0; url='niprefs.html'\" />" >> docs/index.html
+          nimble docs
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
