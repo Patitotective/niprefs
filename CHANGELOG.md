@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### v0.3.0
+- Totally removed prefs parser, now using TOML.
+- Not reading nor updating the file everytime you read it or write it anymore. Now using `content` field and the user must manually `save` it at the end to update the prefs file.
+
 ### v0.2.4
 - Removed negative bin/bin/oct.
 - Now using `int64` for `PInt`.
