@@ -5,7 +5,7 @@ import niprefs
 
 const path = "Prefs/subdir/settings.toml"
 
-let defaultPrefs = toToml {
+var defaultPrefs = toToml {
   lang: "en", 
   nums: [0b100001110011110101110100010001001101000101110100001011010000000f32, 0b100001110011110101110100010001001101000101110100001011010000000d, 0b100001110011110101110100010001001101000101110100001011010000000],
   dark: true,
@@ -68,16 +68,16 @@ test "can do stuff with nodes":
   check "c" in node
   check 5.2 in node["c"]
 
-# test "can overwrite":
-#   prefs.table["lang"] = "en".toToml
-#   prefs.overwrite("lang")
+test "can overwrite":
+  prefs.overwrite("lang")
+  defaultPrefs["lang"] = "en".newTNode()
 
-#   prefs.table["scheme"]["font"]["family"] = "UbuntuMono".toToml
-#   prefs.overwrite("scheme/font/family")
+  prefs.overwrite(["scheme", "font", "family"])
+  defaultPrefs["scheme"]["font"]["family"] = "UbuntuMono".newTNode()
 
-#   check prefs.content == prefs.table
+  check prefs.content == defaultPrefs
 
-#   prefs.overwrite(toToml({"theme": "dark"}).getObject())
-#   prefs.table = toToml({"theme": "dark"}).getObject()
+  prefs.overwrite(toToml({"theme": "dark"}))
+  defaultPrefs = toToml({"theme": "dark"})
 
-#   check prefs.content == prefs.table
+  check prefs.content == defaultPrefs

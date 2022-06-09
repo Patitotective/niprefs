@@ -1,8 +1,9 @@
 import std/[strformat, options, tables, macros]
 
-import toml_serialization, toml_serialization/value_ops
+import toml_serialization
+import toml_serialization/value_ops
 
-export value_ops
+export value_ops except len
 
 type
   TomlArray* = seq[TomlValueRef]
@@ -60,6 +61,9 @@ proc newTNode*(val: TomlTables): TomlValueRef =
   newTTables(val)
 
 proc newTNode*(val: TomlTableRef): TomlValueRef = 
+  newTTable(val)
+
+proc newTNode*(val: openArray[(string, TomlValueRef)]): TomlValueRef = 
   newTTable(val)
 
 proc newTNode*(val: TomlValueRef): TomlValueRef = val
@@ -209,35 +213,8 @@ proc `$`*(node: TomlValueRef): string =
   else:
     $node[]
 
-proc `==`*(node1, node2: TomlValue): bool = 
-  assert node1.kind == node2.kind
-
-  case node1.kind
-  of TomlKind.Int:
-    result = node1.intVal == node2.intVal
-  of TomlKind.Float:
-    result = node1.floatVal == node2.floatVal
-  of TomlKind.Bool:
-    result = node1.boolVal == node2.boolVal
-  of TomlKind.DateTime:
-    result = node1.dateTime == node2.dateTime
-  of TomlKind.String:
-    result = node1.stringVal == node2.stringVal
-  of TomlKind.Array:
-    result = node1.arrayVal == node2.arrayVal
-  of TomlKind.Tables: 
-    result = node1.tablesVal == node2.tablesVal
-  of TomlKind.Table, TomlKind.InlineTable:
-    result = node1.tableVal == node2.tableVal
-
-proc `==`*[T: not TomlValue](node: TomlValue, val: T): bool = 
-  node == val.newTNode()
-
-proc `==`*(node1, node2: TomlValueRef): bool = 
-  node1[] == node2[]
-
 proc `==`*[T: not TomlValueRef](node: TomlValueRef, val: T): bool = 
-  node[] == val
+  node == val.newTNode()
 
 proc tDateTime*(date: Option[TomlDate] = none(TomlDate), time: Option[TomlTime] = none(TomlTime), zone: Option[TomlTimeZone] = none(TomlTimeZone)): TomlDateTime = 
   TomlDateTime(date: date, time: time, zone: zone)
@@ -259,6 +236,18 @@ proc tTime*(source: string): TomlTime =
 
 proc tTimeZone*(positiveShift = false, hourShift, minuteShift: int = 0): TomlTimeZone = 
   TomlTimeZone(positiveShift: positiveShift, hourShift: hourShift, minuteShift: minuteShift)
+
+proc len*(node: TomlValueRef): int = 
+  assert node.kind in {TomlKind.Array, TomlKind.Tables, TomlKind.Table}
+
+  case node.kind
+  of TomlKind.Array:
+    result = node.arrayVal.len
+  of TomlKind.Tables:
+    result = node.tablesVal.len
+  of TomlKind.Table:
+    result = node.tableVal.len
+  else: discard
 
 proc add*(node: TomlValueRef, table: TomlTableRef) = 
   assert node.kind == TomlKind.Tables
@@ -283,10 +272,24 @@ proc delete*(node: TomlValueRef, index: int) =
     node.arrayVal.delete(index)
   of TomlKind.Tables:
     node.tablesVal.delete(index)
+  else: discard
 
 proc contains*[T: not TomlValueRef](node: TomlValueRef, val: T): bool =
   assert node.kind == TomlKind.Array
   val.newTNode() in node
+
+proc hasKey*(node: TomlValueRef, keys: varargs[string]): bool = 
+  ## Traverses the node and checks if the given key exists.
+  assert node.kind == TomlKind.Table
+
+  var table = node
+  for key in keys:
+    if key notin table:
+      return false
+
+    table = table[key]
+
+  result = true
 
 iterator items*(node: TomlValueRef): TomlValueRef = 
   assert node.kind in {TomlKind.Array, TomlKind.Tables}

@@ -1,124 +1,144 @@
-## NiPrefs is a library that offers a dynamic preferences-system in a text file within a table-like structure.
-## It stores the preferences in an `OrderedTable[string, PrefsNode]`, where `PrefsNode` is an object variation that supports the following types:  
-## - `nil`
-## - `int`
-## - `seq` (there are no arrays)
-## - `bool`
-## - `char`
-## - `float`
-## - `string` (and raw strings)
-## - `set[char]`
-## - `set[byte]`
-## - Objects and tables
+## niprefs is a simple way to manage your application preferences (or configuration) using TOML.
 
-## # Syntax
-## NiPrefs writes the preferences down to a text file using a pretty straightforward syntax that goes like this:
-## ```nim
-## # Comment
-## # key=val
-## lang="en" # Keys do not require quotes
-## dark=false
-## scheme=> # Nested objects are defined with a greater than symbol and indentation-in
-##   background="#ffffff" # background belongs to scheme
-##   font=>
-##     family="UbuntuMono" # scheme/font/family
-##     size=15
-##     color="#000000"
-## users={"ElegantBeef": 28, "Rika": 22, "hmmm": 0x0} # Tables are also supported (and keys do require quotes inside tables)
+## # TOML Syntax
+## A config file format for humans. 
+## ```toml
+## # This is a TOML document
+## 
+## title = "TOML Example"
+## 
+## [owner]
+## name = "Tom Preston-Werner"
+## dob = 1979-05-27T07:32:00-08:00
+## 
+## [database]
+## enabled = true
+## ports = [ 8000, 8001, 8002 ]
+## data = [ ["delta", "phi"], [3.14] ]
+## temp_targets = { cpu = 79.5, case = 72.0 }
+## 
+## [servers]
+## 
+## [servers.alpha]
+## ip = "10.0.0.1"
+## role = "frontend"
+## 
+## [servers.beta]
+## ip = "10.0.0.2"
+## role = "backend"
 ## ```
 
 ## # Basic usage
-## To generate a `OrderedTable[string, PrefsNode]` or a `PrefsNode` you may want to use the [toPrefs](prefsnode.html#toPrefs.m%2Cuntyped) macro.
-
+## A `Prefs` object requires a `path` and a `default` preferences. A TOML file is created at `path` with `default` whenever it's not found, if it exists it will read it.  
+## To access the actual preferences (not the default) you may want to use `Prefs.content` and at the end of your program call `Prefs.save()` to update the preferences file.
+## 
+## `toToml` is a helpful macro to define your default preferences.  
+## Instead of having to write:
+## ```nim
+## {"a": [1.newTInt(), 2.newTInt()].newTArray()}.newTTable()
+## ```
+## Using the `toToml` it's just as easy as writing:
+## ```nim
+## toToml {a: [1, 2]}
+## ```
 runnableExamples:
-  var prefs = toPrefs({
-    "lang": "en", # Keys do not require quotes when using toPrefs macro.
-    dark: true,
-    keybindings: {:},
-    scheme: {
-      background: "#000000",
-      font: {
-        size: 15,
-        family: "UbuntuMono",
-        color: "#73D216"
+  let prefs = initPrefs(
+    path = "prefs.toml", 
+    default = toToml {
+      "lang": "en", # Keys do not require quotes when using toToml macro.
+      dark: true,
+      keybindings: {:},
+      scheme: {
+        background: "#000000",
+        font: {
+          size: 15,
+          family: "UbuntuMono",
+          color: "#73D216"
+        }
       }
     }
-  }).initPrefs(path = "settings.niprefs")
-
-## After the above example, a new `settings.niprefs` file should be created:
+  )
+## After the above example, a new `prefs.toml` file should be created:
 ## ```nim
-## #NiPrefs
-## lang="en"
-## dark=true
-## keybindings={:}
-## scheme=>
-##   background="#000000"
-##   font=>
-##     size=15
-##     family="UbuntuMono"
-##     color="#73D216"
+##   lang="en"
+##   dark=true
+##   scheme.background="#000000"
+##   scheme.font.color="#73D216"
+##   scheme.font.family="UbuntuMono"
+##   scheme.font.size=15
+## [keybindings]
 ## ```
 ##
-## ### Why does the niprefs file doesn't change if I change the toPrefs macro?
-## Well, niprefs is meant to be used as a preferences system, what that means is that the file is created with the default values if it doesn't exist.  
-## If it does exist, it just reads it. If you want to reset the file with the default prefs manually, you may use [overwrite](Prefs.html#overwrite%2CPrefs%2CPObjectType).  
-
-
 ## ## Reading
-## To read a key from your preferences file you can access to it as it were a table:
+## You can access `prefs.content`
+## ```nim
+## assert prefs.content["lang"] == "en"
+## ```
+## But `Prefs` has some helper procedures to access `content` so you don't need to write `prefs.content[]` you can just `prefs[]`:
 ## ```nim
 ## assert prefs["lang"] == "en"
 ## ```
-## To read a nested key you must use something called *key paths*, which are in essence a path to a nested key separated by a slash `/`.
-##
-## Or you can pass the *key path* separated by a comma:
+## To read a nested key you can use the `{}` operator:
 ## ```nim
-## assert prefs["scheme/font/family"] == "UbuntuMono" # Same as prefs["scheme"]["font"]["family"]
-## assert prefs["scheme", "font", "family"] == "UbuntuMono"
+## assert prefs{"scheme", "font", "family"} == "UbuntuMono" # This acceses prefs.content
+## assert prefs["scheme"]["font"]["family"] == "UbuntuMono" # This acceses prefs.content
 ## ```
-
+##
 ## ## Writing
-## To change the value of a key or create a new one you can do it as it were table:
 ## ```nim
-## prefs["lang"] = "es"
+## prefs["lang"] = "es" # Same as prefs.content["lang"] = "es"
 ## assert prefs["lang"] == "es"
 ## ```
 ## Same with nested keys:
 ## ```nim
-## prefs["scheme/font/size"] = 20 # prefs["scheme"]["font"]["size"] = 20 wont' work
-## assert prefs["scheme/font/size"] == 20
-## prefs["scheme", "font", "size"] = 21
-## assert prefs["scheme", "font", "size"] == 21
-## ```
-
-## ## Removing
-## To remove a key from your preferences you can use either `del` or `pop`:
-## - [del](#del%2CPrefs%2Cstring) deletes the `key` **if** it exists, does nothing if it does not.
-## - [pop](#pop%2CPrefs%2Cstring%2CPrefsNode) deletes the `key`, returns true if it existed and sets `val` to the value that the `key` had. Otherwise, returns false, and `val` is unchanged.
-## ```nim
-## prefs.del("lang")
-## assert "lang" notin prefs
+## prefs{"scheme", "font", "size"} = 20 
+## assert prefs{"scheme", "font", "size"} == 20
 ## 
-## var val: PrefsNode
-## prefs.pop("scheme/font/size")
-## assert val == 20
+## prefs["scheme"]["font"]["size"] = 10
+## assert prefs["scheme"]["font"]["size"] == 10
+## ```
+##
+## ## Removing
+## ```nim
+## assert "lang" in prefs
+## 
+## prefs.delete("lang")
+## 
+## assert "lang" notin prefs
+## ```
+## ## Overwriting
+## To reset a key to its default value or reset the whole preferences use `Prefs.overwrite()`:
+## ```nim
+## assert prefs["lang"] == "en"
+## prefs["lang"] = "es"
+## prefs.overwrite("lang")
+## assert prefs["lang"] == "en"
+## ```
+## Nested key:
+## ```nim
+## assert prefs{"scheme", "font", "size"} == 15
+## prefs{"scheme", "font", "size"} = 20
+## prefs.overwrite(["scheme", "font", "size"])
+## assert prefs{"scheme", "font", "size"} == 15
+## ```
+## Whole file:
+## ```nim
+## prefs["lang"] = "es"
+## prefs["dark"] = false
+## 
+## prefs.overwrite()
+## 
+## assert prefs["lang"] == "en"
+## assert prefs["dark"] == true
 ## ```
 
-## ## More
-## There are more useful procedures.
-##
-## Check them here:
-## - [writeMany](Prefs.html#writeMany%2CPrefs%2CPObjectType)
-## - [clear](#clear%2CPrefs)
-## - [overwrite](Prefs.html#overwrite%2CPrefs%2Cstring)
-## - [delete](Prefs.html#delete%2CPrefs)
-## - [parsePrefs](parser/parser.html#parsePrefs%2Cstring)
-## - [readPrefs](parser/parser.html#readPrefs%2Cstring)
 import std/os
 import toml_serialization
 
 import niprefs/node
+
 export node
+export toml_serialization
 
 type
   Prefs* = object
@@ -137,7 +157,7 @@ proc initPrefs*(path: string, default: TomlValueRef): Prefs =
   result = Prefs(path: path, default: default.copy())
 
   if not path.fileExists:
-    result.content = default
+    result.content = default.copy()
     result.save()
 
   result.content = Toml.loadFile(result.path, TomlValueRef)
@@ -183,7 +203,7 @@ proc len*(prefs: Prefs): int =
 
   prefs.content.len
 
-proc delete*(prefs: var Prefs, key: string) =
+proc delete*(prefs: Prefs, key: string) =
   runnableExamples:
     var prefs = initPrefs("prefs.toml", toToml({"lang": "en", "theme": "dark"}))
 
@@ -215,10 +235,10 @@ proc contains*(prefs: Prefs, key: string): bool =
 
   prefs.hasKey(key)
 
-proc overwrite*(prefs: var Prefs, key: string) =
+proc overwrite*(prefs: Prefs, key: string) =
   ## Overwrites `key` in the niprefs file with it's default value from `prefs.default`.
   runnableExamples:
-    var prefs = initPrefs("prefs.toml", toToml({"lang": "en", "theme": "dark"}))
+    let prefs = initPrefs("prefs.toml", toToml({"lang": "en", "theme": "dark"}))
 
     prefs.overwrite() # Ignore this line
 
@@ -232,6 +252,25 @@ proc overwrite*(prefs: var Prefs, key: string) =
 
   assert key in prefs.default
   prefs.content[key] = prefs.default[key]
+
+proc overwrite*(prefs: Prefs, keys: openArray[string]) =
+  ## Traverses the node and overwrites the given value with it's default value from `prefs.default`.
+  runnableExamples:
+    let prefs = initPrefs("prefs.toml", toToml({"lang": "en", "theme": "dark"}))
+
+    prefs.overwrite() # Ignore this line
+
+    prefs["lang"] = "en"
+    prefs["theme"] = "light"
+
+    prefs.overwrite("lang")
+
+    assert prefs["lang"] == "es" # "es" is the default value
+    assert prefs["theme"] == "light" # "theme" was not overwritten
+
+  assert prefs.default.hasKey(keys)
+  
+  prefs.content{keys} = prefs.default{keys}
 
 proc overwrite*(prefs: var Prefs, table: TomlValueRef = prefs.default) =
   ## Overwrites the whole niprefs file with `table`.
@@ -248,4 +287,4 @@ proc overwrite*(prefs: var Prefs, table: TomlValueRef = prefs.default) =
     assert prefs.get("lang") == "es" # "es" is the default value
     assert prefs.get("theme") == "dark" # "dark" is the default value
 
-  prefs.content = table
+  prefs.content = table.copy()
