@@ -11,3 +11,6 @@ srcDir = "src"
 
 requires "nim >= 1.6.1"
 requires "npeg >= 0.26.0"
+
+task docs, "Generate documentation":
+  exec "nim doc --git.url:https://github.com/Patitotective/niprefs --git.commit:main --project --outdir:docs src/niprefs.nim"

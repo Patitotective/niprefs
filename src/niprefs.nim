@@ -238,7 +238,7 @@ proc contains*(prefs: Prefs, key: string): bool =
 proc overwrite*(prefs: Prefs, key: string) =
   ## Overwrites `key` in the niprefs file with it's default value from `prefs.default`.
   runnableExamples:
-    let prefs = initPrefs("prefs.toml", toToml({"lang": "en", "theme": "dark"}))
+    var prefs = initPrefs("prefs.toml", toToml({"lang": "es", "theme": "dark"}))
 
     prefs.overwrite() # Ignore this line
 
@@ -256,17 +256,15 @@ proc overwrite*(prefs: Prefs, key: string) =
 proc overwrite*(prefs: Prefs, keys: openArray[string]) =
   ## Traverses the node and overwrites the given value with it's default value from `prefs.default`.
   runnableExamples:
-    let prefs = initPrefs("prefs.toml", toToml({"lang": "en", "theme": "dark"}))
+    var prefs = initPrefs("prefs.toml", toToml({"scheme": {"font": "UbuntuMono"}}))
 
     prefs.overwrite() # Ignore this line
 
-    prefs["lang"] = "en"
-    prefs["theme"] = "light"
+    prefs{"scheme", "font"} = "ProggyClean Vector"
 
-    prefs.overwrite("lang")
+    prefs.overwrite(["scheme", "font"])
 
-    assert prefs["lang"] == "es" # "es" is the default value
-    assert prefs["theme"] == "light" # "theme" was not overwritten
+    assert prefs{"scheme", "font"} == "UbuntuMono" # "UbuntuMono" is the default value
 
   assert prefs.default.hasKey(keys)
   
@@ -275,7 +273,7 @@ proc overwrite*(prefs: Prefs, keys: openArray[string]) =
 proc overwrite*(prefs: var Prefs, table: TomlValueRef = prefs.default) =
   ## Overwrites the whole niprefs file with `table`.
   runnableExamples:
-    var prefs = initPrefs("settings.niprefs", toToml({lang: "es", theme: "dark"}))
+    var prefs = initPrefs("prefs.toml", toToml({lang: "es", theme: "dark"}))
     
     prefs.overwrite() # Ignore this line
 
@@ -284,7 +282,7 @@ proc overwrite*(prefs: var Prefs, table: TomlValueRef = prefs.default) =
 
     prefs.overwrite()
 
-    assert prefs.get("lang") == "es" # "es" is the default value
-    assert prefs.get("theme") == "dark" # "dark" is the default value
+    assert prefs["lang"] == "es" # "es" is the default value
+    assert prefs["theme"] == "dark" # "dark" is the default value
 
   prefs.content = table.copy()
