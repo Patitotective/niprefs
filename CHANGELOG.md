@@ -1,5 +1,11 @@
 # CHANGELOG
 
+### v0.3.1
+- Renamed `niprefs/node` to `niprefs/nodeutils`.
+- New `toTTables` macro and `toTTable` template.
+- More support for `TomlValueRef(kind: TomlKind.Tables)`.
+- Added nil assertions.
+
 ### v0.3.0
 - Totally removed prefs parser, now using TOML.
 - Not reading nor updating the file everytime you read it or write it anymore. Now using `content` field and the user must manually `save` it at the end to update the prefs file.

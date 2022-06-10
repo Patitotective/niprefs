@@ -132,13 +132,12 @@ runnableExamples:
 ## assert prefs["dark"] == true
 ## ```
 
-import std/os
+import std/[tables, os]
 import toml_serialization
 
-import niprefs/node
+import niprefs/nodeutils
 
-export node
-export toml_serialization
+export toml_serialization, nodeutils, tables
 
 type
   Prefs* = object
