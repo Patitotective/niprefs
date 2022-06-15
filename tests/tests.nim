@@ -51,7 +51,7 @@ test "contains and len":
   check prefs.len == defaultPrefs.len
 
 test "can do stuff with nodes":
-  var node = prefs["test"]
+  var node = prefs["test"].copy()
 
   node["c"][1] = 3
   node["c"][2] = newTInt(4)
