@@ -150,7 +150,11 @@ window.addEventListener('DOMContentLoaded', main);
 
   </ul>
   <ul class="simple nested-toc-section">add
-      <li><a class="reference" href="#add%2CTomlValueRef%2CTomlTableRef"
+      <li><a class="reference" href="#add%2CTomlValueRef%2Cchar"
+    title="add(node: TomlValueRef; chr: char)">add(node: TomlValueRef; chr: char)</a></li>
+  <li><a class="reference" href="#add%2CTomlValueRef%2Cstring"
+    title="add(node: TomlValueRef; str: string)">add(node: TomlValueRef; str: string)</a></li>
+  <li><a class="reference" href="#add%2CTomlValueRef%2CTomlTableRef"
     title="add(node: TomlValueRef; table: TomlTableRef)">add(node: TomlValueRef; table: TomlTableRef)</a></li>
   <li><a class="reference" href="#add%2CTomlValueRef%2CTomlValueRef"
     title="add(node: TomlValueRef; val: TomlValueRef)">add(node: TomlValueRef; val: TomlValueRef)</a></li>
@@ -159,8 +163,14 @@ window.addEventListener('DOMContentLoaded', main);
 
   </ul>
   <ul class="simple nested-toc-section">contains
-      <li><a class="reference" href="#contains%2CTomlValueRef%2CTomlTableRef"
+      <li><a class="reference" href="#contains%2CTomlValueRef%2Cchar"
+    title="contains(node: TomlValueRef; chr: char): bool">contains(node: TomlValueRef; chr: char): bool</a></li>
+  <li><a class="reference" href="#contains%2CTomlValueRef%2Cstring"
+    title="contains(node: TomlValueRef; str: string): bool">contains(node: TomlValueRef; str: string): bool</a></li>
+  <li><a class="reference" href="#contains%2CTomlValueRef%2CTomlTableRef"
     title="contains(node: TomlValueRef; val: TomlTableRef): bool">contains(node: TomlValueRef; val: TomlTableRef): bool</a></li>
+  <li><a class="reference" href="#contains%2CTomlValueRef%2CTomlValueRef"
+    title="contains(node: TomlValueRef; val: TomlValueRef): bool">contains(node: TomlValueRef; val: TomlValueRef): bool</a></li>
   <li><a class="reference" href="#contains%2CTomlValueRef%2CT"
     title="contains[T: not TomlValueRef](node: TomlValueRef; val: T): bool">contains[T: not TomlValueRef](node: TomlValueRef; val: T): bool</a></li>
 
@@ -589,15 +599,39 @@ class="link-seesrc" target="_blank">Source</a>
 
 </dd>
 </div>
+<div id="add,TomlValueRef,char">
+<dt><pre><span class="Keyword">proc</span> <a href="#add%2CTomlValueRef%2Cchar"><span class="Identifier">add</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Identifier">TomlValueRef</span><span class="Other">;</span> <span class="Identifier">chr</span><span class="Other">:</span> <span class="Identifier">char</span><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L305"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L305" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="add,TomlValueRef,string">
+<dt><pre><span class="Keyword">proc</span> <a href="#add%2CTomlValueRef%2Cstring"><span class="Identifier">add</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Identifier">TomlValueRef</span><span class="Other">;</span> <span class="Identifier">str</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L300"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L300" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
 <div id="add,TomlValueRef,TomlTableRef">
 <dt><pre><span class="Keyword">proc</span> <a href="#add%2CTomlValueRef%2CTomlTableRef"><span class="Identifier">add</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Identifier">TomlValueRef</span><span class="Other">;</span> <span class="Identifier">table</span><span class="Other">:</span> <span class="Identifier">TomlTableRef</span><span class="Other">)</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L285"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L287"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L285" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L287" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -607,9 +641,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L290"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L292"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L290" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L292" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -619,9 +653,33 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L295"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L297"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L295" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L297" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="contains,TomlValueRef,char">
+<dt><pre><span class="Keyword">proc</span> <a href="#contains%2CTomlValueRef%2Cchar"><span class="Identifier">contains</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Identifier">TomlValueRef</span><span class="Other">;</span> <span class="Identifier">chr</span><span class="Other">:</span> <span class="Identifier">char</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L339"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L339" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="contains,TomlValueRef,string">
+<dt><pre><span class="Keyword">proc</span> <a href="#contains%2CTomlValueRef%2Cstring"><span class="Identifier">contains</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Identifier">TomlValueRef</span><span class="Other">;</span> <span class="Identifier">str</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L329"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L329" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -632,9 +690,22 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L308"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L319"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L308" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L319" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+</div>
+<div id="contains,TomlValueRef,TomlValueRef">
+<dt><pre><span class="Keyword">proc</span> <a href="#contains%2CTomlValueRef%2CTomlValueRef"><span class="Identifier">contains</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Identifier">TomlValueRef</span><span class="Other">;</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">TomlValueRef</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.
+    <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">]</span></span>.}</pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L324"
+class="link-seesrc" target="_blank">Source</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L324" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -644,9 +715,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L313"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L344"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L313" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L344" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -656,9 +727,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L298"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L309"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L298" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L309" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -765,9 +836,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Traverses the node and checks if the given key exists.
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L316"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L347"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L316" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L347" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1124,9 +1195,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L329"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L360"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L329" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L360" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1137,9 +1208,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L339"
+href="https://github.com/Patitotective/niprefs/tree/main/src/niprefs/nodeutils.nim#L370"
 class="link-seesrc" target="_blank">Source</a>
-&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L339" class="link-seesrc" target="_blank" >Edit</a>
+&nbsp;&nbsp;<a href="https://github.com/Patitotective/niprefs/edit/devel/src/niprefs/nodeutils.nim#L370" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 </div>
@@ -1214,7 +1285,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2022-06-10 02:17:32 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2022-06-15 02:14:55 UTC</small>
       </div>
     </div>
   </div>

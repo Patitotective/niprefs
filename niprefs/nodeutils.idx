@@ -55,8 +55,13 @@ len	niprefs/nodeutils.html#len,TomlValueRef	nodeutils: len(node: TomlValueRef): 
 add	niprefs/nodeutils.html#add,TomlValueRef,TomlTableRef	nodeutils: add(node: TomlValueRef; table: TomlTableRef)	
 add	niprefs/nodeutils.html#add,TomlValueRef,TomlValueRef	nodeutils: add(node: TomlValueRef; val: TomlValueRef)	
 add	niprefs/nodeutils.html#add,TomlValueRef,T	nodeutils: add[T: not TomlValueRef](node: TomlValueRef; val: T)	
+add	niprefs/nodeutils.html#add,TomlValueRef,string	nodeutils: add(node: TomlValueRef; str: string)	
+add	niprefs/nodeutils.html#add,TomlValueRef,char	nodeutils: add(node: TomlValueRef; chr: char)	
 delete	niprefs/nodeutils.html#delete,TomlValueRef,int	nodeutils: delete(node: TomlValueRef; index: int)	
 contains	niprefs/nodeutils.html#contains,TomlValueRef,TomlTableRef	nodeutils: contains(node: TomlValueRef; val: TomlTableRef): bool	
+contains	niprefs/nodeutils.html#contains,TomlValueRef,TomlValueRef	nodeutils: contains(node: TomlValueRef; val: TomlValueRef): bool	
+contains	niprefs/nodeutils.html#contains,TomlValueRef,string	nodeutils: contains(node: TomlValueRef; str: string): bool	
+contains	niprefs/nodeutils.html#contains,TomlValueRef,char	nodeutils: contains(node: TomlValueRef; chr: char): bool	
 contains	niprefs/nodeutils.html#contains,TomlValueRef,T	nodeutils: contains[T: not TomlValueRef](node: TomlValueRef; val: T): bool	
 hasKey	niprefs/nodeutils.html#hasKey,TomlValueRef,varargs[string]	nodeutils: hasKey(node: TomlValueRef; keys: varargs[string]): bool	
 items	niprefs/nodeutils.html#items.i,TomlValueRef	nodeutils: items(node: TomlValueRef): TomlValueRef	
