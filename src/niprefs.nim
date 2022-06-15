@@ -133,11 +133,12 @@ runnableExamples:
 ## ```
 
 import std/[tables, os]
-import toml_serialization
+import toml_serialization except `$`
 
 import niprefs/nodeutils
 
-export toml_serialization, nodeutils, tables
+export toml_serialization except `$`
+export nodeutils, tables
 
 type
   Prefs* = object

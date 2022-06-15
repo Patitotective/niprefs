@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### v0.3.3
+- Not exporting `$` toml_serialization procedure.
+
 ### v0.3.2
 - Added `len` procedure for `TomlKind.String`.
 - Added `add` procedure for `TomlKind.String`.
