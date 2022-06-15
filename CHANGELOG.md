@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### v0.3.2
+- Added `len` procedure for `TomlKind.String`.
+- Added `add` procedure for `TomlKind.String`.
+- Added `contains` procedure for `TomlKind.String`
+
 ### v0.3.1
 - Renamed `niprefs/node` to `niprefs/nodeutils`.
 - New `toTTables` macro and `toTTable` template.

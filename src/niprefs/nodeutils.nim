@@ -1,9 +1,9 @@
-import std/[strformat, tables, macros]
+import std/[strformat, strutils, tables, macros]
 
 import toml_serialization
 import toml_serialization/value_ops
 
-export value_ops except len, `[]`
+export value_ops except len, `[]`, contains
 
 type
   TomlArray* = seq[TomlValueRef]
@@ -271,7 +271,7 @@ proc tTimeZone*(positiveShift = false, hourShift, minuteShift: int = 0): TomlTim
   TomlTimeZone(positiveShift: positiveShift, hourShift: hourShift, minuteShift: minuteShift)
 
 proc len*(node: TomlValueRef): int = 
-  node.assertKind TomlKind.Array, TomlKind.Tables, TomlKind.Table
+  node.assertKind TomlKind.Array, TomlKind.Tables, TomlKind.Table, TomlKind.String
 
   case node.kind
   of TomlKind.Array:
@@ -280,6 +280,8 @@ proc len*(node: TomlValueRef): int =
     result = node.tablesVal.len
   of TomlKind.Table:
     result = node.tableVal.len
+  of TomlKind.String:
+    result = node.stringVal.len
   else: discard
 
 proc add*(node: TomlValueRef, table: TomlTableRef) = 
@@ -294,6 +296,15 @@ proc add*(node: TomlValueRef, val: TomlValueRef) =
 
 proc add*[T: not TomlValueRef](node: TomlValueRef, val: T) = 
   node.add(val.newTNode())
+
+proc add*(node: TomlValueRef, str: string) = 
+  node.assertKind TomlKind.String
+
+  node.stringVal.add str
+
+proc add*(node: TomlValueRef, chr: char) = 
+  node.assertKind TomlKind.String
+  node.stringVal.add chr
 
 proc delete*(node: TomlValueRef, index: int) = 
   node.assertKind TomlKind.Array, TomlKind.Tables
@@ -310,8 +321,28 @@ proc contains*(node: TomlValueRef, val: TomlTableRef): bool =
 
   val in node.tablesVal
 
+proc contains*(node: TomlValueRef, val: TomlValueRef): bool = 
+  node.assertKind TomlKind.Array
+
+  val in node.arrayVal
+
+proc contains*(node: TomlValueRef, str: string): bool = 
+  node.assertKind TomlKind.String, TomlKind.Table
+
+  case node.kind
+  of TomlKind.String:
+    result = str in node.stringVal
+  of TomlKind.Table:
+    result = str in node.tableVal
+  else: discard
+
+proc contains*(node: TomlValueRef, chr: char): bool = 
+  node.assertKind TomlKind.String
+
+  chr in node.stringVal
+
 proc contains*[T: not TomlValueRef](node: TomlValueRef, val: T): bool =
-  val.newTNode() in node
+  nodeutils.contains(node, val.newTNode())
 
 proc hasKey*(node: TomlValueRef, keys: varargs[string]): bool = 
   ## Traverses the node and checks if the given key exists.
