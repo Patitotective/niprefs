@@ -298,9 +298,14 @@ proc add*[T: not TomlValueRef](node: TomlValueRef, val: T) =
   node.add(val.newTNode())
 
 proc add*(node: TomlValueRef, str: string) = 
-  node.assertKind TomlKind.String
+  node.assertKind TomlKind.Array, TomlKind.String
 
-  node.stringVal.add str
+  case node.kind
+  of TomlKind.Array:
+    node.arrayVal.add(str.newTString())
+  of TomlKind.String:
+    node.stringVal.add str
+  else: discard
 
 proc add*(node: TomlValueRef, chr: char) = 
   node.assertKind TomlKind.String

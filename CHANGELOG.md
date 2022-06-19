@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### v0.3.4
+- Updated `toml_serialization` dependency to `v0.2.3`
+- Added support for `array.add "string"`.
+- Improved tests.
+
 ### v0.3.3
 - Not exporting `$` toml_serialization procedure.
 
