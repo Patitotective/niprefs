@@ -63,7 +63,7 @@ Check the [docs](https://patitotective.github.io/niprefs) for more.
 - Docs: https://patitotective.github.io/niprefs.
 - Nimble: https://nimble.directory/pkg/niprefs.
 - GitHub: https://github.com/Patitotective/niprefs.
-- Discord: https://discord.gg/as85Q4GnR6.
+- Discord: https://discord.gg/gdcPVjazCG.
 
 Contact me:
 - Discord: [**Patitotective#0127**](https://discord.com/users/762008715162419261).
