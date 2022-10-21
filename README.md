@@ -48,7 +48,7 @@ var prefs = initPrefs(
 prefs["lang"] = "es"
 assert prefs["lang"] == "es"
 
-prefs.delelete("lang")
+prefs.delete("lang")
 
 assert "lang" notin prefs
 
