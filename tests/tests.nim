@@ -2,8 +2,8 @@
 
 import std/[unittest]
 import niprefs
-
 const path = "Prefs/subdir/settings.toml"
+# FIXME TESTS DO NOT INCLUDE nodeutils!!!!!!!!!!!!
 
 let defaultPrefs = toToml {
   lang: "en", 
