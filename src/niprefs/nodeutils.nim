@@ -235,7 +235,7 @@ proc `$`*(node: TomlValue): string =
   of TomlKind.String:
     result.addQuoted node.stringVal
   of TomlKind.Array:
-    result = $node.arrayVal:
+    result = $node.arrayVal
   of TomlKind.Tables:
     result = $node.tablesVal
   of TomlKind.Table, TomlKind.InlineTable:
