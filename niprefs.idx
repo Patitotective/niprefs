@@ -1,25 +1,30 @@
-Prefs	niprefs.html#Prefs	niprefs: Prefs	
-save	niprefs.html#save,Prefs	niprefs: save(prefs: Prefs)	
-initPrefs	niprefs.html#initPrefs,string,TomlValueRef	niprefs: initPrefs(path: string; default: TomlValueRef): Prefs	
-remove	niprefs.html#remove,Prefs	niprefs: remove(prefs: Prefs)	
-default	niprefs.html#default,Prefs	niprefs: default(prefs: Prefs): TomlValueRef	
-`$`	niprefs.html#$,Prefs	niprefs: `$`(prefs: Prefs): string	
-`[]`	niprefs.html#[],Prefs,string	niprefs: `[]`(prefs: Prefs; key: string): TomlValueRef	
-`{}`	niprefs.html#{},Prefs,varargs[string]	niprefs: `{}`(prefs: Prefs; keys: varargs[string]): TomlValueRef	
-`[]=`	niprefs.html#[]=,Prefs,string,TomlValueRef	niprefs: `[]=`(prefs: Prefs; key: string; val: TomlValueRef)	
-`{}=`	niprefs.html#{}=,Prefs,varargs[string],TomlValueRef	niprefs: `{}=`(prefs: Prefs; keys: varargs[string]; val: TomlValueRef)	
-`[]=`	niprefs.html#[]=,Prefs,string,T	niprefs: `[]=`[T: not TomlValueRef](prefs: Prefs; key: string; val: T)	
-`{}=`	niprefs.html#{}=,Prefs,varargs[string],T	niprefs: `{}=`[T: not TomlValueRef](prefs: Prefs; keys: varargs[string]; val: T)	
-len	niprefs.html#len,Prefs	niprefs: len(prefs: Prefs): int	
-delete	niprefs.html#delete,Prefs,string	niprefs: delete(prefs: Prefs; key: string)	
-hasKey	niprefs.html#hasKey,Prefs,string	niprefs: hasKey(prefs: Prefs; key: string): bool	
-hasKey	niprefs.html#hasKey,Prefs,varargs[string]	niprefs: hasKey(prefs: Prefs; keys: varargs[string]): bool	
-contains	niprefs.html#contains,Prefs,string	niprefs: contains(prefs: Prefs; key: string): bool	
-overwrite	niprefs.html#overwrite,Prefs,string	niprefs: overwrite(prefs: Prefs; key: string)	
-overwrite	niprefs.html#overwrite,Prefs,openArray[string]	niprefs: overwrite(prefs: Prefs; keys: openArray[string])	
-overwrite	niprefs.html#overwrite,Prefs,TomlValueRef	niprefs: overwrite(prefs: var Prefs; table: TomlValueRef = prefs.default)	
-TOML Syntax	niprefs.html#toml-syntax	 TOML Syntax	
-Basic usage	niprefs.html#basic-usage	 Basic usage	
-Reading	niprefs.html#basic-usage-reading	  Reading	
-Writing	niprefs.html#basic-usage-writing	  Writing	
-Removing	niprefs.html#basic-usage-removing	  Removing	
+nimTitle	niprefs	niprefs.html	module src/niprefs		0
+nim	Prefs	niprefs.html#Prefs	object Prefs		144
+nim	save	niprefs.html#save,Prefs	proc save(prefs: Prefs)		149
+nim	initPrefs	niprefs.html#initPrefs,string,TomlValueRef	proc initPrefs(path: string; default: TomlValueRef): Prefs		153
+nim	remove	niprefs.html#remove,Prefs	proc remove(prefs: Prefs)		165
+nim	default	niprefs.html#default,Prefs	proc default(prefs: Prefs): TomlValueRef		170
+nim	`$`	niprefs.html#$,Prefs	proc `$`(prefs: Prefs): string		173
+nim	`[]`	niprefs.html#[],Prefs,string	proc `[]`(prefs: Prefs; key: string): TomlValueRef		184
+nim	`{}`	niprefs.html#{},Prefs,varargs[string]	proc `{}`(prefs: Prefs; keys: varargs[string]): TomlValueRef		187
+nim	`[]=`	niprefs.html#[]=,Prefs,string,TomlValueRef	proc `[]=`(prefs: Prefs; key: string; val: TomlValueRef)		190
+nim	`{}=`	niprefs.html#{}=,Prefs,varargs[string],TomlValueRef	proc `{}=`(prefs: Prefs; keys: varargs[string]; val: TomlValueRef)		193
+nim	`[]=`	niprefs.html#[]=,Prefs,string,T	proc `[]=`[T: not TomlValueRef](prefs: Prefs; key: string; val: T)		196
+nim	`{}=`	niprefs.html#{}=,Prefs,varargs[string],T	proc `{}=`[T: not TomlValueRef](prefs: Prefs; keys: varargs[string]; val: T)		199
+nim	len	niprefs.html#len,Prefs	proc len(prefs: Prefs): int		202
+nim	delete	niprefs.html#delete,Prefs,string	proc delete(prefs: Prefs; key: string)		212
+nim	hasKey	niprefs.html#hasKey,Prefs,string	proc hasKey(prefs: Prefs; key: string): bool		224
+nim	hasKey	niprefs.html#hasKey,Prefs,varargs[string]	proc hasKey(prefs: Prefs; keys: varargs[string]): bool		234
+nim	contains	niprefs.html#contains,Prefs,string	proc contains(prefs: Prefs; key: string): bool		244
+nim	overwrite	niprefs.html#overwrite,Prefs,string	proc overwrite(prefs: Prefs; key: string)		254
+nim	overwrite	niprefs.html#overwrite,Prefs,openArray[string]	proc overwrite(prefs: Prefs; keys: openArray[string])		272
+nim	overwrite	niprefs.html#overwrite,Prefs,TomlValueRef	proc overwrite(prefs: var Prefs; table: TomlValueRef = prefs.default)		289
+nimgrp	overwrite	niprefs.html#overwrite-procs-all	proc		254
+nimgrp	{}=	niprefs.html#{}=-procs-all	proc		193
+nimgrp	[]=	niprefs.html#[]=-procs-all	proc		190
+nimgrp	haskey	niprefs.html#hasKey-procs-all	proc		224
+heading	TOML Syntax	niprefs.html#toml-syntax	 TOML Syntax		0
+heading	Basic usage	niprefs.html#basic-usage	 Basic usage		0
+heading	Reading	niprefs.html#basic-usage-reading	  Reading		0
+heading	Writing	niprefs.html#basic-usage-writing	  Writing		0
+heading	Removing	niprefs.html#basic-usage-removing	  Removing		0
