@@ -1,6 +1,8 @@
 # niprefs
 A Nim library to manage preferences in a TOML file.
 
+### This project is archived! Check out kdl-nim
+
 ## Installation
 You can install niprefs with _nimble_:
 ```sh
